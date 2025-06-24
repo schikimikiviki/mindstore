@@ -48,7 +48,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{userId}")
-    public ResponseEntity<?> deletePlantTask(@PathVariable Long userId) {
+    public ResponseEntity<?> deleteUser(@PathVariable Long userId) {
         try {
             userService.deleteUserById(userId);
             return ResponseEntity.ok(Map.of("success", true, "message", "User  deleted successfully"));

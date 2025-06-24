@@ -11,6 +11,10 @@ Search engine application that allows searching for IT terms and topics and addi
 - Postgres
 - Opensearch
 
+## Data
+
+![Image](https://github.com/user-attachments/assets/3c3477a8-99f1-4513-9d51-c764674fdf69)
+
 ## Deployment
 
 1. Run the following command to set up the database:

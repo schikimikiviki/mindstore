@@ -4,16 +4,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import com.mindstore.backend.data.Category;
 import com.mindstore.backend.data.Text;
+import com.mindstore.backend.data.TextDto;
 import com.mindstore.backend.service.TextService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.bind.annotation.*;
 
 
 @RestController
@@ -36,6 +33,19 @@ public class TextController {
     public Optional<Text> getTextById(@PathVariable Long Id) {
         return textService.findTextById(Id);
     }
+
+    @PostMapping
+    public Text addText(@RequestBody TextDto textDto) {
+        Text t1 = new Text();
+        t1.setTitle(textDto.getTitle());
+        t1.setContent_raw(textDto.getContent_raw());
+        t1.setContent_html(textDto.getContent_html());
+        t1.setTags(textDto.getTags());
+        t1.setCommandList(textDto.getCommandList());
+
+        return textService.save(t1);
+    }
+
 
     @DeleteMapping("/{userId}")
     public ResponseEntity<?> deleteText(@PathVariable Long userId) {

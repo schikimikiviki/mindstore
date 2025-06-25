@@ -19,15 +19,25 @@ public class Initializer implements CommandLineRunner {
     @Override
     public void run(String... args) {
 
-        Text t1 = new Text();
-        t1.setTitle("How to Use Docker with Spring Boot");
-        t1.setContent_raw("Here's how to set up Docker for a Spring Boot project...");
-        t1.setContent_html("<p>Here's how to set up Docker for a Spring Boot project...</p>");
-        t1.setTags(List.of(Category.DOCKER, Category.DEPLOYMENT));
-        t1.setCommandList(List.of("docker build -t myapp .", "docker run -p 8080:8080 myapp"));
 
-        textRepository.save(t1);
-        System.out.println("Database initialized!");
+
+        String title = "How to Use Docker with Spring Boot";
+
+        boolean alreadyExists = textRepository.existsByTitle(title);
+
+        if (!alreadyExists) {
+            Text t1 = new Text();
+            t1.setTitle(title);
+            t1.setContent_raw("Here's how to set up Docker for a Spring Boot project...");
+            t1.setContent_html("<p>Here's how to set up Docker for a Spring Boot project...</p>");
+            t1.setTags(List.of(Category.DOCKER, Category.DEPLOYMENT));
+            t1.setCommandList(List.of("docker build -t myapp .", "docker run -p 8080:8080 myapp"));
+
+            textRepository.save(t1);
+            System.out.println("Database initialized!");
+        } else {
+            System.out.println("Database already contains entry with that title.");
+        }
 
     }
 }

@@ -30,7 +30,7 @@ public class TextController {
     }
 
     @GetMapping("/id/{Id}")
-    public Optional<Text> getTextById(@PathVariable Long Id) {
+    public Optional<Text> getTextById(@PathVariable Integer Id) {
         return textService.findTextById(Id);
     }
 
@@ -48,7 +48,7 @@ public class TextController {
 
 
     @DeleteMapping("/{userId}")
-    public ResponseEntity<?> deleteText(@PathVariable Long userId) {
+    public ResponseEntity<?> deleteText(@PathVariable Integer userId) {
         try {
             textService.deleteTextById(userId);
             return ResponseEntity.ok(Map.of("success", true, "message", "Text  deleted successfully"));

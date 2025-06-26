@@ -75,11 +75,20 @@
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-<!--		<dependency>-->
-<!--			<groupId>org.opensearch.client</groupId>-->
-<!--			<artifactId>spring-data-opensearch</artifactId>-->
-<!--			<version>1.1.0</version>-->
-<!--		</dependency>-->
+
+		<dependency>
+			<groupId>org.opensearch.client</groupId>
+			<artifactId>opensearch-java</artifactId>
+			<version>2.10.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.opensearch.client</groupId>
+			<artifactId>spring-data-opensearch-starter</artifactId>
+			<version>1.8.1</version>
+		</dependency>
+
+
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
@@ -105,12 +114,6 @@
 			<artifactId>jjwt-jackson</artifactId>
 			<version>0.11.5</version>
 		</dependency>
-<!--		<dependency>-->
-<!--			<groupId>org.opensearch.client</groupId>-->
-<!--			<artifactId>opensearch-rest-high-level-client</artifactId>-->
-<!--			<version>2.11.1</version>-->
-<!--		</dependency>-->
-
 
 
 	</dependencies>

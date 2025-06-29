@@ -23,3 +23,10 @@ Search engine application that allows searching for IT terms and topics and addi
 ```
 docker compose up --build -d postgres
 ```
+
+2. Run the following command to start all services: 
+
+```
+docker compose up -d 
+```
+

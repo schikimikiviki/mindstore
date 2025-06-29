@@ -102,29 +102,7 @@
 <main class="main">
   <div class="content">
     <app-header></app-header>
-    <div class="logo">
-      <h2>Mindstore 🧠</h2>
-    </div>
-
-    <div class="right-side">
-      <input
-        type="text"
-        placeholder="Search for IT topic or a term"
-        (input)="filterTexts(getInputValue($event))"
-      />
-    </div>
-  </div>
-  <div>
-    <div *ngIf="filteredTexts.length > 0; else loading">
-      <div *ngFor="let text of filteredTexts">
-        <h2>{{ text.title }}</h2>
-        <p>{{ text.content_raw }}</p>
-      </div>
-    </div>
-    <ng-template #loading>
-      <p>Loading texts...</p>
-    </ng-template>
   </div>
 </main>
 
-<router-outlet />
+<router-outlet></router-outlet>

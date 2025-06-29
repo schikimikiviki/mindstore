@@ -63,7 +63,7 @@ public class AuthenticationController {
 
         // Create HTTP-only cookie
         Cookie cookie = new Cookie("token", jwtToken);
-        cookie.setHttpOnly(true);  // Prevents access to the cookie via JavaScript
+        cookie.setHttpOnly(true);
         //cookie.setSecure(true);     // Ensures cookie is sent only over HTTPS
         cookie.setPath("/");
         cookie.setMaxAge(3600);

@@ -25,7 +25,7 @@ public class TextSearchService {
     public SearchResult<TextIndex> search(String query, int page, int size) {
         try {
             SearchResponse<TextIndex> response = client.search(s -> s
-                            .index("text-index") // change if needed
+                            .index("text-index")
                             .from(page * size)
                             .size(size)
                             .query(q -> q

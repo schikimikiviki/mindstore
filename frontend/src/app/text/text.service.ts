@@ -7,7 +7,7 @@ import { Text } from './text.model';
   providedIn: 'root',
 })
 export class TextService {
-  private baseUrl = 'http://localhost:8080/texts/all';
+  private baseUrl = 'http://localhost:8080/text-index/all';
 
   constructor(private http: HttpClient) {}
 

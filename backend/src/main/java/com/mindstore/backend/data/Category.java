@@ -17,5 +17,6 @@ public enum Category {
     DATABASES,
     REACT,
     ANGULAR,
-    PROGRAMMING_GENERAL
+    PROGRAMMING_GENERAL,
+    PYTHON
 }

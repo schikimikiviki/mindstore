@@ -1,0 +1,505 @@
+[
+  {
+    "title": "Kill all Firefox processes",
+    "content_raw": "Example: Firefox froze and you want to kill every process connected to firefox.",
+    "content_html": "<u>Example</u>: Firefox froze and you want to kill every process connected to firefox.",
+    "tags": ["LINUX"],
+    "commandList": ["pkill firefox"]
+  },
+  {
+    "title": "Find PID for a certain process",
+    "content_raw": "Example: You want to kill a process, but first, you would like to find out the PID.",
+    "content_html": "<u>Example</u>: You want to kill a process, but first, you would like to find out the PID.",
+    "tags": ["LINUX"],
+    "commandList": ["ps aux | grep 'nano'"]
+  },
+  {
+    "title": "Create and restore a PostgreSQL dump",
+    "content_raw": "You want to create a database dump in form of a SQL file. 1. You create a dump 2. You use that dump to re-populate the database.",
+    "content_html": "You want to create a database dump in form of a SQL file. <ol> <li>1. You create a dump </li><li>2. You use that dump to re-populate the database.</li></ol>",
+    "tags": ["POSTGRES", "DATABASES"],
+    "commandList": [
+      "pg_dump -U nucc -h localhost -p 54321 nucc > dump.sql",
+      "psql -U username -d database_name -f /path/to/your/file.sql"
+    ]
+  },
+  {
+    "title": "Automatically create a component in Angular",
+    "content_raw": "You open a terminal and want to auto-create the Angular files that are needed for a component.",
+    "content_html": "You open a terminal and want to auto-create the Angular files that are needed for a component.",
+    "tags": ["ANGULAR"],
+    "commandList": ["ng c header", "ng g c components/header"]
+  },
+  {
+    "title": "Run Maven with environment variables",
+    "content_raw": "You have some environment variables that you need maven to use. You want to run maven without having to use more than one command.",
+    "content_html": "You have some environment variables that you need maven to use. You want to run maven without having to use more than <b> one </b>command.",
+    "tags": ["JAVA"],
+    "commandList": [
+      "SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:15432/mindstore \\",
+      "SPRING_DATASOURCE_USERNAME=user \\",
+      "SPRING_DATASOURCE_PASSWORD=password \\",
+      "mvn package"
+    ]
+  },
+  {
+    "title": "Check disk usage",
+    "content_raw": "You want to see how much disk space is used on each partition.",
+    "content_html": "<u>Example</u>: You want to see how much disk space is used on each partition.",
+    "tags": ["LINUX"],
+    "commandList": ["df -h"]
+  },
+  {
+    "title": "View running processes in a tree",
+    "content_raw": "You want to see all running processes in a hierarchical tree view.",
+    "content_html": "<u>Example</u>: You want to see all running processes in a hierarchical tree view.",
+    "tags": ["LINUX"],
+    "commandList": ["pstree -p"]
+  },
+  {
+    "title": "Restart Apache server",
+    "content_raw": "You're updating your site and need to restart Apache to apply changes.",
+    "content_html": "<u>Example</u>: You're updating your site and need to restart Apache to apply changes.",
+    "tags": ["APACHE"],
+    "commandList": ["sudo systemctl restart apache2"]
+  },
+  {
+    "title": "Generate SSH key for GitHub",
+    "content_raw": "You want to generate an SSH key to connect to GitHub securely.",
+    "content_html": "<u>Example</u>: You want to generate an SSH key to connect to GitHub securely.",
+    "tags": ["SSH"],
+    "commandList": ["ssh-keygen -t ed25519 -C \"your_email@example.com\""]
+  },
+  {
+    "title": "Check public IP address",
+    "content_raw": "You want to quickly get your public IP address using the terminal.",
+    "content_html": "<u>Example</u>: You want to quickly get your public IP address using the terminal.",
+    "tags": ["LINUX"],
+    "commandList": ["curl ifconfig.me"]
+  },
+  {
+    "title": "Search for a file by name",
+    "content_raw": "You want to find a file called 'notes.txt' anywhere on your system.",
+    "content_html": "<u>Example</u>: You want to find a file called 'notes.txt' anywhere on your system.",
+    "tags": ["LINUX"],
+    "commandList": ["find / -name notes.txt 2>/dev/null"]
+  },
+  {
+    "title": "List all active network connections",
+    "content_raw": "You want to see which services are listening on your system.",
+    "content_html": "<u>Example</u>: You want to see which services are listening on your system.",
+    "tags": ["LINUX"],
+    "commandList": ["ss -tuln"]
+  },
+  {
+    "title": "List Docker containers",
+    "content_raw": "You want to see all currently running Docker containers.",
+    "content_html": "<u>Example</u>: You want to see all currently running Docker containers.",
+    "tags": ["DOCKER"],
+    "commandList": ["docker ps"]
+  },
+  {
+    "title": "Stop a Docker container",
+    "content_raw": "You want to stop a running container with the name 'webapp'.",
+    "content_html": "<u>Example</u>: You want to stop a running container with the name 'webapp'.",
+    "tags": ["DOCKER"],
+    "commandList": ["docker stop webapp"]
+  },
+  {
+    "title": "Create a virtual environment in Python",
+    "content_raw": "You want to isolate your Python project dependencies.",
+    "content_html": "<u>Example</u>: You want to isolate your Python project dependencies.",
+    "tags": ["PROGRAMMING_GENERAL", "PYTHON"],
+    "commandList": ["python3 -m venv venv"]
+  },
+  {
+    "title": "Activate a Python virtual environment",
+    "content_raw": "You want to activate the virtual environment before installing packages.",
+    "content_html": "<u>Example</u>: You want to activate the virtual environment before installing packages.",
+    "tags": ["PROGRAMMING_GENERAL", "PYTHON"],
+    "commandList": ["source venv/bin/activate"]
+  },
+  {
+    "title": "Pull latest changes from Git",
+    "content_raw": "You want to update your local repo with the latest changes.",
+    "content_html": "<u>Example</u>: You want to update your local repo with the latest changes.",
+    "tags": ["PROGRAMMING_GENERAL"],
+    "commandList": ["git pull origin main"]
+  },
+  {
+    "title": "Create a new Git branch",
+    "content_raw": "You want to work on a new feature and need a separate branch.",
+    "content_html": "<u>Example</u>: You want to work on a new feature and need a separate branch.",
+    "tags": ["PROGRAMMING_GENERAL"],
+    "commandList": ["git checkout -b feature/login"]
+  },
+  {
+    "title": "Clone a GitHub repository",
+    "content_raw": "You want to clone a repo from GitHub to your local system.",
+    "content_html": "<u>Example</u>: You want to clone a repo from GitHub to your local system.",
+    "tags": ["PROGRAMMING_GENERAL"],
+    "commandList": ["git clone git@github.com:user/repo.git"]
+  },
+  {
+    "title": "Restart PostgreSQL service",
+    "content_raw": "You want to restart the PostgreSQL service after making config changes.",
+    "content_html": "<u>Example</u>: You want to restart the PostgreSQL service after making config changes.",
+    "tags": ["POSTGRES"],
+    "commandList": ["sudo systemctl restart postgresql"]
+  },
+  {
+    "title": "Show PostgreSQL version",
+    "content_raw": "You want to check which version of PostgreSQL is installed.",
+    "content_html": "<u>Example</u>: You want to check which version of PostgreSQL is installed.",
+    "tags": ["POSTGRES"],
+    "commandList": ["psql --version"]
+  },
+  {
+    "title": "Install Node.js using nvm",
+    "content_raw": "You want to install a specific version of Node.js using nvm.",
+    "content_html": "<u>Example</u>: You want to install a specific version of Node.js using nvm.",
+    "tags": ["JAVASCRIPT"],
+    "commandList": ["nvm install 18"]
+  },
+  {
+    "title": "Start a local server with Python",
+    "content_raw": "You want to serve a folder locally over HTTP.",
+    "content_html": "<u>Example</u>: You want to serve a folder locally over HTTP.",
+    "tags": ["PROGRAMMING_GENERAL", "PYTHON"],
+    "commandList": ["python3 -m http.server 8000"]
+  },
+  {
+    "title": "List all environment variables",
+    "content_raw": "You want to see all environment variables available to the current shell.",
+    "content_html": "<u>Example</u>: You want to see all environment variables available to the current shell.",
+    "tags": ["LINUX"],
+    "commandList": ["printenv"]
+  },
+  {
+    "title": "Ping a host to check connectivity",
+    "content_raw": "You want to verify if google.com is reachable.",
+    "content_html": "<u>Example</u>: You want to verify if google.com is reachable.",
+    "tags": ["LINUX"],
+    "commandList": ["ping -c 4 google.com"]
+  },
+  {
+    "title": "Display current directory",
+    "content_raw": "You want to print your current working directory.",
+    "content_html": "<u>Example</u>: You want to print your current working directory.",
+    "tags": ["LINUX"],
+    "commandList": ["pwd"]
+  },
+  {
+    "title": "Change file permissions to executable",
+    "content_raw": "You want to make a script executable.",
+    "content_html": "<u>Example</u>: You want to make a script executable.",
+    "tags": ["LINUX"],
+    "commandList": ["chmod +x script.sh"]
+  },
+  {
+    "title": "Install a package using dnf",
+    "content_raw": "You want to install a new package on Fedora.",
+    "content_html": "<u>Example</u>: You want to install a new package on Fedora.",
+    "tags": ["LINUX"],
+    "commandList": ["sudo dnf install htop"]
+  },
+  {
+    "title": "Extract a tar.gz archive",
+    "content_raw": "You want to extract a compressed archive to the current folder.",
+    "content_html": "<u>Example</u>: You want to extract a compressed archive to the current folder.",
+    "tags": ["LINUX"],
+    "commandList": ["tar -xvzf archive.tar.gz"]
+  },
+  {
+    "title": "Get current date and time",
+    "content_raw": "You want to print the current date and time.",
+    "content_html": "<u>Example</u>: You want to print the current date and time.",
+    "tags": ["LINUX"],
+    "commandList": ["date"]
+  },
+  {
+    "title": "Connect to PostgreSQL",
+    "content_raw": "You want to connect to a PostgreSQL database.",
+    "content_html": "<u>Example</u>: You want to connect to a PostgreSQL database.",
+    "tags": ["POSTGRES"],
+    "commandList": ["psql -U username -d dbname"]
+  },
+  {
+    "title": "List all databases",
+    "content_raw": "You want to list all available databases in PostgreSQL.",
+    "content_html": "<u>Example</u>: You want to list all available databases in PostgreSQL.",
+    "tags": ["POSTGRES"],
+    "commandList": ["\\l", "SELECT datname FROM pg_database;"]
+  },
+  {
+    "title": "List all tables",
+    "content_raw": "You want to list all tables in the current database.",
+    "content_html": "<u>Example</u>: You want to list all tables in the current database.",
+    "tags": ["POSTGRES"],
+    "commandList": [
+      "\\dt",
+      "SELECT table_name FROM information_schema.tables WHERE table_schema = 'public';"
+    ]
+  },
+  {
+    "title": "Describe a table structure",
+    "content_raw": "You want to view the structure of a table.",
+    "content_html": "<u>Example</u>: You want to view the structure of a table.",
+    "tags": ["POSTGRES"],
+    "commandList": ["\\d tablename"]
+  },
+  {
+    "title": "Execute SQL from a file",
+    "content_raw": "You want to run SQL commands stored in a file.",
+    "content_html": "<u>Example</u>: You want to run SQL commands stored in a file.",
+    "tags": ["POSTGRES"],
+    "commandList": ["psql -U username -d dbname -f script.sql"]
+  },
+  {
+    "title": "Kill idle connections",
+    "content_raw": "You want to terminate idle PostgreSQL connections.",
+    "content_html": "<u>Example</u>: You want to terminate idle PostgreSQL connections.",
+    "tags": ["POSTGRES"],
+    "commandList": [
+      "SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE state = 'idle';"
+    ]
+  },
+  {
+    "title": "Check PostgreSQL version",
+    "content_raw": "You want to check the PostgreSQL server version.",
+    "content_html": "<u>Example</u>: You want to check the PostgreSQL server version.",
+    "tags": ["POSTGRES"],
+    "commandList": ["SELECT version();"]
+  },
+  {
+    "title": "Create a new user",
+    "content_raw": "You want to create a new PostgreSQL user.",
+    "content_html": "<u>Example</u>: You want to create a new PostgreSQL user.",
+    "tags": ["POSTGRES"],
+    "commandList": ["CREATE USER username WITH PASSWORD 'password';"]
+  },
+  {
+    "title": "Check open ports",
+    "content_raw": "You want to check which ports are open on a system.",
+    "content_html": "<u>Example</u>: You want to check which ports are open on a system.",
+    "tags": ["LINUX", "CYBERSECURITY"],
+    "commandList": ["netstat -tuln", "ss -tuln"]
+  },
+  {
+    "title": "Scan for open ports (nmap)",
+    "content_raw": "You want to scan a host for open ports using nmap.",
+    "content_html": "<u>Example</u>: You want to scan a host for open ports using nmap.",
+    "tags": ["LINUX", "CYBERSECURITY"],
+    "commandList": ["nmap -sV target_ip"]
+  },
+  {
+    "title": "Check running processes",
+    "content_raw": "You want to list all running processes.",
+    "content_html": "<u>Example</u>: You want to list all running processes.",
+    "tags": ["LINUX", "CYBERSECURITY"],
+    "commandList": ["ps aux", "top"]
+  },
+  {
+    "title": "Check logged-in users",
+    "content_raw": "You want to see who is currently logged in.",
+    "content_html": "<u>Example</u>: You want to see who is currently logged in.",
+    "tags": ["LINUX", "CYBERSECURITY"],
+    "commandList": ["who", "w"]
+  },
+  {
+    "title": "Check file integrity (checksum)",
+    "content_raw": "You want to verify a file's integrity using checksum.",
+    "content_html": "<u>Example</u>: You want to verify a file's integrity using checksum.",
+    "tags": ["LINUX", "CYBERSECURITY"],
+    "commandList": ["sha256sum file.txt", "md5sum file.txt"]
+  },
+  {
+    "title": "Search for SUID files",
+    "content_raw": "You want to find files with SUID permissions (potential privilege escalation).",
+    "content_html": "<u>Example</u>: You want to find files with SUID permissions (potential privilege escalation).",
+    "tags": ["LINUX", "CYBERSECURITY"],
+    "commandList": ["find / -perm -4000 -type f 2>/dev/null"]
+  },
+  {
+    "title": "Check SSH login attempts",
+    "content_raw": "You want to check recent SSH login attempts.",
+    "content_html": "<u>Example</u>: You want to check recent SSH login attempts.",
+    "tags": ["LINUX", "CYBERSECURITY"],
+    "commandList": ["grep 'Failed password' /var/log/auth.log", "lastb"]
+  },
+  {
+    "title": "Check firewall rules (iptables)",
+    "content_raw": "You want to list current iptables firewall rules.",
+    "content_html": "<u>Example</u>: You want to list current iptables firewall rules.",
+    "tags": ["LINUX", "CYBERSECURITY"],
+    "commandList": ["iptables -L -n -v"]
+  },
+  {
+    "title": "Check for rootkits",
+    "content_raw": "You want to scan for rootkits using rkhunter.",
+    "content_html": "<u>Example</u>: You want to scan for rootkits using rkhunter.",
+    "tags": ["LINUX", "CYBERSECURITY"],
+    "commandList": ["rkhunter --check"]
+  },
+  {
+    "title": "Monitor network traffic (tcpdump)",
+    "content_raw": "You want to capture and analyze network traffic.",
+    "content_html": "<u>Example</u>: You want to capture and analyze network traffic.",
+    "tags": ["LINUX", "CYBERSECURITY"],
+    "commandList": ["tcpdump -i eth0 -n"]
+  },
+  {
+    "title": "Compile and Run a Java Program",
+    "content_raw": "You want to compile and execute a Java program from the command line.",
+    "content_html": "<u>Example</u>: You want to compile and execute a Java program from the command line.",
+    "tags": ["JAVA"],
+    "commandList": ["javac Main.java", "java Main"]
+  },
+  {
+    "title": "Create a Java JAR File",
+    "content_raw": "You want to package a Java application into a JAR file.",
+    "content_html": "<u>Example</u>: You want to package a Java application into a JAR file.",
+    "tags": ["JAVA"],
+    "commandList": ["jar cvf MyApp.jar *.class"]
+  },
+  {
+    "title": "Run a Java Program with Arguments",
+    "content_raw": "You want to pass command-line arguments to a Java program.",
+    "content_html": "<u>Example</u>: You want to pass command-line arguments to a Java program.",
+    "tags": ["JAVA"],
+    "commandList": ["java Main arg1 arg2"]
+  },
+  {
+    "title": "Check Java Version",
+    "content_raw": "You want to verify the installed Java version.",
+    "content_html": "<u>Example</u>: You want to verify the installed Java version.",
+    "tags": ["JAVA"],
+    "commandList": ["java -version"]
+  },
+  {
+    "title": "Generate JavaDocs",
+    "content_raw": "You want to create documentation for your Java code.",
+    "content_html": "<u>Example</u>: You want to create documentation for your Java code.",
+    "tags": ["JAVA"],
+    "commandList": ["javadoc -d docs *.java"]
+  },
+  {
+    "title": "Run a JavaScript File with Node.js",
+    "content_raw": "You want to execute a JavaScript file using Node.js.",
+    "content_html": "<u>Example</u>: You want to execute a JavaScript file using Node.js.",
+    "tags": ["JAVASCRIPT"],
+    "commandList": ["node script.js"]
+  },
+  {
+    "title": "Install an NPM Package",
+    "content_raw": "You want to add a dependency to your project using npm.",
+    "content_html": "<u>Example</u>: You want to add a dependency to your project using npm.",
+    "tags": ["JAVASCRIPT"],
+    "commandList": ["npm install lodash"]
+  },
+  {
+    "title": "Check Node.js Version",
+    "content_raw": "You want to verify the installed Node.js version.",
+    "content_html": "<u>Example</u>: You want to verify the installed Node.js version.",
+    "tags": ["JAVASCRIPT"],
+    "commandList": ["node -v"]
+  },
+  {
+    "title": "Initialize a New NPM Project",
+    "content_raw": "You want to create a new Node.js project with a `package.json` file.",
+    "content_html": "<u>Example</u>: You want to create a new Node.js project with a `package.json` file.",
+    "tags": ["JAVASCRIPT"],
+    "commandList": ["npm init -y"]
+  },
+  {
+    "title": "Run a Script Defined in package.json",
+    "content_raw": "You want to execute a custom script defined in your `package.json`.",
+    "content_html": "<u>Example</u>: You want to execute a custom script defined in your `package.json`.",
+    "tags": ["JAVASCRIPT"],
+    "commandList": ["npm run start"]
+  },
+  {
+    "title": "Create a New Angular Project",
+    "content_raw": "You want to generate a new Angular application.",
+    "content_html": "<u>Example</u>: You want to generate a new Angular application.",
+    "tags": ["ANGULAR"],
+    "commandList": ["ng new my-app"]
+  },
+  {
+    "title": "Serve an Angular App Locally",
+    "content_raw": "You want to run an Angular app in development mode.",
+    "content_html": "<u>Example</u>: You want to run an Angular app in development mode.",
+    "tags": ["ANGULAR"],
+    "commandList": ["ng serve"]
+  },
+  {
+    "title": "Build an Angular App for Production",
+    "content_raw": "You want to compile an Angular app for deployment.",
+    "content_html": "<u>Example</u>: You want to compile an Angular app for deployment.",
+    "tags": ["ANGULAR"],
+    "commandList": ["ng build --prod"]
+  },
+  {
+    "title": "Run Angular Unit Tests",
+    "content_raw": "You want to execute unit tests in an Angular project.",
+    "content_html": "<u>Example</u>: You want to execute unit tests in an Angular project.",
+    "tags": ["ANGULAR"],
+    "commandList": ["ng test"]
+  },
+  {
+    "title": "Create a New React App",
+    "content_raw": "You want to bootstrap a new React application.",
+    "content_html": "<u>Example</u>: You want to bootstrap a new React application.",
+    "tags": ["REACT"],
+    "commandList": ["npx create-react-app my-app"]
+  },
+  {
+    "title": "Start a React Development Server",
+    "content_raw": "You want to run a React app locally.",
+    "content_html": "<u>Example</u>: You want to run a React app locally.",
+    "tags": ["REACT"],
+    "commandList": ["npm start"]
+  },
+  {
+    "title": "Build a React App for Production",
+    "content_raw": "You want to compile a React app for deployment.",
+    "content_html": "<u>Example</u>: You want to compile a React app for deployment.",
+    "tags": ["REACT"],
+    "commandList": ["npm run build"]
+  },
+  {
+    "title": "Add React Router to a Project",
+    "content_raw": "You want to install React Router for navigation.",
+    "content_html": "<u>Example</u>: You want to install React Router for navigation.",
+    "tags": ["REACT"],
+    "commandList": ["npm install react-router-dom"]
+  },
+  {
+    "title": "Run React Tests",
+    "content_raw": "You want to execute tests in a React project.",
+    "content_html": "<u>Example</u>: You want to execute tests in a React project.",
+    "tags": ["REACT"],
+    "commandList": ["npm test"]
+  },
+  {
+    "title": "Initialize a Git Repository",
+    "content_raw": "You want to start version control for a project.",
+    "content_html": "<u>Example</u>: You want to start version control for a project.",
+    "tags": ["PROGRAMMING_GENERAL"],
+    "commandList": ["git init"]
+  },
+  {
+    "title": "Check Python Version",
+    "content_raw": "You want to verify the installed Python version.",
+    "content_html": "<u>Example</u>: You want to verify the installed Python version.",
+    "tags": ["PROGRAMMING_GENERAL", "PYTHON"],
+    "commandList": ["python --version"]
+  },
+  {
+    "title": "List Files in a Directory (Linux/Mac)",
+    "content_raw": "You want to list all files in the current directory.",
+    "content_html": "<u>Example</u>: You want to list all files in the current directory.",
+    "tags": ["PROGRAMMING_GENERAL"],
+    "commandList": ["ls -la"]
+  }
+]

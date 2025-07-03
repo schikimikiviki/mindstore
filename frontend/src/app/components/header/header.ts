@@ -16,12 +16,14 @@ export class Header implements OnInit {
   allTexts: Text[] = [];
   filteredTexts: Text[] = [];
   loading = true;
+  textCount = 0;
 
   constructor(private textService: TextService) {}
 
   ngOnInit() {
     this.textService.getTexts().subscribe((texts) => {
       console.log('Fetched texts:', texts);
+      this.textCount = texts.length;
       this.allTexts = texts;
       this.filteredTexts = texts;
       this.loading = false;

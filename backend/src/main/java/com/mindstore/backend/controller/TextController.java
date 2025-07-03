@@ -33,17 +33,17 @@ public class TextController {
         return textService.findTextById(Id);
     }
 
-    @PostMapping
-    public Text addText(@RequestBody TextDto textDto) {
-        Text t1 = new Text();
-        t1.setTitle(textDto.getTitle());
-        t1.setContent_raw(textDto.getContent_raw());
-        t1.setContent_html(textDto.getContent_html());
-        t1.setTags(textDto.getTags());
-        t1.setCommandList(textDto.getCommandList());
-
-        return textService.save(t1);
-    }
+//    @PostMapping
+//    public Text addText(@RequestBody TextDto textDto) {
+//        Text t1 = new Text();
+//        t1.setTitle(textDto.getTitle());
+//        t1.setContent_raw(textDto.getContent_raw());
+//        t1.setContent_html(textDto.getContent_html());
+//        t1.setTags(textDto.getTags());
+//        t1.setCommandList(textDto.getCommandList());
+//
+//        return textService.save(t1);
+//    }
 
 
     @DeleteMapping("/{userId}")

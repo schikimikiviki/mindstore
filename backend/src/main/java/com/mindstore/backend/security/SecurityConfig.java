@@ -51,6 +51,7 @@ public class SecurityConfig {
                         .requestMatchers("/auth/check").authenticated()
 
                         .requestMatchers("/texts/all").permitAll()
+                        .requestMatchers("/text-index/all").permitAll()
                         .requestMatchers("/api/search").permitAll()
                         .anyRequest().authenticated()
                 )

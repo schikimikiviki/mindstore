@@ -1,7 +1,7 @@
 package com.mindstore.backend.security;
 
 import com.mindstore.backend.data.Category;
-import com.mindstore.backend.data.Text;
+import com.mindstore.backend.data.entity.Text;
 import com.mindstore.backend.repository.TextRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;

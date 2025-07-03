@@ -5,7 +5,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import com.mindstore.backend.data.User;
+import com.mindstore.backend.data.entity.User;
 import com.mindstore.backend.repository.UserRepository;
 
 @Service

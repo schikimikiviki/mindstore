@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.mindstore.backend.data.LoginUserDto;
-import com.mindstore.backend.data.RegisterUserDto;
-import com.mindstore.backend.data.User;
+import com.mindstore.backend.data.dto.LoginUserDto;
+import com.mindstore.backend.data.dto.RegisterUserDto;
+import com.mindstore.backend.data.entity.User;
 import com.mindstore.backend.service.AuthenticationService;
 import com.mindstore.backend.service.JwtService;
 

@@ -1,6 +1,6 @@
 package com.mindstore.backend.service;
 
-import com.mindstore.backend.data.Text;
+import com.mindstore.backend.data.entity.Text;
 import com.mindstore.backend.repository.TextRepository;
 import org.springframework.stereotype.Service;
 

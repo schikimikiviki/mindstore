@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.mindstore.backend.data.User;
+import com.mindstore.backend.data.entity.User;
 import com.mindstore.backend.service.UserService;
 
 @RestController

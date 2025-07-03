@@ -1,10 +1,8 @@
 package com.mindstore.backend.service;
 
 import com.mindstore.backend.data.TextIndex;
-import com.mindstore.backend.data.SearchResult;
+import com.mindstore.backend.data.dto.SearchResultDto;
 import org.opensearch.client.opensearch.OpenSearchClient;
-import org.opensearch.client.opensearch._types.query_dsl.Query;
-import org.opensearch.client.opensearch.core.SearchRequest;
 import org.opensearch.client.opensearch.core.SearchResponse;
 import org.opensearch.client.opensearch.core.search.Hit;
 import org.springframework.stereotype.Service;
@@ -22,7 +20,7 @@ public class TextSearchService {
         this.client = client;
     }
 
-    public SearchResult<TextIndex> search(String query, int page, int size) {
+    public SearchResultDto<TextIndex> search(String query, int page, int size) {
         try {
             SearchResponse<TextIndex> response = client.search(s -> s
                             .index("text-index")
@@ -43,7 +41,7 @@ public class TextSearchService {
 
             long total = response.hits().total().value();
 
-            return new SearchResult<>(results, total, page, size);
+            return new SearchResultDto<>(results, total, page, size);
 
         } catch (IOException e) {
             throw new RuntimeException("Search failed", e);

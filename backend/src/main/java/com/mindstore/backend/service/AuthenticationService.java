@@ -5,9 +5,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.mindstore.backend.data.LoginUserDto;
-import com.mindstore.backend.data.RegisterUserDto;
-import com.mindstore.backend.data.User;
+import com.mindstore.backend.data.dto.LoginUserDto;
+import com.mindstore.backend.data.dto.RegisterUserDto;
+import com.mindstore.backend.data.entity.User;
 import com.mindstore.backend.repository.UserRepository;
 
 @Service

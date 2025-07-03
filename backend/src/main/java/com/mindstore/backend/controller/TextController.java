@@ -4,9 +4,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import com.mindstore.backend.data.Category;
-import com.mindstore.backend.data.Text;
-import com.mindstore.backend.data.TextDto;
+import com.mindstore.backend.data.entity.Text;
+import com.mindstore.backend.data.dto.TextDto;
 import com.mindstore.backend.service.TextService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

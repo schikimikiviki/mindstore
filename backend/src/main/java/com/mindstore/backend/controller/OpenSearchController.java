@@ -1,13 +1,9 @@
 package com.mindstore.backend.controller;
 
 import com.mindstore.backend.data.TextIndex;
-import com.mindstore.backend.data.dto.SearchResultDto;
-import com.mindstore.backend.data.entity.Text;
-import com.mindstore.backend.service.TextIndexService;
-import com.mindstore.backend.service.TextSearchService;
+import com.mindstore.backend.service.TextIndexServiceImpl;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -17,15 +13,15 @@ import java.util.List;
 public class OpenSearchController {
 
 
-    private final TextIndexService textIndexService;
+    private final TextIndexServiceImpl textIndexServiceImpl;
 
-    public OpenSearchController(TextIndexService textIndexService) {
-        this.textIndexService = textIndexService;
+    public OpenSearchController(TextIndexServiceImpl textIndexServiceImpl) {
+        this.textIndexServiceImpl = textIndexServiceImpl;
     }
 
     @GetMapping("/all")
     public List<TextIndex> getAllTextIndexes(){
-        return textIndexService.findAll();
+        return textIndexServiceImpl.findAll();
     }
 
 }

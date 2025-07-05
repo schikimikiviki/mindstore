@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -22,18 +21,16 @@ import com.mindstore.backend.service.UserService;
 @RequestMapping("/users")
 public class UserController {
 
-    @Autowired
+
     private UserDetailsService userDetailsService;
-
     private final PasswordEncoder passwordEncoder;
-
-
     private final UserService userService;
 
 
-    public UserController(UserService userService, PasswordEncoder passwordEncoder) {
+    public UserController(UserService userService, PasswordEncoder passwordEncoder, UserDetailsService userDetailsService ) {
         this.userService = userService;
         this.passwordEncoder = passwordEncoder;
+        this.userDetailsService = userDetailsService;
     }
 
 

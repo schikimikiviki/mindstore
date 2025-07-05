@@ -77,17 +77,21 @@ public class User implements UserDetails {
 
     public User setFullName(String fullName) {
         this.fullName = fullName;
-        return this; // Return 'this' for method chaining
+        return this;
+    }
+
+    public String getFullName() {
+        return this.fullName;
     }
 
     public User setEmail(String email) {
         this.email = email;
-        return this; // Return 'this' for method chaining
+        return this;
     }
 
     public User setPassword(String password) {
         this.password = password;
-        return this; // Return 'this' for method chaining
+        return this;
     }
 
 

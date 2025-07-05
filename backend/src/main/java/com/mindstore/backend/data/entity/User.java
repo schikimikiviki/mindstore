@@ -22,7 +22,7 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(nullable = false)
-    private Integer id;
+    private Long id;
 
     @Column(nullable = false)
     private String fullName;
@@ -89,11 +89,22 @@ public class User implements UserDetails {
         return this;
     }
 
+    public String getEmail(){
+        return this.email;
+    }
+
     public User setPassword(String password) {
         this.password = password;
         return this;
     }
 
+    public Long getId (){
+        return this.id;
+    }
+
+    public void setId(Long id){
+        this.id = id;
+    }
 
 
 

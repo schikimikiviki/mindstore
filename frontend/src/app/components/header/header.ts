@@ -9,7 +9,7 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [FilterButton, CommonModule],
   templateUrl: './header.html',
-  styleUrls: ['./header.css'],
+  styleUrls: ['./header.scss'],
 })
 export class Header implements OnInit {
   title = 'mindstore';

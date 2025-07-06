@@ -52,7 +52,7 @@ public class Initializer implements CommandLineRunner {
             try {
                 JSONObject jsonEntry = (JSONObject) entry;
 
-                // Validate required fields
+
                 String title = (String) jsonEntry.get("title");
                 String content_raw = (String) jsonEntry.get("content_raw");
                 String content_html = (String) jsonEntry.get("content_html");
@@ -66,7 +66,7 @@ public class Initializer implements CommandLineRunner {
                     continue;
                 }
 
-                // Normalize title for comparison
+
                 String normalizedTitle = title.trim().toLowerCase();
 //                if (textIndexService.existsByTitle(normalizedTitle)) {
 //                    System.out.println("Skipping duplicate title: " + title);
@@ -74,18 +74,18 @@ public class Initializer implements CommandLineRunner {
 //                    continue;
 //                }
 
-                // Create and populate the index
+
                 TextIndex index = new TextIndex();
                 index.setTitle(title);
                 index.setContent_raw(content_raw);
                 index.setContent_html(content_html);
 
-                // Handle tags - assuming Category has a name field
+
                 List<Category> tags = mapper.readValue(tagsArray.toJSONString(),
                         new TypeReference<List<Category>>(){});
                 index.setTags(tags);
 
-                // Handle commands
+
                 List<String> commands = mapper.readValue(commandListArray.toJSONString(),
                         new TypeReference<List<String>>(){});
                 index.setCommandList(commands);

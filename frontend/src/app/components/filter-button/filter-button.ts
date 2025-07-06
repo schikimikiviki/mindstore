@@ -5,6 +5,6 @@ import { Component } from '@angular/core';
   imports: [],
   standalone: true,
   templateUrl: './filter-button.html',
-  styleUrls: ['./filter-button.css'],
+  styleUrls: ['./filter-button.scss'],
 })
 export class FilterButton {}

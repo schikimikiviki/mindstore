@@ -44,11 +44,37 @@ public class AuthenticationController {
 
     @GetMapping("/check")
     public ResponseEntity<?> checkAuth(HttpServletRequest request) {
-
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
+        // Extract JWT from cookie
+        String token = null;
+        if (request.getCookies() != null) {
+            for (Cookie cookie : request.getCookies()) {
+                if ("token".equals(cookie.getName())) {
+                    token = cookie.getValue();
+                    break;
+                }
+            }
+        }
+
+        if (token == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Missing token cookie");
+        }
+
         if (auth != null && auth.isAuthenticated() && !(auth instanceof AnonymousAuthenticationToken)) {
-            return ResponseEntity.ok().build(); // or return user info if needed
+
+            try {
+                long remainingMillis = jwtService.extractExpiration(token).getTime() - System.currentTimeMillis();
+                long remainingSeconds = Math.max(remainingMillis / 1000, 0);
+
+                return ResponseEntity.ok().body(
+                        new LoginResponse()
+                                .setToken(token)
+                                .setExpiresIn(remainingSeconds)
+                );
+            } catch (Exception e) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid token");
+            }
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }

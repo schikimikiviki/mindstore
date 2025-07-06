@@ -1,6 +1,7 @@
 package com.mindstore.backend.data.entity;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
@@ -35,11 +36,11 @@ public class User implements UserDetails {
 
     @CreationTimestamp
     @Column(updatable = false, name = "created_at")
-    private Date createdAt;
+    private LocalDateTime createdAt;
 
     @UpdateTimestamp
     @Column(name = "updated_at")
-    private Date updatedAt;
+    private LocalDateTime updatedAt;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

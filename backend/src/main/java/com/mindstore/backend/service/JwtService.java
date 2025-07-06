@@ -41,6 +41,12 @@ public class JwtService {
         return buildToken(extraClaims, userDetails, jwtExpiration);
     }
 
+    public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails, Long expiration) {
+        long exp = expiration != null ? expiration : jwtExpiration;
+        return buildToken(extraClaims, userDetails, exp);
+    }
+
+
     public long getExpirationTime() {
         return jwtExpiration;
     }
@@ -69,7 +75,7 @@ public class JwtService {
         return extractExpiration(token).before(new Date());
     }
 
-    private Date extractExpiration(String token) {
+    public Date extractExpiration(String token) {
         return extractClaim(token, Claims::getExpiration);
     }
 

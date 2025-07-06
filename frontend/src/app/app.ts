@@ -10,6 +10,6 @@ import { Header } from './components/header/header';
   standalone: true,
   imports: [CommonModule, RouterOutlet, FormsModule, Header],
   templateUrl: './app.html',
-  styleUrl: './app.css',
+  styleUrl: './app.scss',
 })
 export class App {}

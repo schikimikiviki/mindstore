@@ -1,5 +1,6 @@
 package com.mindstore.backend.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,7 +36,9 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
-
+    public User getRecentUser(String email, LocalDateTime createdAt){
+        return userRepository.getUserWithMailAdressAndSpecificCreatedAtDate(email, createdAt);
+    }
 
 
 

@@ -1,18 +1,18 @@
 package com.mindstore.backend.controller;
 
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import com.mindstore.backend.data.dto.UserQueryDto;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.mindstore.backend.data.entity.User;
 import com.mindstore.backend.service.UserService;
@@ -43,6 +43,18 @@ public class UserController {
     public Optional<User> getUserById(@PathVariable Long Id) {
         return userService.findUserById(Id);
     }
+
+    @GetMapping("/recent-users")
+    public User getRecentUser(
+            @RequestParam String email,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime createdAt) {
+
+        System.out.println("Checking for email=" + email + " created after " + createdAt);
+
+        return userService.getRecentUser(email, createdAt);
+    }
+
+
 
     @DeleteMapping("/{userId}")
     public ResponseEntity<?> deleteUser(@PathVariable Long userId) {

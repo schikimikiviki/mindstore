@@ -1,6 +1,6 @@
 package com.mindstore.backend.service;
 
-import com.mindstore.backend.data.TextIndex;
+import com.mindstore.backend.data.TextDocument;
 import com.mindstore.backend.data.dto.SearchResultDto;
 import org.opensearch.client.opensearch.OpenSearchClient;
 import org.opensearch.client.opensearch.core.SearchResponse;
@@ -20,9 +20,9 @@ public class TextSearchService {
         this.client = client;
     }
 
-    public SearchResultDto<TextIndex> search(String query, int page, int size) {
+    public SearchResultDto<TextDocument> search(String query, int page, int size) {
         try {
-            SearchResponse<TextIndex> response = client.search(s -> s
+            SearchResponse<TextDocument> response = client.search(s -> s
                             .index("text-index")
                             .from(page * size)
                             .size(size)
@@ -32,10 +32,10 @@ public class TextSearchService {
                                             .query(query)
                                     )
                             ),
-                    TextIndex.class
+                    TextDocument.class
             );
 
-            List<TextIndex> results = response.hits().hits().stream()
+            List<TextDocument> results = response.hits().hits().stream()
                     .map(Hit::source)
                     .collect(Collectors.toList());
 

@@ -30,3 +30,8 @@ docker compose up --build -d postgres
 docker compose up -d 
 ```
 
+3. The opensearch dashboard can be found at: 
+
+```
+http://localhost:5601
+```

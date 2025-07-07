@@ -1,7 +1,7 @@
 package com.mindstore.backend.service;
 
 import com.mindstore.backend.data.Category;
-import com.mindstore.backend.data.TextIndex;
+import com.mindstore.backend.data.TextDocument;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -9,7 +9,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.opensearch.client.opensearch.OpenSearchClient;
-import org.opensearch.client.opensearch._types.FieldValue;
 import org.opensearch.client.opensearch.core.*;
 import org.opensearch.client.opensearch.core.search.Hit;
 import org.opensearch.client.opensearch.core.search.HitsMetadata;
@@ -20,7 +19,6 @@ import org.opensearch.client.opensearch.core.search.TotalHitsRelation;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -28,7 +26,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class TextIndexServiceImplTest {
+class TextDocumentServiceImplTest {
 
     @Mock
     private OpenSearchClient client;
@@ -36,11 +34,11 @@ class TextIndexServiceImplTest {
     @InjectMocks
     private TextIndexServiceImpl textIndexService;
 
-    private TextIndex testText;
+    private TextDocument testText;
 
     @BeforeEach
     void setUp() {
-        testText = new TextIndex();
+        testText = new TextDocument();
         testText.setTitle("Test Title");
         testText.setContent_raw("Test Content");
         testText.setContent_html("<h1>Test Content</h1>");
@@ -50,7 +48,7 @@ class TextIndexServiceImplTest {
 
     @Test
     void shouldIndexText() throws IOException {
-        TextIndex text = new TextIndex();
+        TextDocument text = new TextDocument();
         text.setTitle("My Title");
         textIndexService.indexText(text);
 
@@ -61,33 +59,28 @@ class TextIndexServiceImplTest {
 
     @Test
     void testIndexText_shouldGenerateIdIfNull() throws IOException {
-        TextIndex textIndex = new TextIndex();
-        textIndex.setTitle("Test Title");
-
-        OpenSearchClient clientMock = mock(OpenSearchClient.class);
-        TextIndexServiceImpl service = new TextIndexServiceImpl(clientMock);
+        TextDocument textDocument = new TextDocument();
+        textDocument.setTitle("Test Title");
 
       // do nothing
-        when(clientMock.index(any(Function.class))).thenReturn(null);
+        when(client.index(any(Function.class))).thenReturn(null);
 
-        service.indexText(textIndex);
+        textIndexService.indexText(textDocument);
 
-        assertNotNull(textIndex.getId(), "ID should be generated if null");
-        verify(clientMock).index(any(Function.class));
+        assertNotNull(textDocument.getId(), "ID should be generated if null");
+        verify(client).index(any(Function.class));
     }
 
     @Test
     void testFindAll_shouldReturnTextList() throws IOException {
-        OpenSearchClient clientMock = mock(OpenSearchClient.class);
-        TextIndexServiceImpl service = new TextIndexServiceImpl(clientMock);
 
-        SearchResponse<TextIndex> responseMock = mock(SearchResponse.class);
-        Hit<TextIndex> hit = Hit.of(h -> h.source(testText));
+        SearchResponse<TextDocument> responseMock = mock(SearchResponse.class);
+        Hit<TextDocument> hit = Hit.of(h -> h.source(testText));
 
         when(responseMock.hits()).thenReturn(HitsMetadata.of(h -> h.hits(List.of(hit))));
-        when(clientMock.search(any(Function.class), eq(TextIndex.class))).thenReturn(responseMock);
+        when(client.search(any(Function.class), eq(TextDocument.class))).thenReturn(responseMock);
 
-        List<TextIndex> results = service.findAll();
+        List<TextDocument> results = textIndexService.findAll();
 
         assertEquals(1, results.size());
         assertEquals("Test Title", results.get(0).getTitle());
@@ -96,18 +89,16 @@ class TextIndexServiceImplTest {
     // verify that countTexts() works correcly
     @Test
     void testCountTexts_shouldReturnTotal() throws IOException {
-        OpenSearchClient clientMock = mock(OpenSearchClient.class);
-        TextIndexServiceImpl service = new TextIndexServiceImpl(clientMock);
 
         TotalHits totalHits = TotalHits.of(t -> t.value(42L).relation(TotalHitsRelation.Eq));
-        List<Hit<TextIndex>> emptyHits = new ArrayList<>();
-        HitsMetadata<TextIndex> hitsMetadata = HitsMetadata.of(h -> h.total(totalHits).hits(emptyHits));
-        SearchResponse<TextIndex> responseMock = mock(SearchResponse.class);
+        List<Hit<TextDocument>> emptyHits = new ArrayList<>();
+        HitsMetadata<TextDocument> hitsMetadata = HitsMetadata.of(h -> h.total(totalHits).hits(emptyHits));
+        SearchResponse<TextDocument> responseMock = mock(SearchResponse.class);
 
         when(responseMock.hits()).thenReturn(hitsMetadata);
-        when(clientMock.search(any(Function.class), eq(TextIndex.class))).thenReturn(responseMock);
+        when(client.search(any(Function.class), eq(TextDocument.class))).thenReturn(responseMock);
 
-        long count = service.countTexts();
+        long count = textIndexService.countTexts();
 
         assertEquals(42L, count);
     }
@@ -116,12 +107,12 @@ class TextIndexServiceImplTest {
     void testExistsByTitle_shouldReturnTrue() throws IOException {
 
         TotalHits totalHits = TotalHits.of(t -> t.value(1L).relation(TotalHitsRelation.Eq));
-        List<Hit<TextIndex>> emptyHits = new ArrayList<>();
-        HitsMetadata<TextIndex> hitsMetadata = HitsMetadata.of(h -> h.total(totalHits).hits(emptyHits));
-        SearchResponse<TextIndex> responseMock = mock(SearchResponse.class);
+        List<Hit<TextDocument>> emptyHits = new ArrayList<>();
+        HitsMetadata<TextDocument> hitsMetadata = HitsMetadata.of(h -> h.total(totalHits).hits(emptyHits));
+        SearchResponse<TextDocument> responseMock = mock(SearchResponse.class);
 
         when(responseMock.hits()).thenReturn(hitsMetadata);
-        when(client.search(any(Function.class), eq(TextIndex.class))).thenReturn(responseMock);
+        when(client.search(any(Function.class), eq(TextDocument.class))).thenReturn(responseMock);
 
         boolean exists = textIndexService.existsByTitle("Test Title");
 

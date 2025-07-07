@@ -1,10 +1,8 @@
 package com.mindstore.backend.controller;
 
 import com.mindstore.backend.data.Category;
-import com.mindstore.backend.data.TextIndex;
-import com.mindstore.backend.data.entity.User;
-import com.mindstore.backend.service.TextIndexServiceImpl;
-import com.mindstore.backend.service.UserService;
+import com.mindstore.backend.data.TextDocument;
+import com.mindstore.backend.service.TextIndexService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -27,28 +25,28 @@ class OpenSearchControllerTest {
     private MockMvc mockMvc;
 
     @MockitoBean
-    private TextIndexServiceImpl textIndexServiceImpl;
+    private TextIndexService textIndexService;
 
     @Test
     void shouldReturnTextList() throws Exception {
 
-        TextIndex textIndexOne = new TextIndex();
-        textIndexOne.setTitle("Some random title");
-        textIndexOne.setContent_html("<h1>Soem content</h1>");
-        textIndexOne.setContent_raw("Some content");
-        textIndexOne.setCommandList(List.of("sudo rm -rf", "sudo mkdir"));
-        textIndexOne.setTags(List.of(Category.DATABASES, Category.AI));
+        TextDocument textDocumentOne = new TextDocument();
+        textDocumentOne.setTitle("Some random title");
+        textDocumentOne.setContent_html("<h1>Soem content</h1>");
+        textDocumentOne.setContent_raw("Some content");
+        textDocumentOne.setCommandList(List.of("sudo rm -rf", "sudo mkdir"));
+        textDocumentOne.setTags(List.of(Category.DATABASES, Category.AI));
 
-        TextIndex textIndexTwo = new TextIndex();
-        textIndexTwo.setTitle("Some random title 2");
-        textIndexTwo.setContent_html("<h1>Soem content2</h1>");
-        textIndexTwo.setContent_raw("Some content2");
-        textIndexTwo.setCommandList(List.of("sudo rm -rf", "sudo mkdir"));
-        textIndexTwo.setTags(List.of(Category.DOCKER, Category.LINUX));
+        TextDocument textDocumentTwo = new TextDocument();
+        textDocumentTwo.setTitle("Some random title 2");
+        textDocumentTwo.setContent_html("<h1>Soem content2</h1>");
+        textDocumentTwo.setContent_raw("Some content2");
+        textDocumentTwo.setCommandList(List.of("sudo rm -rf", "sudo mkdir"));
+        textDocumentTwo.setTags(List.of(Category.DOCKER, Category.LINUX));
 
-        List<TextIndex> mockTexts = List.of(textIndexOne, textIndexTwo);
+        List<TextDocument> mockTexts = List.of(textDocumentOne, textDocumentTwo);
 
-        when(textIndexServiceImpl.findAll()).thenReturn(mockTexts);
+        when(textIndexService.findAll()).thenReturn(mockTexts);
 
         String response = mockMvc.perform(get("/text-index/all"))
                 .andExpect(status().isOk())

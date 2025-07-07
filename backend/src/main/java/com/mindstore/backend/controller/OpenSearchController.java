@@ -1,8 +1,8 @@
 package com.mindstore.backend.controller;
 
-import com.mindstore.backend.data.TextIndex;
+import com.mindstore.backend.data.TextDocument;
 import com.mindstore.backend.service.JwtService;
-import com.mindstore.backend.service.TextIndexServiceImpl;
+import com.mindstore.backend.service.TextIndexService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,24 +19,24 @@ import java.util.List;
 public class OpenSearchController {
 
 
-    private final TextIndexServiceImpl textIndexServiceImpl;
+    private final TextIndexService textIndexService;
     private final JwtService jwtService;
 
-    public OpenSearchController(TextIndexServiceImpl textIndexServiceImpl, JwtService jwtService) {
-        this.textIndexServiceImpl = textIndexServiceImpl;
+    public OpenSearchController(TextIndexService textIndexService, JwtService jwtService) {
+        this.textIndexService = textIndexService;
         this.jwtService = jwtService;
 
     }
 
     @GetMapping("/all")
-    public List<TextIndex> getAllTextIndexes(){
-        return textIndexServiceImpl.findAll();
+    public List<TextDocument> getAllTextIndexes(){
+        return textIndexService.findAll();
     }
 
 
     @PostMapping("/create")
-    public ResponseEntity<TextIndex> createTextIndex(@RequestBody TextIndex textIndex, HttpServletResponse response) {
-        textIndexServiceImpl.indexText(textIndex);
+    public ResponseEntity<TextDocument> createTextIndex(@RequestBody TextDocument textDocument, HttpServletResponse response) {
+        textIndexService.indexText(textDocument);
 
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 

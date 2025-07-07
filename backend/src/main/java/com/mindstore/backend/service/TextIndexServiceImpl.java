@@ -1,6 +1,6 @@
 package com.mindstore.backend.service;
 
-import com.mindstore.backend.data.TextIndex;
+import com.mindstore.backend.data.TextDocument;
 import org.opensearch.client.opensearch.OpenSearchClient;
 import org.opensearch.client.opensearch._types.FieldValue;
 import org.springframework.stereotype.Service;
@@ -19,7 +19,7 @@ public class TextIndexServiceImpl implements TextIndexService{
         this.client = client;
     }
 
-    public void indexText(TextIndex text) {
+    public void indexText(TextDocument text) {
 
         try {
 
@@ -38,13 +38,13 @@ public class TextIndexServiceImpl implements TextIndexService{
     }
 
 
-    public List<TextIndex> findAll() {
+    public List<TextDocument> findAll() {
         try {
             var response = client.search(s -> s
                             .index("text-index")
                             .query(q -> q.matchAll(m -> m))
                             .size(1000),
-                    TextIndex.class
+                    TextDocument.class
             );
 
             return response.hits().hits().stream()
@@ -63,7 +63,7 @@ public class TextIndexServiceImpl implements TextIndexService{
                             .index("text-index")
                             .query(q -> q.matchAll(m -> m))
                             .size(0), // Don't fetch actual documents
-                    TextIndex.class
+                    TextDocument.class
             );
 
             return response.hits().total().value();
@@ -84,7 +84,7 @@ public class TextIndexServiceImpl implements TextIndexService{
                                     .field("title")
                                     .query(FieldValue.of(title))
                             )
-                    ), TextIndex.class);
+                    ), TextDocument.class);
 
             return response.hits().total().value() > 0;
         } catch (IOException e) {
@@ -92,7 +92,12 @@ public class TextIndexServiceImpl implements TextIndexService{
         }
     }
 
-    public void deleteAll() {
+    public void deleteAll() throws IOException {
+
+        if (!client.indices().exists(b -> b.index("text-index")).value()) {
+            client.indices().create(c -> c.index("text-index"));
+        }
+
         try {
             client.deleteByQuery(d -> d
                     .index("text-index")

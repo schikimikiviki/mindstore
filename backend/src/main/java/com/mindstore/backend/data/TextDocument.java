@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.List;
 
 @Document(indexName = "text_index")
-public class TextIndex {
+public class TextDocument {
 
     @Id
     private Integer id;

@@ -1,6 +1,7 @@
 package com.mindstore.backend.controller;
 
 import com.mindstore.backend.data.TextDocument;
+import com.mindstore.backend.data.dto.SearchResultDto;
 import com.mindstore.backend.service.JwtService;
 import com.mindstore.backend.service.TextIndexService;
 import jakarta.servlet.http.HttpServletResponse;
@@ -28,9 +29,11 @@ public class OpenSearchController {
 
     }
 
+    // return the results in a DTO format
     @GetMapping("/all")
-    public List<TextDocument> getAllTextIndexes(){
-        return textIndexService.findAll();
+    public SearchResultDto<TextDocument> getAllTextIndexes(){
+        List<TextDocument> docs = textIndexService.findAll();
+        return new SearchResultDto<>(docs, docs.size(), 0, docs.size());
     }
 
 

@@ -101,7 +101,8 @@
 
 <main class="main">
   <div class="content">
-    <app-header></app-header>
+    <app-header (childEmitter)="getDataFromChild($event)"></app-header>
+    <app-result-page [childTryingToPullData]="textArray"></app-result-page>
   </div>
 </main>
 

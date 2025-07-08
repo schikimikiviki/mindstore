@@ -1,0 +1,10 @@
+<div *ngIf="!loading">
+  <div *ngFor="let text of childTryingToPullData">
+    <h2>{{ text?.title }}</h2>
+    <p>{{ text?.content_raw }}</p>
+  </div>
+</div>
+
+<div *ngIf="loading">
+  <p>Loading...</p>
+</div>

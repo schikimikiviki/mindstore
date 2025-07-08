@@ -6,15 +6,17 @@ import {
   OnInit,
   ChangeDetectorRef,
   ChangeDetectionStrategy,
+  Output,
+  EventEmitter,
 } from '@angular/core';
-import { FilterButton } from '../filter-button/filter-button';
+
 import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, FilterButton],
+  imports: [CommonModule],
   templateUrl: './header.html',
   styleUrls: ['./header.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -23,9 +25,10 @@ export class Header implements OnInit {
   title = 'mindstore';
   allTexts: Text[] = [];
   filteredTexts: Text[] = [];
-  loading = true;
   textCount = 0;
   filteredCount = 0;
+
+  @Output() childEmitter: EventEmitter<Text[]> = new EventEmitter<Text[]>();
 
   // RxJS subject for search input
   searchTerm$ = new Subject<string>();
@@ -41,7 +44,7 @@ export class Header implements OnInit {
       this.filteredTexts = texts.content;
       this.textCount = texts.total;
       this.filteredCount = texts.total;
-      this.loading = false;
+      this.childEmitter.emit(this.filteredTexts);
     });
 
     this.searchTerm$
@@ -57,19 +60,17 @@ export class Header implements OnInit {
           return;
         }
 
-        this.loading = true;
         this.textService.searchTexts(term).subscribe({
           next: (result) => {
             this.filteredTexts = [...result.content];
             this.filteredCount = result.total;
-            this.loading = false;
             this.cdr.markForCheck();
+            this.childEmitter.emit(result.content);
           },
           error: (err) => {
             console.error('Search error:', err);
             this.filteredTexts = [];
             this.filteredCount = 0;
-            this.loading = false;
             this.cdr.markForCheck();
           },
         });

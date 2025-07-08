@@ -9,14 +9,3 @@
 <!-- <app-filter-button></app-filter-button> -->
 
 <input type="text" placeholder="Search..." (input)="onSearchInput($event)" />
-
-<div *ngIf="!loading">
-  <div *ngFor="let text of filteredTexts">
-    <h2>{{ text?.title }}</h2>
-    <p>{{ text?.content_raw }}</p>
-  </div>
-</div>
-
-<div *ngIf="loading">
-  <p>Loading...</p>
-</div>

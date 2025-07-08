@@ -18,15 +18,14 @@ public class SearchController {
 
     private final TextSearchService textSearchService;
     private final SearchHistoryService searchHistoryService;
-    private final UserRepository userRepository;
 
-    public SearchController(TextSearchService textSearchService, SearchHistoryService searchHistoryService, UserRepository userRepository) {
+
+    public SearchController(TextSearchService textSearchService, SearchHistoryService searchHistoryService) {
 
         System.out.println("SearchController loaded");
-        
+
         this.textSearchService = textSearchService;
         this.searchHistoryService = searchHistoryService;
-        this.userRepository = userRepository;
     }
 
     @GetMapping
@@ -35,8 +34,7 @@ public class SearchController {
                                                 @RequestParam(defaultValue = "10") int size, Principal principal) {
 
         // wenn wir eine Search machen, soll das auch als History abgespeichert werden
-        User user = userRepository.findByEmail(principal.getName()).orElse(null);
-        searchHistoryService.saveSearch(query.toString(), user);
+        searchHistoryService.saveSearch(query.toString());
 
         return textSearchService.search(query, page, size);
     }
@@ -50,13 +48,8 @@ public class SearchController {
     @GetMapping("/history")
     public ResponseEntity<List<String>> getSearchHistory(Principal principal) {
         System.out.println("HISTORY ROUTE REQUESTED");
-        User user = userRepository.findByEmail(principal.getName()).orElse(null);
-        return ResponseEntity.ok(searchHistoryService.getRecentSearches(user));
+        return ResponseEntity.ok(searchHistoryService.getRecentSearches());
     }
 
-    @GetMapping("/popular")
-    public ResponseEntity<List<String>> getPopularSearches() {
-        return ResponseEntity.ok(searchHistoryService.getPopularSearches());
-    }
 }
 

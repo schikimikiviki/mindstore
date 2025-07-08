@@ -9,7 +9,7 @@ Search engine application that allows searching for IT terms and topics and addi
 - Java
 - Spring Boot, Spring Security
 - Postgres
-- JWT Cookie Based Authentication
+- JWT Authentication (HTTP only Cookie)
 - Opensearch
 
 ## Data

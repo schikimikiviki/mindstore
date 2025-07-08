@@ -18,26 +18,20 @@ public SearchHistoryService(SearchHistoryRepository searchHistoryRepository){
     this.searchHistoryRepository = searchHistoryRepository;
 }
 
-    public void saveSearch(String term, User user) {
+    public void saveSearch(String term) {
         SearchHistory history = new SearchHistory();
         history.setTerm(term);
-        history.setUser(user);
         history.setSearchedAt(new Date());
         searchHistoryRepository.save(history);
     }
 
-    public List<String> getRecentSearches(User user) {
-        return searchHistoryRepository.findTop10ByUserOrderBySearchedAtDesc(user)
+    public List<String> getRecentSearches() {
+        return searchHistoryRepository.findTop10ByOrderBySearchedAtDesc()
                 .stream()
                 .map(SearchHistory::getTerm)
                 .distinct()
                 .toList();
     }
 
-    public List<String> getPopularSearches() {
-        return searchHistoryRepository.findTopSearchTerms(PageRequest.of(0, 10))
-                .stream()
-                .map(row -> (String) row[0])
-                .toList();
-    }
+
 }

@@ -27,6 +27,9 @@ export class TextService {
       page: page.toString(),
       size: size.toString(),
     };
-    return this.http.get<SearchResultDto<Text>>(this.searchUrl, { params });
+    return this.http.get<SearchResultDto<Text>>(this.searchUrl, {
+      params,
+      withCredentials: true,
+    });
   }
 }

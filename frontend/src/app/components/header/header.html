@@ -8,11 +8,7 @@
 
 <!-- <app-filter-button></app-filter-button> -->
 
-<input
-  type="text"
-  (input)="searchBackend(getInputValue($event))"
-  placeholder="Search..."
-/>
+<input type="text" placeholder="Search..." (input)="onSearchInput($event)" />
 
 <div *ngIf="!loading">
   <div *ngFor="let text of filteredTexts">

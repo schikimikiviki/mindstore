@@ -8,6 +8,8 @@ import {
   ChangeDetectionStrategy,
 } from '@angular/core';
 import { FilterButton } from '../filter-button/filter-button';
+import { Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 @Component({
   selector: 'app-header',
@@ -25,6 +27,9 @@ export class Header implements OnInit {
   textCount = 0;
   filteredCount = 0;
 
+  // RxJS subject for search input
+  searchTerm$ = new Subject<string>();
+
   constructor(
     private textService: TextService,
     private cdr: ChangeDetectorRef
@@ -32,48 +37,47 @@ export class Header implements OnInit {
 
   ngOnInit() {
     this.textService.getTexts().subscribe((texts) => {
-      console.log(ChangeDetectionStrategy);
-      console.log('Fetched texts:', texts);
-      this.textCount = texts.content?.length;
       this.allTexts = texts.content;
       this.filteredTexts = texts.content;
+      this.textCount = texts.total;
+      this.filteredCount = texts.total;
       this.loading = false;
     });
+
+    this.searchTerm$
+      .pipe(
+        debounceTime(500), // wait 500ms after last input
+        distinctUntilChanged() // ignore same values
+      )
+      .subscribe((term) => {
+        if (!term || term.trim() === '') {
+          this.filteredTexts = [...this.allTexts];
+          this.filteredCount = this.allTexts.length;
+          this.cdr.markForCheck();
+          return;
+        }
+
+        this.loading = true;
+        this.textService.searchTexts(term).subscribe({
+          next: (result) => {
+            this.filteredTexts = [...result.content];
+            this.filteredCount = result.total;
+            this.loading = false;
+            this.cdr.markForCheck();
+          },
+          error: (err) => {
+            console.error('Search error:', err);
+            this.filteredTexts = [];
+            this.filteredCount = 0;
+            this.loading = false;
+            this.cdr.markForCheck();
+          },
+        });
+      });
   }
 
-  getInputValue(event: Event): string {
-    return (event.target as HTMLInputElement).value;
-  }
-
-  searchBackend(query: string) {
-    if (!query || query.trim() === '') {
-      this.filteredTexts = [...this.allTexts];
-      this.filteredCount = this.allTexts.length;
-      this.cdr.markForCheck();
-      return;
-    }
-
-    this.loading = true;
-    console.log('Starting search for:', query);
-
-    this.textService.searchTexts(query).subscribe({
-      next: (result) => {
-        console.log('Search results received:', result);
-        // this.filteredTexts = result.content;
-        this.filteredTexts = [...result.content]; // create new array reference
-
-        this.filteredCount = result.total;
-        this.loading = false;
-        this.cdr.markForCheck();
-        console.log('Loading set to false, filteredTexts:', this.filteredTexts);
-      },
-      error: (err) => {
-        console.error('Search error:', err);
-        this.loading = false;
-        this.filteredTexts = [];
-        this.filteredCount = 0;
-        this.cdr.markForCheck();
-      },
-    });
+  onSearchInput(event: Event) {
+    const value = (event.target as HTMLInputElement).value;
+    this.searchTerm$.next(value); // push new value into the stream
   }
 }

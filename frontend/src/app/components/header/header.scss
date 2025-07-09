@@ -1,0 +1,66 @@
+@use "sass:map";
+@use "styles" as styles;
+
+.header-box {
+  color: map.get(styles.$colors, text);
+  margin: -10px;
+  border-bottom: 2px solid black;
+  width: 100vw;
+  min-height: 180px;
+}
+
+.logo {
+  padding: 10px 10px 10px 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  p {
+    font-size: 12px;
+    padding-right: 20px;
+  }
+
+  #version {
+    margin-top: -10px;
+  }
+}
+
+.recent {
+  padding: 5px 5px 5px 30px;
+  color: white;
+  display: flex;
+  gap: 15px;
+  background-color: styles.$juicyOrange;
+
+  p {
+    font-size: 12px;
+    cursor: pointer;
+  }
+}
+
+.history-half {
+  display: flex;
+  gap: 20px;
+}
+
+.search-bar {
+  border-radius: 20px;
+  font-size: 20px;
+  padding: 8px;
+}
+
+.search-box {
+  background-color: styles.$lightBlue;
+  min-height: 180px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.search-inner {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}

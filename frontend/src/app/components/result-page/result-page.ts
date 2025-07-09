@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-result-page',
   templateUrl: './result-page.html',
-  styleUrl: './result-page.css',
+  styleUrl: './result-page.scss',
   standalone: true,
   imports: [CommonModule],
 })

@@ -10,6 +10,7 @@ import { SearchResultDto } from '../searchResultDto/searchResultDto';
 export class TextService {
   private baseUrl = 'http://localhost:8080/text-index/all';
   private searchUrl = 'http://localhost:8080/api/search';
+  private historyUrl = 'http://localhost:8080/api/search/history';
 
   constructor(private http: HttpClient) {}
 
@@ -31,5 +32,9 @@ export class TextService {
       params,
       withCredentials: true,
     });
+  }
+
+  getHistory(): Observable<string[]> {
+    return this.http.get<string[]>(this.historyUrl);
   }
 }

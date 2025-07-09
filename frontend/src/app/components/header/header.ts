@@ -27,6 +27,7 @@ export class Header implements OnInit {
   filteredTexts: Text[] = [];
   textCount = 0;
   filteredCount = 0;
+  historyArray: string[] = [];
 
   @Output() childEmitter: EventEmitter<Text[]> = new EventEmitter<Text[]>();
 
@@ -75,6 +76,12 @@ export class Header implements OnInit {
           },
         });
       });
+
+    this.textService.getHistory().subscribe((historyStrings) => {
+      console.log('history:', historyStrings);
+      this.historyArray = historyStrings;
+      this.cdr.detectChanges();
+    });
   }
 
   onSearchInput(event: Event) {

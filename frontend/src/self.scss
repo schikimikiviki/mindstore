@@ -1,0 +1,16 @@
+// global colors
+
+$lightBlue: #8ecae6;
+$mediumBlue: #219ebc;
+$darkBlue: #023047;
+$sunnyYellow: #ffb703;
+$juicyOrange: #fb8500;
+
+// color map
+$colors: (
+  primary: $lightBlue,
+  secondary: $mediumBlue,
+  error: $juicyOrange,
+  success: $sunnyYellow,
+  text: $darkBlue,
+);

@@ -1,11 +1,33 @@
-<div class="logo">
-  <h2>Mindstore 🧠</h2>
+<div class="header-box">
+  <div class="logo">
+    <div>
+      <h2>Mindstore 🧠</h2>
+      <p id="version">Version 1.0.0</p>
+    </div>
+
+    <div>
+      <p>Texts in database: {{textCount}}</p>
+      <p>Search results: {{filteredCount}}</p>
+    </div>
+  </div>
+
+  <div class="search-box">
+    <div class="search-inner">
+      <h1>Search the knowledge base</h1>
+      <input
+        type="text"
+        placeholder="Search..."
+        (input)="onSearchInput($event)"
+        class="search-bar"
+      />
+    </div>
+    <!-- <app-filter-button></app-filter-button> -->
+  </div>
+
+  <div class="recent" *ngIf="historyArray.length > 0">
+    <p><u>Recent searches:</u></p>
+    <div class="history-half">
+      <p *ngFor="let item of historyArray">{{ item }}</p>
+    </div>
+  </div>
 </div>
-
-<div class="right-side"></div>
-<p>Texts in database: {{textCount}}</p>
-<p>Filtered texts: {{filteredCount}}</p>
-
-<!-- <app-filter-button></app-filter-button> -->
-
-<input type="text" placeholder="Search..." (input)="onSearchInput($event)" />

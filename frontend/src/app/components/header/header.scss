@@ -55,20 +55,39 @@
   padding: 8px;
 }
 
-.search-box {
-  background-color: styles.$lightBlue;
-  min-height: 180px;
-  padding: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 .search-inner {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.search-box {
+  position: relative;
+  background-color: styles.$lightBlue;
+  min-height: 180px;
+  padding: 20px;
+}
+
+.plus-button {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+
+  button {
+    font-size: 1.2rem;
+    padding: 0.3rem 0.6rem;
+    border: 1px solid styles.$mediumBlue;
+    border-radius: 50%;
+    background-color: styles.$sunnyYellow;
+    color: black;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
 }
 
 #login-button {

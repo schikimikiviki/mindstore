@@ -9,10 +9,12 @@ import {
   Output,
   EventEmitter,
 } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 
 import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { FormsModule } from '@angular/forms';
+import { Popup } from '../popup/popup';
 
 @Component({
   selector: 'app-header',
@@ -29,6 +31,7 @@ export class Header implements OnInit {
   textCount = 0;
   filteredCount = 0;
   historyArray: string[] = [];
+  loggedIn = false;
 
   @Output() childEmitter: EventEmitter<Text[]> = new EventEmitter<Text[]>();
 
@@ -38,7 +41,8 @@ export class Header implements OnInit {
 
   constructor(
     private textService: TextService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private dialogRef: MatDialog
   ) {}
 
   ngOnInit() {
@@ -107,5 +111,15 @@ export class Header implements OnInit {
     this.searchTerm$.next(item);
     this.searchTerm = item;
     this.loadSearchHistory();
+  }
+
+  openPopup() {
+    this.dialogRef
+      .open(Popup)
+      .afterClosed()
+      .subscribe((result) => {
+        console.log('Dialog closed with:', result);
+        this.loggedIn = true;
+      });
   }
 }

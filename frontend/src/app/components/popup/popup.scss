@@ -1,0 +1,33 @@
+@use "sass:map";
+@use "styles" as styles;
+
+.login-container {
+  padding: 10px;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  label {
+    font-size: 13px;
+  }
+
+  input {
+    border-radius: 20px;
+  }
+
+  button {
+    color: white;
+    border-radius: 20px;
+    background-color: styles.$darkBlue;
+  }
+}
+
+.error-msg {
+  font-size: 12px;
+  background-color: styles.$juicyOrange;
+  border-radius: 20px;
+  padding: 5px;
+}

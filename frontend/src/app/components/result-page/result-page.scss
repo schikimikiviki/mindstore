@@ -1,3 +1,39 @@
+@use "sass:map";
+@use "styles" as styles;
+
 .result-area {
-  padding: 20px;
+  width: 100vw;
+}
+
+.result-singular {
+  padding: 5px 5px 20px 20px;
+  border-bottom: 2px solid rgb(221, 221, 221);
+}
+
+.result-header {
+  display: flex;
+  gap: 20px;
+}
+
+.result-tags {
+  margin-top: 25px;
+  font-size: 8px;
+  border-radius: 20px;
+  padding: 0 5px;
+  height: 20px;
+  background-color: styles.$sunnyYellow;
+
+  display: flex;
+  align-items: center;
+}
+
+.clickable-title {
+  cursor: pointer;
+}
+
+#command-header {
+  background-color: styles.$mediumBlue;
+  border-radius: 20px;
+  padding: 5px 5px 5px 20px;
+  width: 8%;
 }

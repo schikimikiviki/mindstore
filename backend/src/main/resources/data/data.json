@@ -15,8 +15,8 @@
   },
   {
     "title": "Create and restore a PostgreSQL dump",
-    "content_raw": "You want to create a database dump in form of a SQL file. 1. You create a dump 2. You use that dump to re-populate the database.",
-    "content_html": "You want to create a database dump in form of a SQL file. <ol> <li>1. You create a dump </li><li>2. You use that dump to re-populate the database.</li></ol>",
+    "content_raw": "You want to create a database dump in form of a SQL file. You create a dump You use that dump to re-populate the database.",
+    "content_html": "You want to create a database dump in form of a SQL file. <ol> <li> You create a dump </li><li> You use that dump to re-populate the database.</li></ol>",
     "tags": ["POSTGRES", "DATABASES"],
     "commandList": [
       "pg_dump -U nucc -h localhost -p 54321 nucc > dump.sql",

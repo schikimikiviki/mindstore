@@ -11,6 +11,7 @@ import { CommonModule } from '@angular/common';
 })
 export class ResultPage implements OnInit {
   loading = true;
+  expandedTextId: number | null = null;
 
   @Input() childTryingToPullData: Text[] = [];
 
@@ -18,6 +19,7 @@ export class ResultPage implements OnInit {
 
   ngOnInit(): void {
     this.loading = this.childTryingToPullData.length == 0;
+    console.log(this.childTryingToPullData);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -26,6 +28,14 @@ export class ResultPage implements OnInit {
       changes['childTryingToPullData'].currentValue.length > 0
     ) {
       this.loading = false;
+    }
+  }
+
+  expandSection(text: Text) {
+    if (this.expandedTextId === text.id) {
+      this.expandedTextId = null; // collapse if already expanded
+    } else {
+      this.expandedTextId = text.id;
     }
   }
 }

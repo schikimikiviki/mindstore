@@ -47,7 +47,7 @@ public class SearchController {
 
     @GetMapping("/history")
     public ResponseEntity<List<String>> getSearchHistory(Principal principal) {
-        System.out.println("HISTORY ROUTE REQUESTED");
+      //  System.out.println("HISTORY ROUTE REQUESTED");
         return ResponseEntity.ok(searchHistoryService.getRecentSearches());
     }
 

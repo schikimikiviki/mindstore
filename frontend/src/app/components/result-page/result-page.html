@@ -1,8 +1,25 @@
 <div class="result-area">
   <div *ngIf="!loading">
-    <div *ngFor="let text of childTryingToPullData">
-      <h2>{{ text?.title }}</h2>
-      <p>{{ text?.content_raw }}</p>
+    <div class="result-singular" *ngFor="let text of childTryingToPullData">
+      <div class="result-header">
+        <h2 (click)="expandSection(text)" class="clickable-title">
+          {{ text?.title }}
+        </h2>
+        <p class="result-tags" *ngFor="let tag of text.tags">
+          {{ tag.trim() }}
+        </p>
+      </div>
+
+      <!--  content always visible -->
+      <div [innerHTML]="text.content_html"></div>
+
+      <!--  section only visible when expanded -->
+      <div *ngIf="expandedTextId === text.id" class="expanded-details">
+        <p id="command-header">Commands:</p>
+        <ul>
+          <li *ngFor="let command of text.commandList">{{ command.trim() }}</li>
+        </ul>
+      </div>
     </div>
   </div>
 

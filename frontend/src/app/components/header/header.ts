@@ -12,11 +12,12 @@ import {
 
 import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './header.html',
   styleUrls: ['./header.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -33,6 +34,7 @@ export class Header implements OnInit {
 
   // RxJS subject for search input
   searchTerm$ = new Subject<string>();
+  searchTerm: string = '';
 
   constructor(
     private textService: TextService,
@@ -50,14 +52,15 @@ export class Header implements OnInit {
 
     this.searchTerm$
       .pipe(
-        debounceTime(500), // wait 500ms after last input
-        distinctUntilChanged() // ignore same values
+        debounceTime(500) // wait 500ms after last input
+        // distinctUntilChanged() // ignore same values
       )
       .subscribe((term) => {
         if (!term || term.trim() === '') {
           this.filteredTexts = [...this.allTexts];
           this.filteredCount = this.allTexts.length;
           this.cdr.markForCheck();
+          this.childEmitter.emit(this.filteredTexts);
           return;
         }
 
@@ -67,6 +70,7 @@ export class Header implements OnInit {
             this.filteredCount = result.total;
             this.cdr.markForCheck();
             this.childEmitter.emit(result.content);
+            this.loadSearchHistory();
           },
           error: (err) => {
             console.error('Search error:', err);
@@ -77,15 +81,31 @@ export class Header implements OnInit {
         });
       });
 
-    this.textService.getHistory().subscribe((historyStrings) => {
-      console.log('history:', historyStrings);
-      this.historyArray = historyStrings;
-      this.cdr.detectChanges();
-    });
+    // this.textService.getHistory().subscribe((historyStrings) => {
+    //   console.log('history:', historyStrings);
+    //   this.historyArray = historyStrings;
+    //   this.cdr.detectChanges();
+    // });
+    this.loadSearchHistory();
   }
 
   onSearchInput(event: Event) {
     const value = (event.target as HTMLInputElement).value;
     this.searchTerm$.next(value); // push new value into the stream
+  }
+
+  private loadSearchHistory() {
+    this.textService.getHistory().subscribe((historyStrings) => {
+      this.historyArray = historyStrings;
+      this.cdr.markForCheck();
+    });
+  }
+
+  onClickItem(item: string) {
+    // we want to search for that
+    // also, display that search string in the bar
+    this.searchTerm$.next(item);
+    this.searchTerm = item;
+    this.loadSearchHistory();
   }
 }

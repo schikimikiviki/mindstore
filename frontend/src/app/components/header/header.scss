@@ -4,7 +4,7 @@
 .header-box {
   color: map.get(styles.$colors, text);
   margin: -10px;
-  border-bottom: 2px solid black;
+  //border-bottom: 2px solid black;
   width: 100vw;
   min-height: 180px;
 }
@@ -14,6 +14,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  //border-bottom: 2px solid black;
 
   p {
     font-size: 12px;
@@ -35,6 +36,11 @@
   p {
     font-size: 12px;
     cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+      color: styles.$darkBlue;
+    }
   }
 }
 

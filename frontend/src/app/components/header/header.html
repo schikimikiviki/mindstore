@@ -19,6 +19,7 @@
         placeholder="Search..."
         (input)="onSearchInput($event)"
         class="search-bar"
+        [(ngModel)]="searchTerm"
       />
     </div>
     <!-- <app-filter-button></app-filter-button> -->
@@ -27,7 +28,9 @@
   <div class="recent" *ngIf="historyArray.length > 0">
     <p><u>Recent searches:</u></p>
     <div class="history-half">
-      <p *ngFor="let item of historyArray">{{ item }}</p>
+      <p *ngFor="let item of historyArray" (click)="onClickItem(item)">
+        {{ item }}
+      </p>
     </div>
   </div>
 </div>

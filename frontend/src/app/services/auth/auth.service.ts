@@ -17,6 +17,14 @@ export class AuthService {
   }
 
   logoutUser(): Observable<any> {
+    localStorage.removeItem('token');
+    localStorage.removeItem('token_expiry');
     return this.http.post(this.logoutUrl, {});
+  }
+
+  startTokenExpiryTimer(expiresIn: number) {
+    setTimeout(() => {
+      this.logoutUser(); // clear token and redirect
+    }, expiresIn * 1000);
   }
 }

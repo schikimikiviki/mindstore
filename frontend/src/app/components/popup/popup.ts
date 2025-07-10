@@ -35,7 +35,14 @@ export class Popup {
     this.authService.loginUser(email, password).subscribe({
       next: (response) => {
         // console.log('Login successful:', response);
+
+        const expiresAt = Date.now() + response.expiresIn * 1000;
         localStorage.setItem('token', response.token);
+        localStorage.setItem('token_expiry', expiresAt.toString());
+
+        // start the timer to auto-logout
+        this.authService.startTokenExpiryTimer(response.expiresIn);
+
         // close window
         this.closePopup();
       },

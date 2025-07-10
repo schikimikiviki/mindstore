@@ -12,6 +12,7 @@ import net.minidev.json.JSONObject;
 import net.minidev.json.parser.JSONParser;
 
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.io.FileNotFoundException;
@@ -29,11 +30,13 @@ public class Initializer implements CommandLineRunner {
 
     private final TextIndexService textIndexService;
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
 
-    public Initializer(TextIndexService textIndexService, UserRepository userRepository) {
+    public Initializer(TextIndexService textIndexService, UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.textIndexService = textIndexService;
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -126,12 +129,12 @@ public class Initializer implements CommandLineRunner {
         // now, also add a test admin user
         User user = new User();
 
-        String email = "test@gmx.at";
+        String email = "test@test.at";
         Optional<User> foundUser = userRepository.findByEmail(email);
 
-        if (!foundUser.isPresent()){
+       if (!foundUser.isPresent()){
             user.setEmail(email);
-            user.setPassword("testPassword");
+            user.setPassword(passwordEncoder.encode("testPassword"));
             user.setFullName("Test user");
 
             userRepository.save(user);

@@ -16,11 +16,12 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { FormsModule } from '@angular/forms';
 import { Popup } from '../popup/popup';
 import { AuthService } from '../../services/auth/auth.service';
+import { FilterButton } from '../filter-button/filter-button';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, FilterButton],
   templateUrl: './header.html',
   styleUrls: ['./header.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -151,5 +152,9 @@ export class Header implements OnInit {
         console.error('Logout error:', err);
       },
     });
+  }
+
+  getTagsFromChild(tags: string[]) {
+    console.log('Tags received:', tags);
   }
 }

@@ -1,0 +1,33 @@
+@use "sass:map";
+@use "styles" as styles;
+
+.filter-menu-container {
+  background-color: map.get(styles.$colors, text);
+  height: 100vh;
+  left: 0;
+  top: 0;
+  color: white;
+  margin: 0;
+  padding: 20px;
+  max-width: 40vw;
+}
+
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  max-width: 40vw;
+}
+
+.singular-tag {
+  background-color: styles.$lightBlue;
+  color: map.get(styles.$colors, text);
+  padding: 5px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.singular-tag.selected {
+  background-color: styles.$mediumBlue;
+  color: white;
+}

@@ -8,6 +8,7 @@ import { Observable } from 'rxjs';
 export class AuthService {
   private loginUrl = 'http://localhost:8080/auth/login';
   private logoutUrl = 'http://localhost:8080/auth/logout';
+  private tagUrl = 'http://localhost:8080/api/search/tags';
 
   constructor(private http: HttpClient) {}
 
@@ -26,5 +27,9 @@ export class AuthService {
     setTimeout(() => {
       this.logoutUser(); // clear token and redirect
     }, expiresIn * 1000);
+  }
+
+  getTags(): Observable<any> {
+    return this.http.get(this.tagUrl);
   }
 }

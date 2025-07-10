@@ -1,5 +1,6 @@
 package com.mindstore.backend.controller;
 
+import com.mindstore.backend.data.Category;
 import com.mindstore.backend.data.TextDocument;
 import com.mindstore.backend.data.dto.SearchResultDto;
 import com.mindstore.backend.data.entity.User;
@@ -22,7 +23,7 @@ public class SearchController {
 
     public SearchController(TextSearchService textSearchService, SearchHistoryService searchHistoryService) {
 
-        System.out.println("SearchController loaded");
+        //System.out.println("SearchController loaded");
 
         this.textSearchService = textSearchService;
         this.searchHistoryService = searchHistoryService;
@@ -49,6 +50,11 @@ public class SearchController {
     public ResponseEntity<List<String>> getSearchHistory(Principal principal) {
       //  System.out.println("HISTORY ROUTE REQUESTED");
         return ResponseEntity.ok(searchHistoryService.getRecentSearches());
+    }
+
+    @GetMapping("/tags")
+    public Category[] getTagList() {
+        return textSearchService.findTags();
     }
 
 }

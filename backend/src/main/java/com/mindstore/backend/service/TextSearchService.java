@@ -1,5 +1,6 @@
 package com.mindstore.backend.service;
 
+import com.mindstore.backend.data.Category;
 import com.mindstore.backend.data.TextDocument;
 import com.mindstore.backend.data.dto.SearchResultDto;
 import org.opensearch.client.opensearch.OpenSearchClient;
@@ -46,5 +47,9 @@ public class TextSearchService {
         } catch (IOException e) {
             throw new RuntimeException("Search failed", e);
         }
+    }
+
+    public Category[] findTags(){
+        return  Category.values();
     }
 }

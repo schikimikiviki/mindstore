@@ -1,0 +1,17 @@
+<div class="filter-menu-container">
+  <h3>Filter your search</h3>
+
+  <p>Filter for specific tags</p>
+  <div class="tag-list">
+    <p
+      class="singular-tag"
+      *ngFor="let item of tags"
+      (click)="toggleTag(item)"
+      [class.selected]="isTagSelected(item)"
+    >
+      {{ item }}
+    </p>
+  </div>
+
+  <!-- <p>Filter for specific text creation time</p> -->
+</div>

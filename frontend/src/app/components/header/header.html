@@ -31,7 +31,9 @@
     <div *ngIf="hydrated && loggedIn" class="plus-button">
       <button>+</button>
     </div>
-    <!-- <app-filter-button></app-filter-button> -->
+    <app-filter-button
+      (childEmitter)="getTagsFromChild($event)"
+    ></app-filter-button>
   </div>
 
   <div class="recent" *ngIf="historyArray.length > 0">

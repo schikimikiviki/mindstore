@@ -1,0 +1,28 @@
+.filter-div {
+  position: absolute;
+  top: 0.8rem;
+  cursor: pointer;
+}
+
+::ng-deep .filter-slide-in {
+  animation: slideInFromLeft 300ms ease-out forwards;
+  margin: 0 !important;
+  border-radius: 0 !important;
+  height: 100vh !important;
+  max-height: 100vh !important;
+  top: 0 !important;
+  left: 0 !important;
+  position: fixed !important;
+  padding: 0 !important;
+}
+
+@keyframes slideInFromLeft {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}

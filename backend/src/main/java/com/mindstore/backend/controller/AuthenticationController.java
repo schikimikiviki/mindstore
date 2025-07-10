@@ -103,4 +103,19 @@ public class AuthenticationController {
         return ResponseEntity.ok(loginResponse);
     }
 
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout(HttpServletResponse response) {
+        // Remove the JWT cookie
+        Cookie cookie = new Cookie("token", "");
+        cookie.setHttpOnly(true);
+        cookie.setPath("/");
+        cookie.setMaxAge(0); // Immediately expire the cookie
+
+        response.addCookie(cookie);
+
+        return ResponseEntity.ok().build();
+    }
+
+
+
 }

@@ -11,7 +11,7 @@
         <p>Search results: {{filteredCount}}</p>
       </div>
 
-      <button (click)="openPopup()" id="login-button">
+      <button (click)="manageLoginOrLogout()" id="login-button">
         {{loggedIn ? "Logout" : "Login"}} &rarr;
       </button>
     </div>
@@ -28,7 +28,7 @@
         [(ngModel)]="searchTerm"
       />
     </div>
-    <div *ngIf="loggedIn" class="plus-button">
+    <div *ngIf="hydrated && loggedIn" class="plus-button">
       <button>+</button>
     </div>
     <!-- <app-filter-button></app-filter-button> -->

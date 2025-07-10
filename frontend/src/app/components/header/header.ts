@@ -15,6 +15,7 @@ import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { FormsModule } from '@angular/forms';
 import { Popup } from '../popup/popup';
+import { AuthService } from '../../services/auth/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -32,6 +33,11 @@ export class Header implements OnInit {
   filteredCount = 0;
   historyArray: string[] = [];
   loggedIn = false;
+  hydrated = false;
+
+  ngAfterViewInit() {
+    setTimeout(() => (this.hydrated = true));
+  }
 
   @Output() childEmitter: EventEmitter<Text[]> = new EventEmitter<Text[]>();
 
@@ -42,7 +48,8 @@ export class Header implements OnInit {
   constructor(
     private textService: TextService,
     private cdr: ChangeDetectorRef,
-    private dialogRef: MatDialog
+    private dialogRef: MatDialog,
+    private authService: AuthService
   ) {}
 
   ngOnInit() {
@@ -113,13 +120,36 @@ export class Header implements OnInit {
     this.loadSearchHistory();
   }
 
+  manageLoginOrLogout() {
+    // if the user is logged out, log in
+    // if the user is logged in, log out
+    this.loggedIn ? this.logOutUser() : this.openPopup();
+  }
+
   openPopup() {
     this.dialogRef
       .open(Popup)
       .afterClosed()
       .subscribe((result) => {
         console.log('Dialog closed with:', result);
-        this.loggedIn = true;
+        if (result === true) {
+          this.loggedIn = true;
+          this.cdr.detectChanges(); // Force view update
+        }
       });
+  }
+
+  logOutUser() {
+    this.authService.logoutUser().subscribe({
+      next: () => {
+        console.log('User logged out!');
+
+        this.loggedIn = false;
+        this.cdr.detectChanges(); // Force view update
+      },
+      error: (err) => {
+        console.error('Logout error:', err);
+      },
+    });
   }
 }

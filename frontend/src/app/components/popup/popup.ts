@@ -1,5 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import {
+  Component,
+  ChangeDetectorRef,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth/auth.service';
 import { MatDialogRef } from '@angular/material/dialog';
@@ -9,6 +13,7 @@ import { MatDialogRef } from '@angular/material/dialog';
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './popup.html',
   styleUrl: './popup.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Popup {
   displayError = false;
@@ -20,7 +25,8 @@ export class Popup {
 
   constructor(
     private authService: AuthService,
-    private dialogRef: MatDialogRef<Popup>
+    private dialogRef: MatDialogRef<Popup>,
+    private cdr: ChangeDetectorRef
   ) {}
   submitLogin() {
     const email = this.applyForm.value.email ?? '';
@@ -37,6 +43,7 @@ export class Popup {
         console.error('Login error:', err);
         // display error message
         this.displayError = true;
+        this.cdr.detectChanges();
       },
     });
   }

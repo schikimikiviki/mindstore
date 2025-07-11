@@ -1,5 +1,6 @@
 package com.mindstore.backend.service;
 
+import com.mindstore.backend.data.Category;
 import com.mindstore.backend.data.TextDocument;
 
 import java.io.IOException;
@@ -12,6 +13,7 @@ public interface TextIndexService {
     long countTexts();
     boolean existsByTitle(String title);
     void deleteAll() throws IOException;
+    List<TextDocument> findAllWithTags(List<String> categories);
 
 
 }

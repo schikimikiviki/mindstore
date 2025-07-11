@@ -156,5 +156,26 @@ export class Header implements OnInit {
 
   getTagsFromChild(tags: string[]) {
     console.log('Tags received:', tags);
+    // die neuen Texte fetch &
+    // jetzt hier wieder mit der Result Page reden
+
+    this.textService.getTextsWithTags(tags).subscribe({
+      next: (result) => {
+        this.filteredTexts = [...result.content];
+        this.filteredCount = result.total;
+        this.cdr.markForCheck();
+        this.childEmitter.emit(result.content);
+      },
+      error: (err) => {
+        console.error('Search error:', err);
+        this.filteredTexts = [];
+        this.filteredCount = 0;
+        this.cdr.markForCheck();
+      },
+    });
+  }
+
+  receiveResetMsg(msg: boolean) {
+    console.log('Reset received');
   }
 }

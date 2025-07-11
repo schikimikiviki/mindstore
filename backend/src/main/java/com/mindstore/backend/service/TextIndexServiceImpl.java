@@ -1,11 +1,14 @@
 package com.mindstore.backend.service;
 
+import com.mindstore.backend.data.Category;
 import com.mindstore.backend.data.TextDocument;
 import org.opensearch.client.opensearch.OpenSearchClient;
 import org.opensearch.client.opensearch._types.FieldValue;
+import org.opensearch.client.opensearch.core.search.Hit;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -55,6 +58,34 @@ public class TextIndexServiceImpl implements TextIndexService{
             throw new RuntimeException("Failed to fetch all indexed texts", e);
         }
     }
+
+    public List<TextDocument> findAllWithTags(List<String> categories) {
+        try {
+            var response = client.search(s -> s
+                            .index("text-index")
+                            .query(q -> q
+                                    .terms(t -> t
+                                            .field("tags.keyword")
+                                            .terms(tt -> tt.value(
+                                                    categories.stream()
+                                                            .map(FieldValue::of)
+                                                            .toList()
+                                            ))
+                                    )
+                            )
+                            .size(1000),
+                    TextDocument.class
+            );
+
+            return response.hits().hits().stream()
+                    .map(Hit::source)
+                    .toList();
+
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to fetch all indexed texts", e);
+        }
+    }
+
 
 
     public long countTexts() {

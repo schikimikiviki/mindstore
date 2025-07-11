@@ -10,6 +10,9 @@
   margin: 0;
   padding: 20px;
   max-width: 40vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .tag-list {
@@ -30,4 +33,36 @@
 .singular-tag.selected {
   background-color: styles.$mediumBlue;
   color: white;
+}
+
+.reset-btn {
+  display: flex;
+  color: map.get(styles.$colors, text);
+  justify-content: end;
+
+  button {
+    background-color: styles.$sunnyYellow;
+    border: none;
+    border-radius: 20px;
+    padding: 7px;
+    cursor: pointer;
+  }
+}
+
+.go-btn {
+  display: flex;
+  color: map.get(styles.$colors, text);
+  justify-content: end;
+  align-items: end;
+  flex: 1;
+  overflow: auto;
+
+  button {
+    height: 30px;
+    background-color: styles.$sunnyYellow;
+    border-radius: 20px;
+    padding: 7px;
+    border: none;
+    cursor: pointer;
+  }
 }

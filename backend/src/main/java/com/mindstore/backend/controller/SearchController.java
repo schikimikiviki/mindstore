@@ -40,6 +40,7 @@ public class SearchController {
         return textSearchService.search(query, page, size);
     }
 
+
     @GetMapping("/test")
     public ResponseEntity<String> test() {
         return ResponseEntity.ok("It works");

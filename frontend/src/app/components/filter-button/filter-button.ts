@@ -16,6 +16,7 @@ import { FilterMenu } from '../filter-menu/filter-menu';
 })
 export class FilterButton {
   @Output() childEmitter = new EventEmitter<string[]>();
+  @Output() onResetBtn = new EventEmitter<boolean>();
 
   constructor(private dialogRef: MatDialog, private cdr: ChangeDetectorRef) {}
 
@@ -26,9 +27,14 @@ export class FilterButton {
       height: '100vh',
     });
 
-    // subscribe to childEmitter from inside the dialog
-    dialogRef.componentInstance.childEmitter.subscribe((tags: string[]) => {
-      this.childEmitter.emit(tags); // Bubble up to header
+    dialogRef.afterOpened().subscribe(() => {
+      dialogRef.componentInstance.childEmitter.subscribe((tags: string[]) => {
+        this.childEmitter.emit(tags);
+      });
+
+      dialogRef.componentInstance.onResetBtn.subscribe((msg: boolean) => {
+        this.onResetBtn.emit(msg);
+      });
     });
 
     //  handle afterClosed

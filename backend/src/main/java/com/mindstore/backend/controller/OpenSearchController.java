@@ -37,6 +37,16 @@ public class OpenSearchController {
     }
 
 
+    @GetMapping("/all/tags")
+    public SearchResultDto<TextDocument> getAllTextIndexesWithTag(
+            @RequestParam List<String> tags) {
+
+        List<TextDocument> docs = textIndexService.findAllWithTags(tags);
+        return new SearchResultDto<>(docs, docs.size(), 0, docs.size());
+    }
+
+
+
     @PostMapping("/create")
     public ResponseEntity<TextDocument> createTextIndex(@RequestBody TextDocument textDocument, HttpServletResponse response) {
         textIndexService.indexText(textDocument);

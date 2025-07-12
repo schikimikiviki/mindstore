@@ -29,7 +29,7 @@
       />
     </div>
     <div *ngIf="hydrated && loggedIn" class="plus-button">
-      <button>+</button>
+      <button (click)="onClickPlus()">+</button>
     </div>
     <app-filter-button
       (childEmitter)="getTagsFromChild($event)"

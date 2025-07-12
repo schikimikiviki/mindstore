@@ -17,6 +17,7 @@ import { FormsModule } from '@angular/forms';
 import { Popup } from '../popup/popup';
 import { AuthService } from '../../services/auth/auth.service';
 import { FilterButton } from '../filter-button/filter-button';
+import { AddText } from '../add-text/add-text';
 
 @Component({
   selector: 'app-header',
@@ -35,6 +36,7 @@ export class Header implements OnInit {
   historyArray: string[] = [];
   loggedIn = false;
   hydrated = false;
+  tags: string[] = [];
 
   ngAfterViewInit() {
     setTimeout(() => (this.hydrated = true));
@@ -54,6 +56,10 @@ export class Header implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.authService.getTags().subscribe((tags) => {
+      this.tags = tags.sort();
+    });
+
     this.authService.checkLogin().subscribe((state) => {
       console.log(state);
       this.loggedIn = state;
@@ -190,5 +196,19 @@ export class Header implements OnInit {
       this.filteredCount = texts.total;
       this.childEmitter.emit(this.filteredTexts);
     });
+  }
+
+  onClickPlus() {
+    // open add text component
+
+    console.log('Opening popup with tags: ', this.tags);
+
+    this.dialogRef
+      .open(AddText, { data: { availableTags: this.tags } })
+      .afterClosed()
+      .subscribe((result) => {
+        console.log('Dialog closed with:', result);
+        this.cdr.detectChanges(); // Force view update
+      });
   }
 }

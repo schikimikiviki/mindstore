@@ -1,0 +1,44 @@
+<div class="add-text">
+  <h2>Add a new text</h2>
+
+  <form class="add-form" [formGroup]="postForm" (submit)="submitText()">
+    <div class="add-row">
+      <label for="title">Title</label>
+      <input id="title" type="text" formControlName="title" />
+    </div>
+
+    <div class="add-row">
+      <label for="content_raw">Content raw</label>
+      <input id="content_raw" type="text" formControlName="content_raw" />
+    </div>
+
+    <div class="add-row">
+      <label for="content_html">Content HTML</label>
+      <input id="content_html" type="text" formControlName="content_html" />
+    </div>
+
+    <div class="add-row">
+      <p
+        class="singular-tag"
+        *ngFor="let item of availableTags"
+        (click)="toggleTag(item)"
+        [class.selected]="isTagSelected(item)"
+      >
+        {{ item }}
+      </p>
+    </div>
+
+    <label>Command List</label>
+
+    <div class="add-row command" formArrayName="commandList">
+      <div *ngFor="let command of commandList.controls; let i = index">
+        <input type="text" [formControlName]="i" placeholder="Enter command" />
+        <button type="button" (click)="removeCommandField(i)">Remove</button>
+      </div>
+
+      <button type="button" (click)="addCommandField()">+ Add Command</button>
+    </div>
+
+    <button id="post" type="submit" class="primary">Post text</button>
+  </form>
+</div>

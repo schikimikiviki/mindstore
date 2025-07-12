@@ -12,11 +12,32 @@ export class TextService {
   private searchUrl = 'http://localhost:8080/api/search';
   private historyUrl = 'http://localhost:8080/api/search/history';
   private tagSearchUrl = 'http://localhost:8080/text-index/all/tags'; // ?tags=JAVA&tags=PYTHON am ende
+  private addTextUrl = 'http://localhost:8080/text-index/create';
 
   constructor(private http: HttpClient) {}
 
   getTexts(): Observable<SearchResultDto<Text>> {
     return this.http.get<SearchResultDto<Text>>(this.baseUrl);
+  }
+
+  addText(
+    title: string,
+    contentRaw: string,
+    contentHtml: string,
+    tags: string[],
+    commands: string[]
+  ) {
+    return this.http.post(
+      this.addTextUrl,
+      {
+        title,
+        content_raw: contentRaw,
+        content_html: contentHtml,
+        tags,
+        commandList: commands,
+      },
+      { withCredentials: true }
+    );
   }
 
   getTextsWithTags(tags: string[]): Observable<SearchResultDto<Text>> {

@@ -2,8 +2,10 @@ package com.mindstore.backend.security;
 
 import java.util.Arrays;
 
+import com.mindstore.backend.controller.CustomOAuth2SuccessHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -24,13 +26,15 @@ public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final AuthenticationProvider authenticationProvider;
+    private final CustomOAuth2SuccessHandler customOAuth2SuccessHandler;
 
     public SecurityConfig(
             JwtAuthenticationFilter jwtAuthenticationFilter,
-            AuthenticationProvider authenticationProvider
+            AuthenticationProvider authenticationProvider, @Lazy CustomOAuth2SuccessHandler customOAuth2SuccessHandler
     ) {
         this.authenticationProvider = authenticationProvider;
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+        this.customOAuth2SuccessHandler = customOAuth2SuccessHandler;
     }
 
     @Bean
@@ -49,6 +53,7 @@ public class SecurityConfig {
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/auth/login").permitAll()
                         .requestMatchers("/auth/logout").permitAll()
+                        .requestMatchers( "/oauth2/**").permitAll()
                         .requestMatchers("/auth/check").authenticated()
 
                         .requestMatchers("/texts/all").permitAll()
@@ -60,6 +65,11 @@ public class SecurityConfig {
                         .requestMatchers("/users/recent-users").permitAll()
 
                         .anyRequest().authenticated()
+                )
+
+                .oauth2Login(oauth -> oauth
+                        .loginPage("/auth/login")
+                        .successHandler(customOAuth2SuccessHandler)
                 )
 
                 .sessionManagement(session -> session

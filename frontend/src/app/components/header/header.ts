@@ -54,6 +54,12 @@ export class Header implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.authService.checkLogin().subscribe((state) => {
+      console.log(state);
+      this.loggedIn = state;
+      this.cdr.markForCheck();
+    });
+
     this.textService.getTexts().subscribe((texts) => {
       this.allTexts = texts.content;
       this.filteredTexts = texts.content;
@@ -177,5 +183,12 @@ export class Header implements OnInit {
 
   receiveResetMsg(msg: boolean) {
     console.log('Reset received');
+    this.textService.getTexts().subscribe((texts) => {
+      this.allTexts = texts.content;
+      this.filteredTexts = texts.content;
+      this.textCount = texts.total;
+      this.filteredCount = texts.total;
+      this.childEmitter.emit(this.filteredTexts);
+    });
   }
 }

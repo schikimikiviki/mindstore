@@ -48,4 +48,18 @@ public class AuthenticationService {
         return userRepository.findByEmail(input.getEmail())
                 .orElseThrow();
     }
+
+    public User findOrCreateUserByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .orElseGet(() -> {
+                    User newUser = new User();
+                    newUser.setEmail(email);
+                    newUser.setFullName(email);
+                    newUser.setPassword("oauth-user");
+                    newUser.setIsOauthUser(true);
+
+                    return userRepository.save(newUser);
+                });
+    }
+
 }

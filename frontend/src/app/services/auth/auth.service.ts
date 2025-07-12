@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -9,6 +11,7 @@ export class AuthService {
   private loginUrl = 'http://localhost:8080/auth/login';
   private logoutUrl = 'http://localhost:8080/auth/logout';
   private tagUrl = 'http://localhost:8080/api/search/tags';
+  private checkLoginUrl = 'http://localhost:8080/auth/check';
 
   constructor(private http: HttpClient) {}
 
@@ -31,5 +34,12 @@ export class AuthService {
 
   getTags(): Observable<any> {
     return this.http.get(this.tagUrl);
+  }
+
+  checkLogin(): Observable<boolean> {
+    return this.http.get(this.checkLoginUrl, { withCredentials: true }).pipe(
+      map(() => true),
+      catchError(() => of(false))
+    );
   }
 }

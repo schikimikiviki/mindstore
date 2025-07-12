@@ -42,6 +42,9 @@ public class User implements UserDetails {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
+    @Column(name = "oauth_user", nullable = true)
+    private Boolean isOauthUser = false;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of();
@@ -74,6 +77,14 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public Boolean isOauthUser (){
+        return this.isOauthUser;
+    }
+
+    public void setIsOauthUser(Boolean isOauthUser){
+        this.isOauthUser = isOauthUser;
     }
 
     public User setFullName(String fullName) {

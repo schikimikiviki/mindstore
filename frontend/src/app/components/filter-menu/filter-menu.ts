@@ -54,5 +54,6 @@ export class FilterMenu {
   resetFilters() {
     // display all search results
     this.onResetBtn.emit(true);
+    this.dialogRef.close();
   }
 }

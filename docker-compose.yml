@@ -13,6 +13,11 @@ services:
         hard: -1
     ports:
       - "9200:9200"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9200"]
+      interval: 10s
+      timeout: 10s
+      retries: 12
     networks:
       - backend
 
@@ -29,12 +34,20 @@ services:
       - pgdata:/var/lib/postgresql/data
     networks:
       - backend
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user -d mindstore"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   backend:
     build: ./backend
     container_name: my_backend
     depends_on:
-      - postgres
+      postgres: 
+          condition: service_healthy
+      opensearch: 
+          condition: service_healthy 
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/mindstore
       SPRING_DATASOURCE_USERNAME: user

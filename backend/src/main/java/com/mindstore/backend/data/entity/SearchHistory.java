@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.util.Date;
 
+@Table(name = "search_history")
 @Entity
 public class SearchHistory {
 

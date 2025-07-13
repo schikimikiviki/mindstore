@@ -2,6 +2,8 @@ package com.mindstore.backend.security;
 
 import java.io.IOException;
 
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.ApplicationContext;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -23,19 +25,17 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
-    private final HandlerExceptionResolver handlerExceptionResolver;
+
 
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
 
     public JwtAuthenticationFilter(
             JwtService jwtService,
-            UserDetailsService userDetailsService,
-            HandlerExceptionResolver handlerExceptionResolver
+            UserDetailsService userDetailsService
     ) {
         this.jwtService = jwtService;
         this.userDetailsService = userDetailsService;
-        this.handlerExceptionResolver = handlerExceptionResolver;
     }
 
     @Override
@@ -100,7 +100,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
             filterChain.doFilter(request, response);
         } catch (Exception exception) {
-            handlerExceptionResolver.resolveException(request, response, null, exception);
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);  // Unauthorized
+            response.getWriter().write("JWT validation failed: " + exception.getMessage());
+            response.getWriter().flush();
         }
     }
 

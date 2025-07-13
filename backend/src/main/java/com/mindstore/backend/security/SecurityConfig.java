@@ -3,6 +3,8 @@ package com.mindstore.backend.security;
 import java.util.Arrays;
 
 import com.mindstore.backend.controller.CustomOAuth2SuccessHandler;
+import com.mindstore.backend.service.AuthenticationService;
+import com.mindstore.backend.service.JwtService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
@@ -10,6 +12,11 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.oauth2.client.registration.ClientRegistration;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
+import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
+import org.springframework.security.oauth2.core.AuthorizationGrantType;
+import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
@@ -30,7 +37,8 @@ public class SecurityConfig {
 
     public SecurityConfig(
             JwtAuthenticationFilter jwtAuthenticationFilter,
-            AuthenticationProvider authenticationProvider, @Lazy CustomOAuth2SuccessHandler customOAuth2SuccessHandler
+            AuthenticationProvider authenticationProvider,
+            @Lazy CustomOAuth2SuccessHandler customOAuth2SuccessHandler
     ) {
         this.authenticationProvider = authenticationProvider;
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
@@ -95,6 +103,33 @@ public class SecurityConfig {
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
+
+
+
+//    @Bean
+//    public ClientRegistrationRepository clientRegistrationRepository() {
+//        ClientRegistration googleRegistration = ClientRegistration.withRegistrationId("google")
+//                .clientId("777012277307-qkao9o1apoiqhst6hn6rve9feacmp30e.apps.googleusercontent.com")
+//                .clientSecret("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")
+//                .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
+//                .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
+//                .redirectUri("{baseUrl}/login/oauth2/code/{registrationId}")
+//                .scope("openid", "profile", "email")
+//                .authorizationUri("https://accounts.google.com/o/oauth2/auth")
+//                .tokenUri("https://oauth2.googleapis.com/token")
+//                .userInfoUri("https://openidconnect.googleapis.com/v1/userinfo")
+//                .userNameAttributeName("sub")
+//                .clientName("Google")
+//                .build();
+//
+//        return new InMemoryClientRegistrationRepository(googleRegistration);
+//    }
+
+    @Bean
+    public CustomOAuth2SuccessHandler customOAuth2SuccessHandler(JwtService jwtService, AuthenticationService authService) {
+        return new CustomOAuth2SuccessHandler(jwtService, authService);
+    }
+
 
 
 }

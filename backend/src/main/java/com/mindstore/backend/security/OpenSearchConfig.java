@@ -16,7 +16,7 @@ public class OpenSearchConfig {
     public OpenSearchClient openSearchClient() {
         // Create the low-level client
         RestClient restClient = RestClient.builder(
-                new HttpHost("localhost", 9200)
+                new HttpHost("opensearch", 9200)
         ).build();
 
         // Create the transport

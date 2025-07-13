@@ -501,5 +501,12 @@
     "content_html": "<u>Example</u>: You want to list all files in the current directory.",
     "tags": ["PROGRAMMING_GENERAL"],
     "commandList": ["ls -la"]
+  },
+  {
+    "title": "Run mvn install without tests",
+    "content_raw": "You want to run mvn install but skip the test (you messed up and the tests dont work).",
+    "content_html": "<u>Example</u>: You want to run mvn install but skip the test (you messed up and the tests dont work).",
+    "tags": ["JAVA"],
+    "commandList": ["mvn clean install -DskipTests"]
   }
 ]

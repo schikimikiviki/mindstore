@@ -11,6 +11,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.mindstore.backend.repository.UserRepository;
+import org.springframework.web.servlet.HandlerExceptionResolver;
+import org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolver;
 
 @Configuration
 public class ApplicationConfiguration {
@@ -45,4 +47,7 @@ public class ApplicationConfiguration {
 
         return authProvider;
     }
+
+
+
 }

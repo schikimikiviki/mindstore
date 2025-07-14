@@ -9,6 +9,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -31,10 +32,13 @@ class InitializerTest {
     @InjectMocks
     private Initializer initializer;
 
+    @Mock
+    private PasswordEncoder passwordEncoder;
+
     @Test
     void checkUserCreation() throws Exception {
         initializer.run();
-        verify(userRepository).findByEmail("test@gmx.at");
+        verify(userRepository).findByEmail("test@test.at");
     }
 
     @Test

@@ -8,6 +8,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -20,6 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc(addFilters = false)
+@ActiveProfiles("test")
 class OpenSearchControllerTest {
 
     @Autowired
@@ -30,6 +33,9 @@ class OpenSearchControllerTest {
 
     @MockitoBean
     private TextSearchService textSearchService;
+
+    @MockitoBean
+    private UserDetailsService userDetailsService;
 
     @Test
     void shouldReturnTextList() throws Exception {
@@ -61,8 +67,9 @@ class OpenSearchControllerTest {
 
         mockMvc.perform(get("/text-index/all"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.length()").value(2))
-                .andExpect(jsonPath("$[0].title").value("Some random title"))
-                .andExpect(jsonPath("$[1].title").value("Some random title 2"));
+                .andExpect(jsonPath("$.content.length()").value(2))
+                .andExpect(jsonPath("$.content[0].title").value("Some random title"))
+                .andExpect(jsonPath("$.content[1].title").value("Some random title 2"));
+
     }
 }

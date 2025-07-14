@@ -42,24 +42,6 @@ public class TextIndexServiceImpl implements TextIndexService{
 
 
 
-    public long countTexts() {
-        try {
-            var response = client.search(s -> s
-                            .index("text-index")
-                            .query(q -> q.matchAll(m -> m))
-                            .size(0), // Don't fetch actual documents
-                    TextDocument.class
-            );
-
-            return response.hits().total().value();
-
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to count indexed texts", e);
-        }
-    }
-
-
-
     public boolean existsByTitle(String title) {
         try {
             var response = client.search(s -> s

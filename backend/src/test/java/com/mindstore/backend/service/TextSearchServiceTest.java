@@ -2,6 +2,7 @@ package com.mindstore.backend.service;
 
 import com.mindstore.backend.data.Category;
 import com.mindstore.backend.data.TextDocument;
+import com.mindstore.backend.data.dto.SearchResultDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -67,7 +68,6 @@ public class TextSearchServiceTest {
         assertEquals(1, results.size());
         assertEquals("Test Title", results.get(0).getTitle());
     }
-
 
 }
 

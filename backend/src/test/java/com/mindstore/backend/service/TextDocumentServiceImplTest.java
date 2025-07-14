@@ -77,41 +77,6 @@ class TextDocumentServiceImplTest {
         verify(client).index(any(Function.class));
     }
 
-//    @Test
-//    void testFindAll_shouldReturnTextList() throws IOException {
-//
-//        SearchResponse<TextDocument> responseMock = mock(SearchResponse.class);
-//        Hit<TextDocument> hit = Hit.of(h -> h.source(testText));
-//
-//        when(responseMock.hits()).thenReturn(HitsMetadata.of(h -> h.hits(List.of(hit))));
-//        when(client.search(any(Function.class), eq(TextDocument.class))).thenReturn(responseMock);
-//
-//        List<TextDocument> results = textSearchService.findAll();
-//
-//
-//        System.out.println(results);
-//
-//        assertEquals(1, results.size());
-//        assertEquals("Test Title", results.get(0).getTitle());
-//    }
-
-    // verify that countTexts() works correcly
-    @Test
-    void testCountTexts_shouldReturnTotal() throws IOException {
-
-        TotalHits totalHits = TotalHits.of(t -> t.value(42L).relation(TotalHitsRelation.Eq));
-        List<Hit<TextDocument>> emptyHits = new ArrayList<>();
-        HitsMetadata<TextDocument> hitsMetadata = HitsMetadata.of(h -> h.total(totalHits).hits(emptyHits));
-        SearchResponse<TextDocument> responseMock = mock(SearchResponse.class);
-
-        when(responseMock.hits()).thenReturn(hitsMetadata);
-        when(client.search(any(Function.class), eq(TextDocument.class))).thenReturn(responseMock);
-
-        long count = textIndexService.countTexts();
-
-        assertEquals(42L, count);
-    }
-
     @Test
     void testExistsByTitle_shouldReturnTrue() throws IOException {
 

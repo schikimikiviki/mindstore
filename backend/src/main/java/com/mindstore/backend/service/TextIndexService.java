@@ -9,7 +9,6 @@ import java.util.List;
 public interface TextIndexService {
 
     void indexText(TextDocument text);
-    long countTexts();
     boolean existsByTitle(String title);
     void deleteAll() throws IOException;
 

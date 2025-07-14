@@ -56,6 +56,12 @@ services:
       - "8080:8080"
     networks:
       - backend
+    healthcheck:
+      test: ["CMD", "nc", "-z", "localhost", "8080"]
+      interval: 10s
+      timeout: 10s
+      retries: 12
+
 
   opensearch-dashboards:
     image: opensearchproject/opensearch-dashboards:2.11.0
@@ -67,6 +73,18 @@ services:
       DISABLE_SECURITY_DASHBOARDS_PLUGIN: "true"
     depends_on:
       - opensearch
+    networks:
+      - backend
+
+
+  frontend:
+    build: ./frontend
+    container_name: my_frontend
+    depends_on:
+      backend: 
+          condition: service_healthy 
+    ports:
+      - "4200:80"
     networks:
       - backend
 

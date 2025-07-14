@@ -508,5 +508,19 @@
     "content_html": "<u>Example</u>: You want to run mvn install but skip the test (you messed up and the tests dont work).",
     "tags": ["JAVA"],
     "commandList": ["mvn clean install -DskipTests"]
+  },
+  {
+    "title": "Check the logs of a docker service",
+    "content_raw": "One of the docker services is acting weird. You want to check the logs. First, check what the service name is. Then, you can check the logs. ",
+    "content_html": "<u>Example</u>: One of the docker services is acting weird. You want to check the logs. <ol> <li> First, check what the service name is. </li><li>Then, you can check the logs. </li></ol>",
+    "tags": ["DOCKER", "DEPLOYMENT"],
+    "commandList": ["docker ps", "docker logs my_frontend"]
+  },
+  {
+    "title": "Enter a docker container from the shell",
+    "content_raw": "Something is off and you need to check the files from inside a container.",
+    "content_html": "<u>Example</u>: Something is off and you need to check the files from inside a container",
+    "tags": ["DOCKER", "DEPLOYMENT"],
+    "commandList": ["docker exec -it my_frontend sh"]
   }
 ]

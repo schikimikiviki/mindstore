@@ -3,6 +3,7 @@ package com.mindstore.backend.controller;
 import com.mindstore.backend.data.Category;
 import com.mindstore.backend.data.TextDocument;
 import com.mindstore.backend.service.TextIndexService;
+import com.mindstore.backend.service.TextSearchService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -27,6 +28,9 @@ class OpenSearchControllerTest {
     @MockitoBean
     private TextIndexService textIndexService;
 
+    @MockitoBean
+    private TextSearchService textSearchService;
+
     @Test
     void shouldReturnTextList() throws Exception {
 
@@ -46,7 +50,7 @@ class OpenSearchControllerTest {
 
         List<TextDocument> mockTexts = List.of(textDocumentOne, textDocumentTwo);
 
-        when(textIndexService.findAll()).thenReturn(mockTexts);
+        when(textSearchService.findAll()).thenReturn(mockTexts);
 
         String response = mockMvc.perform(get("/text-index/all"))
                 .andExpect(status().isOk())

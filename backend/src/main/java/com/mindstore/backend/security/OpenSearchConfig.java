@@ -6,26 +6,46 @@ import org.opensearch.client.opensearch.OpenSearchClient;
 import org.opensearch.client.transport.OpenSearchTransport;
 import org.opensearch.client.transport.rest_client.RestClientTransport;
 import org.opensearch.client.RestClient;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.net.URI;
+
+
 @Configuration
-public class OpenSearchConfig {
+    public class OpenSearchConfig {
 
-    @Bean
-    public OpenSearchClient openSearchClient() {
-        // Create the low-level client
-        RestClient restClient = RestClient.builder(
-                new HttpHost("opensearch", 9200)
-        ).build();
+        @Value("${opensearch.host}")
+        private String openSearchHost;
 
-        // Create the transport
-        OpenSearchTransport transport = new RestClientTransport(
-                restClient,
-                new JacksonJsonpMapper()
-        );
 
-        // Create the API client
-        return new OpenSearchClient(transport);
-    }
+        @Bean
+        public OpenSearchClient openSearchClient() {
+            // Create the low-level client with sniffing disabled
+
+            URI uri = URI.create(openSearchHost);  //  parse full URI
+
+            RestClient restClient = RestClient.builder(
+                            new HttpHost(uri.getHost(), uri.getPort(), uri.getScheme())
+                    )
+                    .setRequestConfigCallback(requestConfigBuilder -> requestConfigBuilder
+                            .setConnectTimeout(5000)
+                            .setSocketTimeout(30000)
+                    )
+                    .setHttpClientConfigCallback(httpClientBuilder -> {
+                        httpClientBuilder.disableConnectionState();
+                        return httpClientBuilder;
+                    })
+                    .build();
+
+            // Create the transport
+            OpenSearchTransport transport = new RestClientTransport(
+                    restClient,
+                    new JacksonJsonpMapper()
+            );
+
+            return new OpenSearchClient(transport);
+        }
+
 }

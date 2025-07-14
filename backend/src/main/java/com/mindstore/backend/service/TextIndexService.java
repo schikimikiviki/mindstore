@@ -9,11 +9,9 @@ import java.util.List;
 public interface TextIndexService {
 
     void indexText(TextDocument text);
-    List<TextDocument> findAll();
     long countTexts();
     boolean existsByTitle(String title);
     void deleteAll() throws IOException;
-    List<TextDocument> findAllWithTags(List<String> categories);
 
 
 }

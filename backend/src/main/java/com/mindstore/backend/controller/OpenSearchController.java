@@ -4,6 +4,7 @@ import com.mindstore.backend.data.TextDocument;
 import com.mindstore.backend.data.dto.SearchResultDto;
 import com.mindstore.backend.service.JwtService;
 import com.mindstore.backend.service.TextIndexService;
+import com.mindstore.backend.service.TextSearchService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,17 +23,18 @@ public class OpenSearchController {
 
     private final TextIndexService textIndexService;
     private final JwtService jwtService;
+    private final TextSearchService textSearchService;
 
-    public OpenSearchController(TextIndexService textIndexService, JwtService jwtService) {
+    public OpenSearchController(TextIndexService textIndexService, JwtService jwtService, TextSearchService textSearchService) {
         this.textIndexService = textIndexService;
         this.jwtService = jwtService;
-
+        this.textSearchService = textSearchService;
     }
 
     // return the results in a DTO format
     @GetMapping("/all")
     public SearchResultDto<TextDocument> getAllTextIndexes(){
-        List<TextDocument> docs = textIndexService.findAll();
+        List<TextDocument> docs = textSearchService.findAll();
         return new SearchResultDto<>(docs, docs.size(), 0, docs.size());
     }
 
@@ -41,7 +43,7 @@ public class OpenSearchController {
     public SearchResultDto<TextDocument> getAllTextIndexesWithTag(
             @RequestParam List<String> tags) {
 
-        List<TextDocument> docs = textIndexService.findAllWithTags(tags);
+        List<TextDocument> docs = textSearchService.findAllWithTags(tags);
         return new SearchResultDto<>(docs, docs.size(), 0, docs.size());
     }
 

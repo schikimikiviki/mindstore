@@ -41,52 +41,6 @@ public class TextIndexServiceImpl implements TextIndexService{
     }
 
 
-    public List<TextDocument> findAll() {
-        try {
-            var response = client.search(s -> s
-                            .index("text-index")
-                            .query(q -> q.matchAll(m -> m))
-                            .size(1000),
-                    TextDocument.class
-            );
-
-            return response.hits().hits().stream()
-                    .map(hit -> hit.source())
-                    .toList();
-
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to fetch all indexed texts", e);
-        }
-    }
-
-    public List<TextDocument> findAllWithTags(List<String> categories) {
-        try {
-            var response = client.search(s -> s
-                            .index("text-index")
-                            .query(q -> q
-                                    .terms(t -> t
-                                            .field("tags.keyword")
-                                            .terms(tt -> tt.value(
-                                                    categories.stream()
-                                                            .map(FieldValue::of)
-                                                            .toList()
-                                            ))
-                                    )
-                            )
-                            .size(1000),
-                    TextDocument.class
-            );
-
-            return response.hits().hits().stream()
-                    .map(Hit::source)
-                    .toList();
-
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to fetch all indexed texts", e);
-        }
-    }
-
-
 
     public long countTexts() {
         try {

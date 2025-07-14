@@ -14,6 +14,7 @@ import org.opensearch.client.opensearch.core.search.Hit;
 import org.opensearch.client.opensearch.core.search.HitsMetadata;
 import org.opensearch.client.opensearch.core.search.TotalHits;
 import org.opensearch.client.opensearch.core.search.TotalHitsRelation;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 
 import java.io.IOException;
@@ -35,6 +36,9 @@ class TextDocumentServiceImplTest {
     private TextIndexServiceImpl textIndexService;
 
     private TextDocument testText;
+
+    @MockitoBean
+    private TextSearchService textSearchService;
 
     @BeforeEach
     void setUp() {
@@ -80,7 +84,7 @@ class TextDocumentServiceImplTest {
         when(responseMock.hits()).thenReturn(HitsMetadata.of(h -> h.hits(List.of(hit))));
         when(client.search(any(Function.class), eq(TextDocument.class))).thenReturn(responseMock);
 
-        List<TextDocument> results = textIndexService.findAll();
+        List<TextDocument> results = textSearchService.findAll();
 
         assertEquals(1, results.size());
         assertEquals("Test Title", results.get(0).getTitle());

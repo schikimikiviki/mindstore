@@ -24,6 +24,15 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
         this.authService = authService;
     }
 
+    /**
+     *
+     * @param request - the request that was made
+     * @param response - the extended response
+     * @param authentication of the user
+     * @throws IOException for sendRedirect
+     * function: this controller is used to redirect the user after a oAuth login
+     * it redirects back to /
+     */
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
             throws IOException {

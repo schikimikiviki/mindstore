@@ -34,16 +34,35 @@ public class UserController {
     }
 
 
+    /**
+     * function: return all users available, usually this will be only 1-2 users
+     * note: the initializer creates a test user. This user should always be there.
+     * @return a list of users
+     */
     @GetMapping("/all")
     public List<User> getAllUsers(){
         return userService.findAll();
     }
 
+    /**
+     *
+     * @param Id of the user that is requested
+     * function: get a singular user
+     * @return Optional User
+     */
     @GetMapping("/id/{Id}")
     public Optional<User> getUserById(@PathVariable Long Id) {
         return userService.findUserById(Id);
     }
 
+    /**
+     *
+     * @param email the email of the user
+     * @param createdAt the time of creation, in ISO time format
+     * function: get a user based on their email and the date they were created in the database.
+     * For example, you might want to check if user with email text@text.at was created before 2024-07-01T14:30:00
+     * @return User
+     */
     @GetMapping("/recent-users")
     public User getRecentUser(
             @RequestParam String email,
@@ -55,7 +74,12 @@ public class UserController {
     }
 
 
-
+    /**
+     *
+     * @param userId the id of the user that is supposed to be deleted
+     * function: delete a user that is not needed
+     * @return ok ---> if successfull, else: 401
+     */
     @DeleteMapping("/{userId}")
     public ResponseEntity<?> deleteUser(@PathVariable Long userId) {
         try {

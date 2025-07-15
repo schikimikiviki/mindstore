@@ -35,3 +35,16 @@ docker compose up -d
 ```
 http://localhost:5601
 ```
+
+## Development
+
+1. Start the database and the opensearch services with docker using: 
+
+```
+docker compose up opensearch postgres -d
+```
+
+2. In the backend, change properties to "localhost" in the application.properties.
+This is important for the opensearch URL and the postgres URL. 
+
+3. You can start the frontend with IntelliJ.

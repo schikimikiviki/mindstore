@@ -38,6 +38,11 @@ class InitializerTest {
     @Mock
     private PasswordEncoder passwordEncoder;
 
+    /**
+     *
+     * function: check if the test user was created successfully when initializing the app
+     * @throws Exception if the initialiter throws an error
+     */
     @Test
     void checkUserCreation() throws Exception {
         initializer.run();

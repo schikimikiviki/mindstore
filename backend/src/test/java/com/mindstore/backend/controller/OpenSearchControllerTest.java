@@ -56,6 +56,11 @@ class OpenSearchControllerTest {
     @MockitoBean
     private UserDetailsService userDetailsService;
 
+    /**
+     * function: create 2 textDocuments and then check if they were added successfully
+     * --> if they can be found at /text-index/all
+     * @throws Exception  when there is an error in mockMvc
+     */
     @Test
     void shouldReturnTextList() throws Exception {
 
@@ -93,6 +98,12 @@ class OpenSearchControllerTest {
     }
 
 
+    /**
+     *
+     * function: check if the number of texts in the data.json file equals the total text count in textSearchService
+     * @throws IOException - when the data.json file is not found
+     * @throws ParseException - when there is an error reading the file
+     */
     @Test
     void testCountTexts_shouldReturnTotal() throws IOException, ParseException {
 
@@ -128,6 +139,11 @@ class OpenSearchControllerTest {
 
     }
 
+    /**
+     *
+     * function: checks if the number of texts in the data.json file is equal to the number at the /text-index/all endpoint
+     * @throws Exception - when the file is not there or the mvc has an error executing
+     */
     @Test
     void testCountTexts_callEndpoint() throws Exception {
 

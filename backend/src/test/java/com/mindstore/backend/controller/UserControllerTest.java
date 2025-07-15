@@ -29,6 +29,11 @@ class UserControllerTest {
     @MockitoBean
     private UserService userService;
 
+    /**
+     *
+     * function: check if adding 2 users results in the correct user number as calling the /users/all endpoint
+     * @throws Exception when mockMvc cannot be executed
+     */
     @Test
     void shouldReturnUserList() throws Exception {
         User userOne = new User();
@@ -59,6 +64,11 @@ class UserControllerTest {
                 .andExpect(jsonPath("$[1].username").value("two@test.at"));
     }
 
+    /**
+     *
+     * function: check if the endpoint "/users/{userId}" successfully deletes users
+     * @throws Exception when mockMvc cannot be executed
+     */
     @Test
     void shouldDeleteUserSuccessfully() throws Exception {
         Long userId = 1L;
@@ -72,6 +82,11 @@ class UserControllerTest {
                 .andExpect(jsonPath("$.message").value("User  deleted successfully"));
     }
 
+    /**
+     *
+     * function: check if a imaginary user is NOT found in at /users/{userId}
+     * @throws Exception when the user is not found or when mockMvc cannot be executed
+     */
     @Test
     void shouldReturnNotFoundWhenUserDoesNotExist() throws Exception {
         Long userId = 999L;

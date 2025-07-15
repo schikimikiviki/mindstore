@@ -45,6 +45,15 @@ public class SecurityConfig {
         this.customOAuth2SuccessHandler = customOAuth2SuccessHandler;
     }
 
+    /**
+     *
+     * @param http
+     * function: sets the filterChain for the routes that need special permissions
+     * by default, any request needs authentication
+     * uses jwtAuthenticationFilter and oauth for oauth login
+     * @return the build securityFilterChain
+     * @throws Exception when a route is accessed without authentication that needs it
+     */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
@@ -92,6 +101,11 @@ public class SecurityConfig {
         return http.build();
     }
 
+    /**
+     * configuration for CORS policy
+     * sets the URL of the frontend and the allowed methods
+     * @return the URL path that uses this config
+     */
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
@@ -104,27 +118,13 @@ public class SecurityConfig {
         return source;
     }
 
-
-
-//    @Bean
-//    public ClientRegistrationRepository clientRegistrationRepository() {
-//        ClientRegistration googleRegistration = ClientRegistration.withRegistrationId("google")
-//                .clientId("777012277307-qkao9o1apoiqhst6hn6rve9feacmp30e.apps.googleusercontent.com")
-//                .clientSecret("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")
-//                .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
-//                .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-//                .redirectUri("{baseUrl}/login/oauth2/code/{registrationId}")
-//                .scope("openid", "profile", "email")
-//                .authorizationUri("https://accounts.google.com/o/oauth2/auth")
-//                .tokenUri("https://oauth2.googleapis.com/token")
-//                .userInfoUri("https://openidconnect.googleapis.com/v1/userinfo")
-//                .userNameAttributeName("sub")
-//                .clientName("Google")
-//                .build();
-//
-//        return new InMemoryClientRegistrationRepository(googleRegistration);
-//    }
-
+    /**
+     *
+     * @param jwtService that serves as input for the handler
+     * @param authService our authentication service
+     * function: creates the customOAuthSuccessHandler with the Authentication service and the jwt service
+     * @return the custom Oauth handler
+     */
     @Bean
     public CustomOAuth2SuccessHandler customOAuth2SuccessHandler(JwtService jwtService, AuthenticationService authService) {
         return new CustomOAuth2SuccessHandler(jwtService, authService);

@@ -38,6 +38,21 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         this.userDetailsService = userDetailsService;
     }
 
+    /**
+     *
+     * @param request the path requested
+     * @param response the extended response
+     * @param filterChain the jakarta filter chain
+     *
+     * function: checks the paths that need to be filtered for spring security,
+     * then checks if some kind of authorization is present - token, cookie
+     * if a username can be found, their authority is checked
+     * if a token is found, the token validity is checked
+     * if those checks pass, the authentication is "passed"
+     *
+     * @throws ServletException
+     * @throws IOException
+     */
     @Override
     protected void doFilterInternal(
             @NonNull HttpServletRequest request,

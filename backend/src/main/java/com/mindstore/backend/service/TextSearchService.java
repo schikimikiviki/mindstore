@@ -22,6 +22,16 @@ public class TextSearchService {
         this.client = client;
     }
 
+    /**
+     *
+     * @param query the string we are searching for
+     * @param page param used for pagination, page number
+     * @param size defines how many results are returned
+
+     * function: search the available TextDocuments for a specific string
+     *
+     * @return a SearchResultDto with TextDocuments that match the query
+     */
     public SearchResultDto<TextDocument> search(String query, int page, int size) {
         try {
             SearchResponse<TextDocument> response = client.search(s -> s
@@ -50,10 +60,20 @@ public class TextSearchService {
         }
     }
 
+    /**
+     *
+     * function: returns all available values of Category enum
+     * @return array of categories
+     */
     public Category[] findTags(){
         return  Category.values();
     }
 
+    /**
+     *
+     * function: service method that returns all available textDocuments
+     * @return list of documents
+     */
     public List<TextDocument> findAll() {
         try {
             var response = client.search(s -> s
@@ -72,6 +92,11 @@ public class TextSearchService {
         }
     }
 
+    /**
+     *
+     * @param categories list of category enum strings
+     * @return a List with TextDocuments that match that query
+     */
     public List<TextDocument> findAllWithTags(List<String> categories) {
         try {
             var response = client.search(s -> s

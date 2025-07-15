@@ -2,7 +2,6 @@ package com.mindstore.backend.service;
 
 import com.mindstore.backend.data.Category;
 import com.mindstore.backend.data.TextDocument;
-import com.mindstore.backend.data.dto.SearchResultDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,10 +12,7 @@ import org.opensearch.client.opensearch.OpenSearchClient;
 import org.opensearch.client.opensearch.core.SearchResponse;
 import org.opensearch.client.opensearch.core.search.Hit;
 import org.opensearch.client.opensearch.core.search.HitsMetadata;
-import org.opensearch.client.opensearch.core.search.TotalHits;
-import org.opensearch.client.opensearch.core.search.TotalHitsRelation;
-import org.opensearch.client.opensearch.indices.OpenSearchIndicesClient;
-import org.opensearch.client.transport.endpoints.BooleanResponse;
+
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -40,7 +36,10 @@ public class TextSearchServiceTest {
         @InjectMocks
         private TextSearchService textSearchService;
 
-        @BeforeEach
+    /**
+     * function: set up a testText
+     */
+    @BeforeEach
         void setUp() {
             testText = new TextDocument();
             testText.setTitle("Test Title");
@@ -51,6 +50,12 @@ public class TextSearchServiceTest {
         }
 
 
+    /**
+     *
+     * function: check if findAll() returns the correct size after the test text was indexed.
+     * Also, check if the title of the first result is equal to the title of the test text
+     * @throws IOException when client.search() fails
+     */
     @Test
     void testFindAll_shouldReturnTextList() throws IOException {
 

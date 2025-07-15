@@ -31,14 +31,23 @@ public class OpenSearchController {
         this.textSearchService = textSearchService;
     }
 
-    // return the results in a DTO format
+    /**
+     * function: used to return all Text documents available
+     * @return a SearchResultDto with the TextDocuments
+     */
     @GetMapping("/all")
     public SearchResultDto<TextDocument> getAllTextIndexes(){
         List<TextDocument> docs = textSearchService.findAll();
         return new SearchResultDto<>(docs, docs.size(), 0, docs.size());
     }
 
-
+    /**
+     *
+     * @param tags that are searched
+     * function: used to get all text documents that contain a specific tag
+     *  or a list of tags, used in the frontend to filter for specific tags
+     * @return a SearchResultDto with the text documents
+     */
     @GetMapping("/all/tags")
     public SearchResultDto<TextDocument> getAllTextIndexesWithTag(
             @RequestParam List<String> tags) {
@@ -47,8 +56,13 @@ public class OpenSearchController {
         return new SearchResultDto<>(docs, docs.size(), 0, docs.size());
     }
 
-
-
+    /**
+     *
+     * @param textDocument with title, content, taglist, etc.
+     * @param response - the extended response
+     * function: used to create new text documents, used in the frontend so that the user can add new entries
+     * @return 201 CREATED --> if successfull
+     */
     @PostMapping("/create")
     public ResponseEntity<TextDocument> createTextIndex(@RequestBody TextDocument textDocument, HttpServletResponse response) {
         textIndexService.indexText(textDocument);

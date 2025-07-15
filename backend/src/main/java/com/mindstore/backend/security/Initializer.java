@@ -39,6 +39,14 @@ public class Initializer implements CommandLineRunner {
         this.passwordEncoder = passwordEncoder;
     }
 
+    /**
+     *
+     * @param args
+     * function: initializes the application by adding the textDocuments that are present in the data.json
+     * and by adding a test user that can be used in tests
+     * note: the first step is deleting all existing entries --> this can be commented out later
+     * @throws Exception when the data file is not found or the initialization cannot be done (for whatever reasons)
+     */
     @Override
     public void run(String... args) throws Exception {
         try {

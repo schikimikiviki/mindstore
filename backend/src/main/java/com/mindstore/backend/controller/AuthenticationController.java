@@ -37,6 +37,12 @@ public class AuthenticationController {
         this.authenticationService = authenticationService;
     }
 
+    /**
+     *
+     * @param registerUserDto the Dto with user data
+     * function: used to register users
+     * @return ok --> if successfull
+     */
     @PostMapping("/signup")
     public ResponseEntity<User> register(@RequestBody RegisterUserDto registerUserDto) {
 
@@ -45,6 +51,14 @@ public class AuthenticationController {
         return ResponseEntity.ok(registeredUser);
     }
 
+    /**
+     *
+     * @param request the path that the user tries to access
+     * function: check if a user is currently logged in
+     * for example when setting the login state in the frontend
+     * returns the token, and the time left for the token validity
+     * @return ok --> if successfull, else return 401 Unauthorized
+     */
     @GetMapping("/check")
     public ResponseEntity<?> checkAuth(HttpServletRequest request) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -83,7 +97,13 @@ public class AuthenticationController {
         }
     }
 
-
+    /**
+     *
+     * @param loginUserDto with the email and password
+     * @param response the extended response
+     * function: login a user and set a cookie
+     * @return ok ---> if successfull
+     */
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> authenticate(@RequestBody LoginUserDto loginUserDto, HttpServletResponse response) {
         User authenticatedUser = authenticationService.authenticate(loginUserDto);
@@ -106,6 +126,12 @@ public class AuthenticationController {
         return ResponseEntity.ok(loginResponse);
     }
 
+    /**
+     *
+     * @param response - the extended response
+     * function: log out a user, used in frontend to delete the set cookie
+     * @return ok ---> if successfull
+     */
     @PostMapping("/logout")
     public ResponseEntity<Void> logout(HttpServletResponse response) {
         // Remove the JWT cookie

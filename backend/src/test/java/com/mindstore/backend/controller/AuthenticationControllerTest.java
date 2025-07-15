@@ -45,6 +45,9 @@ class AuthenticationControllerTest {
     @MockitoBean
     private UserDetailsService userDetailsService;
 
+    /**
+     * mock an authenticated user
+     */
     private void mockAuthenticatedUser() {
         Authentication authentication = new TestingAuthenticationToken(
                 "testUser",
@@ -54,10 +57,18 @@ class AuthenticationControllerTest {
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 
+    /**
+     * mock a non-authneticated user
+     */
     private void mockAnonymousUser() {
         SecurityContextHolder.clearContext();
     }
 
+    /**
+     * function: check if the route /auth/check is accessible for an authenticated user
+     *  --> this should be possible
+     * @throws Exception when there is an error in mockMvc
+     */
     @Test
     void checkAuth_whenAuthenticated_Ok() throws Exception {
         // Mock JWT token validation
@@ -72,6 +83,11 @@ class AuthenticationControllerTest {
     }
 
 
+    /**
+     * function: check if the route /auth/check is accessible for an anonymous user
+     * --> this should not work
+     * @throws Exception when there is an error in mockMvc
+     */
     @Test
     void checkAuth_whenNotAuthenticated_Nok() throws Exception {
         mockAnonymousUser();
@@ -79,6 +95,11 @@ class AuthenticationControllerTest {
                 .andExpect(status().isUnauthorized());
     }
 
+    /**
+     *
+     * function: check if the /auth/login route returns the necessary things - token, expiresIn
+     * @throws Exception when there is an error in mockMvc
+     */
     @Test
     void login_validCredentials_tokenReturned() throws Exception {
         User mockUser = new User();
@@ -98,6 +119,11 @@ class AuthenticationControllerTest {
                 .andExpect(cookie().exists("token"));
     }
 
+    /**
+     *
+     * function: check if /auth/signup successfully signs up a user
+     * @throws Exception when there is an error in mockMvc
+     */
     @Test
     void signup_validRequest_returnsUser() throws Exception {
         RegisterUserDto registerDto = new RegisterUserDto();

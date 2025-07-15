@@ -42,6 +42,9 @@ class TextDocumentServiceImplTest {
     @Mock
     private TextSearchService textSearchService;
 
+    /**
+     * function: sets up a test text to work with
+     */
     @BeforeEach
     void setUp() {
         testText = new TextDocument();
@@ -52,31 +55,43 @@ class TextDocumentServiceImplTest {
         testText.setCommandList(List.of("some command", "some other command"));
     }
 
+    /**
+     *
+     * function: check if the testText is indexed correctly
+     * @throws IOException when the .index() fails
+     */
     @Test
     void shouldIndexText() throws IOException {
-        TextDocument text = new TextDocument();
-        text.setTitle("My Title");
-        textIndexService.indexText(text);
+
+        textIndexService.indexText(testText);
 
         // verify that the method was called on the mocked obj
         verify(client).index(any(Function.class));
 
     }
 
+    /**
+     *
+     * function: check if the text id is generated correctly if none is provided
+     * @throws IOException when index() fails
+     */
     @Test
     void testIndexText_shouldGenerateIdIfNull() throws IOException {
-        TextDocument textDocument = new TextDocument();
-        textDocument.setTitle("Test Title");
 
       // do nothing
         when(client.index(any(Function.class))).thenReturn(null);
 
-        textIndexService.indexText(textDocument);
+        textIndexService.indexText(testText);
 
-        assertNotNull(textDocument.getId(), "ID should be generated if null");
+        assertNotNull(testText.getId(), "ID should be generated if null");
         verify(client).index(any(Function.class));
     }
 
+    /**
+     *
+     * function: checks if the existsByTitle() returns true after a text was indexed
+     * @throws IOException if the client.search() fails
+     */
     @Test
     void testExistsByTitle_shouldReturnTrue() throws IOException {
 
@@ -93,6 +108,11 @@ class TextDocumentServiceImplTest {
         assertTrue(exists);
     }
 
+    /**
+     *
+     * function: test if deleteAll() is correctly executed
+     * @throws IOException when client.deleteAll(), deleteByQuery() or indicesClient.exists() fails
+     */
     @Test
     void testDeleteAll_shouldCallDeleteByQuery() throws IOException {
 

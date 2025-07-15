@@ -28,6 +28,12 @@ public class AuthenticationService {
         this.passwordEncoder = passwordEncoder;
     }
 
+    /**
+     *
+     * @param input RegisterUSerDTO with name and password
+     * function: sign up a user
+     * @return the saved User
+     */
     public User signup(RegisterUserDto input) {
         User user = new User()
                 .setFullName(input.getFullName())
@@ -37,6 +43,12 @@ public class AuthenticationService {
         return userRepository.save(user);
     }
 
+    /**
+     *
+     * @param input LoginUserDto
+     * function: used to authenticate a user, for example for the login by using authenticationManager
+     * @return User
+     */
     public User authenticate(LoginUserDto input) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -49,6 +61,13 @@ public class AuthenticationService {
                 .orElseThrow();
     }
 
+    /**
+     *
+     * @param email of the user
+     * function: search for a user by using the email
+     * if the user isn't found, create them.
+     * @return the User that was created
+     */
     public User findOrCreateUserByEmail(String email) {
         return userRepository.findByEmail(email)
                 .orElseGet(() -> {

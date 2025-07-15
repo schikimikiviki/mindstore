@@ -12,7 +12,10 @@ import org.springframework.context.annotation.Configuration;
 
 import java.net.URI;
 
-
+/**
+ * Configuration file for opensearch that uses the opensearch.host from application.properties
+ * creates openSearchClient that the application uses
+ */
 @Configuration
     public class OpenSearchConfig {
 

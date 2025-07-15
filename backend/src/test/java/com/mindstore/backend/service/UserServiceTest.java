@@ -28,6 +28,9 @@ class UserServiceTest {
 
     private User sampleUser;
 
+    /**
+     * function: set up a test user
+     */
     @BeforeEach
     void setUp() {
         sampleUser = new User();
@@ -36,6 +39,10 @@ class UserServiceTest {
         sampleUser.setFullName("Viki");
     }
 
+    /**
+     * function: check if the userService returns the expected number of users after inserting the test user.
+     * Also, check if the first result of the user service contains the user email of the test user
+     */
     @Test
     void shouldReturnAllUsers() {
         List<User> users = List.of(sampleUser);
@@ -47,6 +54,9 @@ class UserServiceTest {
         assertEquals("viki@example.com", result.get(0).getEmail());
     }
 
+    /**
+     * function: check if the test user is saved successfully
+     */
     @Test
     void shouldSaveUser() {
         when(userRepository.save(sampleUser)).thenReturn(sampleUser);
@@ -57,6 +67,10 @@ class UserServiceTest {
         assertEquals("viki@example.com", savedUser.getEmail());
     }
 
+    /**
+     * function: check if the user can by found using findByUsedId().
+     * Also, check if the email in the result is equal to the test users email
+     */
     @Test
     void shouldFindUserById() {
         when(userRepository.findById(1L)).thenReturn(Optional.of(sampleUser));
@@ -67,6 +81,9 @@ class UserServiceTest {
         assertEquals("viki@example.com", result.get().getEmail());
     }
 
+    /**
+     * function: check if user deletion is successfull when using deleteUserById()
+     */
     @Test
     void shouldDeleteUserById() {
         Long userId = 1L;

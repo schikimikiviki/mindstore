@@ -39,10 +39,14 @@ public class TextSearchService {
                             .from(page * size)
                             .size(size)
                             .query(q -> q
-                                    .multiMatch(m -> m
-                                            .fields("title", "content_raw")
-                                            .query(query)
-                                    )
+//                                    .multiMatch(m -> m
+//                                            .fields("title", "content_raw")
+//                                            .query(query)
+//                                    )
+                                            .queryString(qs -> qs
+                                                    .query(query + "*") // wildcard for fuzzy matching, eg. "kil" should deliver the same results as "kill"
+                                                    .fields("title", "content_raw")
+                                            )
                             ),
                     TextDocument.class
             );

@@ -41,7 +41,7 @@ public class OpenSearchController {
     @GetMapping("/all")
     public SearchResultDto<TextDocument> getAllTextIndexes(
             @RequestParam(defaultValue = "") String searchAfter,
-            @RequestParam(defaultValue = "100") int size
+            @RequestParam(defaultValue = "10") int size
     ) {
         return textSearchService.findAll(searchAfter, size);
     }
@@ -59,7 +59,7 @@ public class OpenSearchController {
     @GetMapping("/all/tags")
     public SearchResultDto<TextDocument> getAllTextIndexesWithTag(
             @RequestParam List<String> tags, @RequestParam(defaultValue = "") String searchAfter,
-            @RequestParam(defaultValue = "100") int size) {
+            @RequestParam(defaultValue = "10") int size) {
 
         return textSearchService.findAllWithTags(tags, searchAfter, size);
         //return new SearchResultDto<>(docs, docs.size(), 0, docs.size());

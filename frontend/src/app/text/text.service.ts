@@ -16,8 +16,17 @@ export class TextService {
 
   constructor(private http: HttpClient) {}
 
-  getTexts(): Observable<SearchResultDto<Text>> {
-    return this.http.get<SearchResultDto<Text>>(this.baseUrl);
+  getTexts(searchAfter?: string): Observable<SearchResultDto<Text>> {
+    console.log('search after param: ', searchAfter);
+    if (searchAfter) {
+      console.log('search after executing!');
+      return this.http.get<SearchResultDto<Text>>(
+        this.baseUrl + '?searchAfter=' + searchAfter
+      );
+    } else {
+      console.log('normal search executing!');
+      return this.http.get<SearchResultDto<Text>>(this.baseUrl);
+    }
   }
 
   addText(
@@ -40,11 +49,18 @@ export class TextService {
     );
   }
 
-  getTextsWithTags(tags: string[]): Observable<SearchResultDto<Text>> {
+  getTextsWithTags(
+    tags: string[],
+    searchAfter?: string
+  ): Observable<SearchResultDto<Text>> {
     let httpParams = new HttpParams();
     tags.forEach((tag) => {
       httpParams = httpParams.append('tags', tag);
     });
+
+    if (searchAfter) {
+      httpParams = httpParams.set('searchAfter', searchAfter);
+    }
 
     return this.http.get<SearchResultDto<Text>>(this.tagSearchUrl, {
       params: httpParams,

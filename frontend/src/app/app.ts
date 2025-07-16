@@ -1,11 +1,11 @@
+import { Header } from './components/header/header';
+import { ViewChild } from '@angular/core';
+import { ResultPage } from './components/result-page/result-page';
+import { Text } from './text/text.model';
 import { Component } from '@angular/core';
-
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { Header } from './components/header/header';
-import { ResultPage } from './components/result-page/result-page';
-import { Text } from './text/text.model';
 
 @Component({
   selector: 'app-root',
@@ -16,11 +16,22 @@ import { Text } from './text/text.model';
 })
 export class App {
   textArray: Text[] = [];
+  searchAfter: string | null = null;
 
-  constructor() {}
+  @ViewChild(Header) headerRef!: Header;
 
   getDataFromChild(e: Text[]) {
-    // we receive the texts from the Header component and send it to the result page component
     this.textArray = e;
+  }
+
+  getSearchAfterInitial(e: string) {
+    this.searchAfter = e;
+  }
+
+  loadNextPage() {
+    if (this.headerRef) {
+      this.headerRef.loadNextPage(this.searchAfter);
+      console.log('app emitting to header');
+    }
   }
 }

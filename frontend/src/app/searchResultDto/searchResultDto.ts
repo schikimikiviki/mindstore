@@ -3,4 +3,5 @@ export interface SearchResultDto<T> {
   total: number;
   page: number;
   size: number;
+  searchAfter: string;
 }

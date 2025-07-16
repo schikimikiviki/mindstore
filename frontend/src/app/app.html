@@ -86,12 +86,17 @@
     }
   }
 </style>
+<main>
+  <app-header
+    (childEmitter)="getDataFromChild($event)"
+    (searchAfterEmitter)="getSearchAfterInitial($event)"
+  ></app-header>
 
-<main class="main">
-  <div class="content">
-    <app-header (childEmitter)="getDataFromChild($event)"></app-header>
-    <app-result-page [childTryingToPullData]="textArray"></app-result-page>
-  </div>
+  <app-result-page
+    [childTryingToPullData]="textArray"
+    (loadMore)="loadNextPage()"
+    [initialSearchAfter]="searchAfter"
+  ></app-result-page>
 </main>
 
 <router-outlet></router-outlet>

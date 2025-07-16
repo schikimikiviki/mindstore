@@ -1,10 +1,15 @@
 package com.mindstore.backend.service;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mindstore.backend.data.Category;
 import com.mindstore.backend.data.TextDocument;
 import com.mindstore.backend.data.dto.SearchResultDto;
+import org.opensearch.client.json.JsonData;
 import org.opensearch.client.opensearch.OpenSearchClient;
 import org.opensearch.client.opensearch._types.FieldValue;
+import org.opensearch.client.opensearch._types.SortOrder;
+import org.opensearch.client.opensearch.core.SearchRequest;
 import org.opensearch.client.opensearch.core.SearchResponse;
 import org.opensearch.client.opensearch.core.search.Hit;
 import org.springframework.stereotype.Service;
@@ -32,32 +37,49 @@ public class TextSearchService {
      *
      * @return a SearchResultDto with TextDocuments that match the query
      */
-    public SearchResultDto<TextDocument> search(String query, int page, int size) {
+    public SearchResultDto<TextDocument> search(String query, int page, int size, String searchAfter) {
         try {
-            SearchResponse<TextDocument> response = client.search(s -> s
-                            .index("text-index")
-                            .from(page * size)
-                            .size(size)
-                            .query(q -> q
-//                                    .multiMatch(m -> m
-//                                            .fields("title", "content_raw")
-//                                            .query(query)
-//                                    )
-                                            .queryString(qs -> qs
-                                                    .query(query + "*") // wildcard for fuzzy matching, eg. "kil" should deliver the same results as "kill"
-                                                    .fields("title", "content_raw")
-                                            )
-                            ),
-                    TextDocument.class
-            );
+            SearchResponse<TextDocument> response = client.search(s -> {
+                SearchRequest.Builder builder = s
+                        .index("text-index")
+                        .size(size)
+                        .sort(sort -> sort
+                                .field(f -> f
+                                        .field("createdAt")
+                                        .order(SortOrder.Desc)
+                                )
+                        )
+                        .query(q -> q
+                                .queryString(qs -> qs
+                                        .query(query + "*")
+                                        .fields("title", "content_raw")
+                                        .analyzeWildcard(true)
+                                )
+                        );
 
-            List<TextDocument> results = response.hits().hits().stream()
+                // Apply search_after if provided
+                if (searchAfter != null && !searchAfter.isEmpty()) {
+                    builder.searchAfter(List.of(searchAfter));
+                }
+
+                return builder;
+            }, TextDocument.class);
+
+            List<Hit<TextDocument>> hits = response.hits().hits();
+
+            List<TextDocument> results = hits.stream()
                     .map(Hit::source)
                     .collect(Collectors.toList());
 
             long total = response.hits().total().value();
 
-            return new SearchResultDto<>(results, total, page, size);
+            // Extract the sort value from the last hit for next request
+            String nextSearchAfter = hits.isEmpty()
+                    ? null
+                    : hits.get(hits.size() - 1).sort().get(0).toString(); // Assuming sort on one field
+
+            return new SearchResultDto<>(results, total, page, size, nextSearchAfter);
+
 
         } catch (IOException e) {
             throw new RuntimeException("Search failed", e);
@@ -75,37 +97,72 @@ public class TextSearchService {
 
     /**
      *
+     * @param searchAfter - searchAfter string
+     * @param size - size of the results
      * function: service method that returns all available textDocuments
      * @return list of documents
      */
-    public List<TextDocument> findAll() {
+    public SearchResultDto<TextDocument> findAll(String searchAfter, int size) {
         try {
-            var response = client.search(s -> s
-                            .index("text-index")
-                            .query(q -> q.matchAll(m -> m))
-                            .size(1000),
-                    TextDocument.class
-            );
+            SearchRequest.Builder searchBuilder = new SearchRequest.Builder()
+                    .index("text-index")
+                    .size(size)
+                    .sort(sort -> sort
+                            .field(f -> f
+                                    .field("createdAt")
+                                    .order(SortOrder.Desc)
+                            )
+                    );
 
-            return response.hits().hits().stream()
-                    .map(hit -> hit.source())
+            // If searchAfter is present, set it
+            if (searchAfter != null && !searchAfter.isEmpty()) {
+                searchBuilder.searchAfter(List.of(searchAfter));
+            }
+
+            // Query: use match_all or query_string depending on user input
+            searchBuilder.query(q -> q.matchAll(m -> m)); // match_all for "get all"
+
+            SearchResponse<TextDocument> response = client.search(searchBuilder.build(), TextDocument.class);
+
+            List<Hit<TextDocument>> hits = response.hits().hits();
+
+            List<TextDocument> docs = hits.stream()
+                    .map(Hit::source)
                     .toList();
 
+            String nextSearchAfter = hits.isEmpty()
+                    ? null
+                    : (hits.get(hits.size() - 1).sort().get(0));
+
+            return new SearchResultDto<>(docs, response.hits().total().value(), 0, size, nextSearchAfter);
+
         } catch (IOException e) {
-            throw new RuntimeException("Failed to fetch all indexed texts", e);
+            throw new RuntimeException("Failed to fetch indexed texts", e);
         }
     }
 
+
     /**
      *
+     * @param searchAfter - searchAfter string
+     * @param size - size of the results
      * @param categories list of category enum strings
      * @return a List with TextDocuments that match that query
      */
-    public List<TextDocument> findAllWithTags(List<String> categories) {
+    public SearchResultDto<TextDocument> findAllWithTags(List<String> categories, String searchAfter, int size) {
+
         try {
-            var response = client.search(s -> s
-                            .index("text-index")
-                            .query(q -> q
+            var response = client.search(s -> {
+                var builder = s
+                        .index("text-index")
+                        .size(size)
+                        .sort(sort -> sort
+                                .field(f -> f
+                                        .field("createdAt")
+                                        .order(SortOrder.Desc)
+                                )
+                        )
+                        .query(q -> q
                                     .terms(t -> t
                                             .field("tags.keyword")
                                             .terms(tt -> tt.value(
@@ -114,14 +171,29 @@ public class TextSearchService {
                                                             .toList()
                                             ))
                                     )
-                            )
-                            .size(1000),
-                    TextDocument.class
-            );
+                            );
 
-            return response.hits().hits().stream()
+                // If a searchAfter is provided, use it
+                if (searchAfter != null && !searchAfter.isEmpty()) {
+                    builder.searchAfter(List.of(searchAfter));
+                }
+
+                return builder;
+            }, TextDocument.class);
+
+            List<Hit<TextDocument>> hits = response.hits().hits();
+
+            List<TextDocument> docs = hits.stream()
                     .map(Hit::source)
                     .toList();
+
+            // Get the sort value of the last hit for the next request
+            String nextSearchAfter = hits.isEmpty()
+                    ? null
+                    : hits.get(hits.size() - 1).sort().get(0);
+
+            return new SearchResultDto<>(docs, response.hits().total().value(), 0, size, nextSearchAfter);
+
 
         } catch (IOException e) {
             throw new RuntimeException("Failed to fetch all indexed texts", e);

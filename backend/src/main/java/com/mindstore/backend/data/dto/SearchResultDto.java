@@ -8,12 +8,18 @@ public class SearchResultDto<T> {
     private long total;
     private int page;
     private int size;
+    private String searchAfter;
 
-    public SearchResultDto(List<T> content, long total, int page, int size) {
+    public SearchResultDto(List<T> content, long total, int page, int size, String searchAfter) {
         this.content = content;
         this.total = total;
         this.page = page;
         this.size = size;
+        this.searchAfter = searchAfter;
+    }
+
+    public String getSearchAfter(){
+        return searchAfter;
     }
 
     public List<T> getContent() {

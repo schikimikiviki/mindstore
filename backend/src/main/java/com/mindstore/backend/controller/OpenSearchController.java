@@ -32,17 +32,25 @@ public class OpenSearchController {
     }
 
     /**
+     *
+     * @param searchAfter - searchAfter string that references the createdAt
+     * @param size - the size of the result to be fetched
      * function: used to return all Text documents available
      * @return a SearchResultDto with the TextDocuments
      */
     @GetMapping("/all")
-    public SearchResultDto<TextDocument> getAllTextIndexes(){
-        List<TextDocument> docs = textSearchService.findAll();
-        return new SearchResultDto<>(docs, docs.size(), 0, docs.size());
+    public SearchResultDto<TextDocument> getAllTextIndexes(
+            @RequestParam(defaultValue = "") String searchAfter,
+            @RequestParam(defaultValue = "100") int size
+    ) {
+        return textSearchService.findAll(searchAfter, size);
     }
+
 
     /**
      *
+     * @param searchAfter - searchAfter string that references the createdAt
+     * @param size - the size of the result to be fetched
      * @param tags that are searched
      * function: used to get all text documents that contain a specific tag
      *  or a list of tags, used in the frontend to filter for specific tags
@@ -50,10 +58,11 @@ public class OpenSearchController {
      */
     @GetMapping("/all/tags")
     public SearchResultDto<TextDocument> getAllTextIndexesWithTag(
-            @RequestParam List<String> tags) {
+            @RequestParam List<String> tags, @RequestParam(defaultValue = "") String searchAfter,
+            @RequestParam(defaultValue = "100") int size) {
 
-        List<TextDocument> docs = textSearchService.findAllWithTags(tags);
-        return new SearchResultDto<>(docs, docs.size(), 0, docs.size());
+        return textSearchService.findAllWithTags(tags, searchAfter, size);
+        //return new SearchResultDto<>(docs, docs.size(), 0, docs.size());
     }
 
     /**

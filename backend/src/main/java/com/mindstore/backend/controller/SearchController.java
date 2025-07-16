@@ -45,12 +45,14 @@ public class SearchController {
     @GetMapping
     public SearchResultDto<TextDocument> search(@RequestParam String query,
                                                 @RequestParam(defaultValue = "0") int page,
-                                                @RequestParam(defaultValue = "10") int size, Principal principal) {
+                                                @RequestParam(defaultValue = "10") int size,
+                                                @RequestParam(defaultValue = "") String searchAfter,
+                                                 Principal principal) {
 
         // wenn wir eine Search machen, soll das auch als History abgespeichert werden
         searchHistoryService.saveSearch(query.toString());
 
-        return textSearchService.search(query, page, size);
+        return textSearchService.search(query, page, size, searchAfter);
     }
 
     /**

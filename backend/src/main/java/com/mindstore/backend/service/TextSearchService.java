@@ -9,6 +9,7 @@ import org.opensearch.client.json.JsonData;
 import org.opensearch.client.opensearch.OpenSearchClient;
 import org.opensearch.client.opensearch._types.FieldValue;
 import org.opensearch.client.opensearch._types.SortOrder;
+import org.opensearch.client.opensearch._types.query_dsl.TextQueryType;
 import org.opensearch.client.opensearch.core.SearchRequest;
 import org.opensearch.client.opensearch.core.SearchResponse;
 import org.opensearch.client.opensearch.core.search.Hit;
@@ -50,10 +51,10 @@ public class TextSearchService {
                                 )
                         )
                         .query(q -> q
-                                .queryString(qs -> qs
-                                        .query(query + "*")
-                                        .fields("title", "content_raw")
-                                        .analyzeWildcard(true)
+                                .multiMatch(mm -> mm
+                                        .query(query)
+                                        .fields("title.autocomplete", "content_raw.autocomplete")
+                                        .type(TextQueryType.BoolPrefix)
                                 )
                         );
 
@@ -119,8 +120,7 @@ public class TextSearchService {
                 searchBuilder.searchAfter(List.of(searchAfter));
             }
 
-            // Query: use match_all or query_string depending on user input
-            searchBuilder.query(q -> q.matchAll(m -> m)); // match_all for "get all"
+            searchBuilder.query(q -> q.matchAll(m -> m));
 
             SearchResponse<TextDocument> response = client.search(searchBuilder.build(), TextDocument.class);
 

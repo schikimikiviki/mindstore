@@ -88,6 +88,25 @@ services:
     networks:
       - backend
 
+
+  opensearch-init:
+    image: curlimages/curl
+    container_name: opensearch-init
+    depends_on:
+      opensearch:
+        condition: service_healthy
+    volumes:
+      - ./docker/opensearch-init:/init
+    command: >
+      sh -c "
+        until curl -s http://opensearch:9200; do
+          sleep 1
+        done
+        cd /init && sh init.sh
+      "
+    networks:
+      - backend
+
 volumes:
   pgdata:
 

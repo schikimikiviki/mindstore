@@ -50,7 +50,7 @@ public class Initializer implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         try {
-            // Delete existing data
+
             textIndexService.deleteAll();
             Thread.sleep(2000); // Simulate delay
 

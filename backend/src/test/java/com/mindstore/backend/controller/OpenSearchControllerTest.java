@@ -63,6 +63,7 @@ class OpenSearchControllerTest {
      */
     @Test
     void shouldReturnTextList() throws Exception {
+        int expectedDataSize = 2;
 
         TextDocument textDocumentOne = new TextDocument();
         textDocumentOne.setTitle("Some random title");
@@ -80,21 +81,21 @@ class OpenSearchControllerTest {
 
         List<TextDocument> mockTexts = List.of(textDocumentOne, textDocumentTwo);
 
-        when(textSearchService.findAll()).thenReturn(mockTexts);
+        SearchResultDto<TextDocument> mockResult = new SearchResultDto<>(
+                mockTexts,
+                expectedDataSize,
+                0,
+                10,
+                null
+        );
 
-        String response = mockMvc.perform(get("/text-index/all"))
-                .andExpect(status().isOk())
-                .andReturn().getResponse().getContentAsString();
-
-        System.out.println("Actual response: " + response);
-
+        when(textSearchService.findAll("", 10)).thenReturn(mockResult);
 
         mockMvc.perform(get("/text-index/all"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.content.length()").value(2))
+                .andExpect(jsonPath("$.content.length()").value(expectedDataSize))
                 .andExpect(jsonPath("$.content[0].title").value("Some random title"))
                 .andExpect(jsonPath("$.content[1].title").value("Some random title 2"));
-
     }
 
 
@@ -106,38 +107,39 @@ class OpenSearchControllerTest {
      */
     @Test
     void testCountTexts_shouldReturnTotal() throws IOException, ParseException {
+        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("data/data.json");
 
-            // we want there to be as many entries as in the JSON data file
+        if (inputStream == null) {
+            throw new FileNotFoundException("data.json not found in resources");
+        }
 
-            InputStream inputStream = getClass().getClassLoader().getResourceAsStream("data/data.json");
+        JSONParser parser = new JSONParser();
+        JSONArray array = (JSONArray) parser.parse(new InputStreamReader(inputStream));
 
-            if (inputStream == null) {
-                throw new FileNotFoundException("data.json not found in resources");
-            }
+        Long expectedDataSize = (long) array.size();
 
-            JSONParser parser = new JSONParser();
-            JSONArray array = (JSONArray) parser.parse(new InputStreamReader(inputStream));
+        List<TextDocument> mockDocs = new ArrayList<>();
+        for (int i = 0; i < expectedDataSize; i++) {
+            TextDocument doc = new TextDocument();
+            doc.setTitle("Mock " + i);
+            mockDocs.add(doc);
+        }
 
-            Long expectedDataSize = (long) array.size();
+        SearchResultDto<TextDocument> mockResult = new SearchResultDto<>(
+                mockDocs,
+                expectedDataSize,
+                0,
+                10,
+                null
+        );
 
-            List<TextDocument> mockDocs = new ArrayList<>();
+        when(textSearchService.findAll("", 10)).thenReturn(mockResult);
 
-            for (int i = 0; i < expectedDataSize; i++) {
-                TextDocument doc = new TextDocument();
-                doc.setTitle("Mock " + i);
-                mockDocs.add(doc);
-            }
+        SearchResultDto<TextDocument> result = textSearchService.findAll("", 10);
 
-            when(textSearchService.findAll()).thenReturn(mockDocs);
-
-            List<TextDocument> docs = textSearchService.findAll();
-            SearchResultDto<TextDocument> searchResult = new SearchResultDto<>(docs, docs.size(), 0, docs.size());
-
-            long total = searchResult.getTotal();
-
-            assertEquals(expectedDataSize, total);
-
+        assertEquals(expectedDataSize, result.getTotal());
     }
+
 
     /**
      *
@@ -168,7 +170,15 @@ class OpenSearchControllerTest {
             mockDocs.add(doc);
         }
 
-        when(textSearchService.findAll()).thenReturn(mockDocs);
+        SearchResultDto<TextDocument> mockResult = new SearchResultDto<>(
+                mockDocs,
+                expectedDataSize,
+                0,
+                10,
+                null
+        );
+
+        when(textSearchService.findAll("", 10)).thenReturn(mockResult);
 
 
         mockMvc.perform(get("/text-index/all"))

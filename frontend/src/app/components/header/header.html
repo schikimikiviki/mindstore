@@ -27,7 +27,15 @@
         class="search-bar"
         [(ngModel)]="searchTerm"
       />
+
+      <!-- Suggestion dropdown -->
+      <ul *ngIf="autocompleteArray.length > 0" class="autocomplete-list">
+        <li *ngFor="let item of autocompleteArray" (click)="onClickItem(item)">
+          {{ item }}
+        </li>
+      </ul>
     </div>
+
     <div *ngIf="hydrated && loggedIn" class="plus-button">
       <button (click)="onClickPlus()">+</button>
     </div>

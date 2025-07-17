@@ -65,8 +65,9 @@
 .search-box {
   position: relative;
   background-color: styles.$lightBlue;
-  min-height: 180px;
   padding: 20px;
+  height: 200px;
+  max-height: 200px;
 }
 
 .plus-button {
@@ -106,4 +107,32 @@
   display: flex;
   flex-direction: column;
   justify-content: end;
+}
+
+.autocomplete-list {
+  top: 100%;
+  left: 0;
+  width: 280px;
+  right: 0;
+  background: white;
+  border-radius: 20px;
+  border-top: none;
+  z-index: 10;
+  overflow-y: auto;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  margin-top: 10px;
+  border: 1px solid styles.$lightBlue;
+
+  li {
+    padding: 10px;
+    cursor: pointer;
+    border: 1px solid styles.$lightBlue;
+  }
+
+  li:hover {
+    background-color: styles.$mediumBlue;
+    color: white;
+  }
 }

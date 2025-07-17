@@ -42,6 +42,7 @@ export class Header implements OnInit {
   searchTerm$ = new Subject<string>(); // RxJS subject for search input
   searchTerm: string = '';
   tagSearchActivated = false;
+  autocompleteArray: string[] = [];
 
   @Output() childEmitter: EventEmitter<Text[]> = new EventEmitter<Text[]>();
   @Output() searchAfterEmitter = new EventEmitter<string>();
@@ -91,6 +92,7 @@ export class Header implements OnInit {
           this.filteredCount = this.allTexts.length;
           this.cdr.markForCheck();
           this.childEmitter.emit(this.filteredTexts);
+          this.autocompleteArray = [];
           return;
         }
 
@@ -109,13 +111,26 @@ export class Header implements OnInit {
             this.cdr.markForCheck();
           },
         });
+
+        // also get the autocomplete results for this
+
+        this.textService.getAutocompletion(term).subscribe({
+          next: (result) => {
+            // only display if the result does not equal the searched term (otherwise its unnccessary)
+            if (result[0] != term) {
+              this.autocompleteArray = result;
+            }
+
+            this.cdr.markForCheck();
+            console.log('autocomplete', result);
+          },
+          error: (err) => {
+            console.error('autocomplete error:', err);
+            this.cdr.markForCheck();
+          },
+        });
       });
 
-    // this.textService.getHistory().subscribe((historyStrings) => {
-    //   console.log('history:', historyStrings);
-    //   this.historyArray = historyStrings;
-    //   this.cdr.detectChanges();
-    // });
     this.loadSearchHistory();
   }
 
@@ -137,6 +152,7 @@ export class Header implements OnInit {
     this.searchTerm$.next(item);
     this.searchTerm = item;
     this.loadSearchHistory();
+    this.autocompleteArray = []; // reset so that it disappears
   }
 
   manageLoginOrLogout() {

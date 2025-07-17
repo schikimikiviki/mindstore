@@ -10,6 +10,7 @@ import com.mindstore.backend.service.TextSearchService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
 
@@ -54,6 +55,18 @@ public class SearchController {
 
         return textSearchService.search(query, page, size, searchAfter);
     }
+
+    /**
+     *
+     * @param prefix - string we are searching for, for example "do" will suggest "docker"
+     * @return List of strings that match query
+     * @throws IOException when search fails
+     */
+    @GetMapping("/autocomplete")
+    public List<String> autocompleteString(@RequestParam String prefix) throws IOException {
+        return textSearchService.autocomplete(prefix);
+    }
+
 
     /**
      * function: used to test the SearchController and debugging

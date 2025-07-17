@@ -16,8 +16,11 @@ import org.opensearch.client.opensearch.core.search.Hit;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class TextSearchService {
@@ -86,6 +89,39 @@ public class TextSearchService {
             throw new RuntimeException("Search failed", e);
         }
     }
+
+
+    /**
+     *
+     * @param prefix - String that we are searching for
+     * @return List of titles that match for that string
+     * @throws IOException when search fails
+     */
+    public List<String> autocomplete(String prefix) throws IOException {
+        SearchResponse<TextDocument> response = client.search(s -> s
+                .index("text-index")
+                .size(5)
+                .query(q -> q
+                        .multiMatch(mm -> mm
+                                .query(prefix)
+                                .fields("title.autocomplete", "content_raw.autocomplete")
+                                .type(TextQueryType.BoolPrefix)
+                        )
+                ), TextDocument.class
+        );
+
+        return response.hits().hits().stream()
+                .map(Hit::source)
+                .flatMap(doc -> Stream.of(doc.getTitle(), doc.getContent_raw()))
+                .filter(Objects::nonNull)
+                .flatMap(text -> Arrays.stream(text.split("\\W+")))
+                .map(String::toLowerCase) // normalize to lowercase
+                .filter(word -> word.startsWith(prefix.toLowerCase()))
+                .distinct()
+                .collect(Collectors.toList());
+
+    }
+
 
     /**
      *

@@ -13,8 +13,14 @@ export class TextService {
   private historyUrl = 'http://localhost:8080/api/search/history';
   private tagSearchUrl = 'http://localhost:8080/text-index/all/tags'; // ?tags=JAVA&tags=PYTHON am ende
   private addTextUrl = 'http://localhost:8080/text-index/create';
+  private autocompleteUrl =
+    'http://localhost:8080/api/search/autocomplete?prefix=';
 
   constructor(private http: HttpClient) {}
+
+  getAutocompletion(query: string): Observable<string[]> {
+    return this.http.get<string[]>(this.autocompleteUrl + query);
+  }
 
   getTexts(searchAfter?: string): Observable<SearchResultDto<Text>> {
     console.log('search after param: ', searchAfter);

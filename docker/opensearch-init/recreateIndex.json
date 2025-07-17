@@ -1,53 +1,75 @@
 {
-  "settings": {
-    "analysis": {
-      "filter": {
-        "autocomplete_filter": {
-          "type": "edge_ngram",
-          "min_gram": 1,
-          "max_gram": 20
+    "settings": {
+        "analysis": {
+            "filter": {
+                "autocomplete_filter": {
+                    "type": "edge_ngram",
+                    "min_gram": 1,
+                    "max_gram": 20
+                }
+            },
+            "analyzer": {
+                "autocomplete_index": {
+                    "tokenizer": "standard",
+                    "filter": [
+                        "lowercase",
+                        "autocomplete_filter"
+                    ]
+                },
+                "autocomplete_search": {
+                    "tokenizer": "standard",
+                    "filter": [
+                        "lowercase"
+                    ]
+                }
+            }
         }
-      },
-      "analyzer": {
-        "autocomplete_index": {
-          "tokenizer": "standard",
-          "filter": ["lowercase", "autocomplete_filter"]
-        },
-        "autocomplete_search": {
-          "tokenizer": "standard",
-          "filter": ["lowercase"]
+    },
+    "mappings": {
+        "properties": {
+            "title": {
+                "type": "text",
+                "fields": {
+                    "autocomplete": {
+                        "type": "text",
+                        "analyzer": "autocomplete_index",
+                        "search_analyzer": "autocomplete_search"
+                    }
+                }
+            },
+            "content_raw": {
+                "type": "text",
+                "fields": {
+                    "autocomplete": {
+                        "type": "text",
+                        "analyzer": "autocomplete_index",
+                        "search_analyzer": "autocomplete_search"
+                    }
+                }
+            },
+            "content_html": {
+                "type": "text"
+            },
+            "commandList": {
+                "type": "keyword"
+            },
+            "tags": {
+                "type": "text",
+                "fields": {
+                    "keyword": {
+                        "type": "keyword"
+                    }
+                }
+            },
+            "createdAt": {
+                "type": "long"
+            },
+            "updatedAt": {
+                "type": "long"
+            },
+            "id": {
+                "type": "long"
+            }
         }
-      }
     }
-  },
-  "mappings": {
-    "properties": {
-      "title": {
-        "type": "text",
-        "fields": {
-          "autocomplete": {
-            "type": "text",
-            "analyzer": "autocomplete_index",
-            "search_analyzer": "autocomplete_search"
-          }
-        }
-      },
-      "content_raw": {
-        "type": "text",
-        "fields": {
-          "autocomplete": {
-            "type": "text",
-            "analyzer": "autocomplete_index",
-            "search_analyzer": "autocomplete_search"
-          }
-        }
-      },
-      "content_html": { "type": "text" },
-      "commandList": { "type": "keyword" },
-      "tags": { "type": "text" },
-      "createdAt": { "type": "long" },
-      "updatedAt": { "type": "long" },
-      "id": { "type": "long" }
-    }
-  }
 }

@@ -1,6 +1,8 @@
 <div class="add-text">
   <h2>Add a new text</h2>
 
+  <p class="errorMsg" *ngIf="displayError">{{errorMessage}}</p>
+
   <form class="add-form" [formGroup]="postForm" (submit)="submitText()">
     <div class="add-row">
       <label for="title">Title</label>

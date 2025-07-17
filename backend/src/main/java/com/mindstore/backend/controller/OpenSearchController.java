@@ -62,7 +62,6 @@ public class OpenSearchController {
             @RequestParam(defaultValue = "10") int size) {
 
         return textSearchService.findAllWithTags(tags, searchAfter, size);
-        //return new SearchResultDto<>(docs, docs.size(), 0, docs.size());
     }
 
     /**

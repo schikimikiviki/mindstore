@@ -217,7 +217,6 @@ export class Header implements OnInit {
     this.textService.getTexts().subscribe((texts) => {
       this.allTexts = texts.content;
       this.filteredTexts = texts.content;
-      this.textCount = texts.total;
       this.filteredCount = texts.total;
       this.childEmitter.emit(this.filteredTexts);
       this.tagSearchActivated = false;
@@ -235,7 +234,22 @@ export class Header implements OnInit {
       .subscribe((result) => {
         console.log('Dialog closed with:', result);
         this.cdr.detectChanges(); // Force view update
+        this.reloadTextsFromDb();
       });
+  }
+
+  reloadTextsFromDb() {
+    this.textService.getTexts().subscribe((texts) => {
+      this.allTexts = texts.content;
+      this.filteredTexts = texts.content;
+      this.textCount = texts.total;
+      this.filteredCount = texts.total;
+      this.childEmitter.emit(this.filteredTexts);
+      this.searchAfter = texts.searchAfter;
+      this.searchAfterEmitter.emit(this.searchAfter);
+
+      // console.log(texts);
+    });
   }
 
   loadNextPage(searchAfter: string | null) {
@@ -252,7 +266,6 @@ export class Header implements OnInit {
             const newTexts = result.content;
             this.allTexts = [...this.allTexts, ...newTexts];
             this.filteredTexts = this.allTexts;
-            this.textCount = result.total;
             this.filteredCount = result.total;
             this.childEmitter.emit(this.filteredTexts);
           },
@@ -267,7 +280,6 @@ export class Header implements OnInit {
           const newTexts = result.content;
           this.allTexts = [...this.allTexts, ...newTexts];
           this.filteredTexts = this.allTexts;
-          this.textCount = result.total;
           this.filteredCount = result.total;
           this.childEmitter.emit(this.filteredTexts);
         },

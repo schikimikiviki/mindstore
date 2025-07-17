@@ -26,6 +26,7 @@ export class AddText {
   displayError = false;
   @Input() availableTags: string[] = [];
   selectedTags: string[] = [];
+  errorMessage: string = '';
 
   postForm = new FormGroup({
     title: new FormControl(''),
@@ -43,6 +44,7 @@ export class AddText {
   ) {}
 
   ngOnInit() {
+    //this.errorMessage = ''; // falls vorher ein Fehler da war
     this.availableTags = this.data.availableTags;
   }
 
@@ -57,13 +59,15 @@ export class AddText {
       .addText(title, content_raw, content_html, tags, commandList)
       .subscribe({
         next: (response) => {
-          console.log('Post successful:', response);
+          // the response is always null here, because we return httpstatus.created
+          console.log('Post successful:');
           this.closePopup();
         },
         error: (err) => {
           console.error('Post error:', err);
           this.displayError = true;
-          this.cdr.detectChanges();
+          this.errorMessage = 'Text could not be created';
+          this.cdr.markForCheck();
         },
       });
   }

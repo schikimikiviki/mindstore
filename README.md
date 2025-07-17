@@ -41,7 +41,7 @@ http://localhost:5601
 1. Start the database and the opensearch services with docker using: 
 
 ```
-docker compose up opensearch postgres -d
+docker compose up opensearch postgres opensearch-dashboards opensearch-init -d
 ```
 
 2. In the backend, change properties to "localhost" in the application.properties.

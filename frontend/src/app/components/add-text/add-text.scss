@@ -60,3 +60,10 @@
   background-color: styles.$mediumBlue;
   color: white;
 }
+
+.errorMsg {
+  font-size: 12px;
+  background-color: styles.$juicyOrange;
+  border-radius: 20px;
+  padding: 5px;
+}

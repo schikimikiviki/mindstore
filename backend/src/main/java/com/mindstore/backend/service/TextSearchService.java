@@ -82,7 +82,9 @@ public class TextSearchService {
                     ? null
                     : hits.get(hits.size() - 1).sort().get(0).toString(); // Assuming sort on one field
 
-            return new SearchResultDto<>(results, total, page, size, nextSearchAfter);
+            boolean hasMore = hits.size() == size;
+
+            return new SearchResultDto<>(results, total, page, size, nextSearchAfter, hasMore);
 
 
         } catch (IOException e) {
@@ -170,7 +172,9 @@ public class TextSearchService {
                     ? null
                     : (hits.get(hits.size() - 1).sort().get(0));
 
-            return new SearchResultDto<>(docs, response.hits().total().value(), 0, size, nextSearchAfter);
+            boolean hasMore = hits.size() == size;
+
+            return new SearchResultDto<>(docs, response.hits().total().value(), 0, size, nextSearchAfter, hasMore);
 
         } catch (IOException e) {
             throw new RuntimeException("Failed to fetch indexed texts", e);
@@ -228,7 +232,9 @@ public class TextSearchService {
                     ? null
                     : hits.get(hits.size() - 1).sort().get(0);
 
-            return new SearchResultDto<>(docs, response.hits().total().value(), 0, size, nextSearchAfter);
+            boolean hasMore = hits.size() == size;
+
+            return new SearchResultDto<>(docs, response.hits().total().value(), 0, size, nextSearchAfter, hasMore);
 
 
         } catch (IOException e) {

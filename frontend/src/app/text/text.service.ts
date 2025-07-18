@@ -3,6 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Text } from './text.model';
 import { SearchResultDto } from '../searchResultDto/searchResultDto';
+import { LoggerService } from '../services/logger/logger.service';
 
 @Injectable({
   providedIn: 'root',
@@ -16,21 +17,27 @@ export class TextService {
   private autocompleteUrl =
     'http://localhost:8080/api/search/autocomplete?prefix=';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private logger: LoggerService) {}
 
   getAutocompletion(query: string): Observable<string[]> {
+    this.logger.log(
+      'Executing HTTP Request GET: ',
+      this.autocompleteUrl + query
+    );
     return this.http.get<string[]>(this.autocompleteUrl + query);
   }
 
   getTexts(searchAfter?: string): Observable<SearchResultDto<Text>> {
-    console.log('search after param: ', searchAfter);
     if (searchAfter) {
-      console.log('search after executing!');
+      this.logger.log(
+        'Executing HTTP Request GET: ',
+        this.baseUrl + '?searchAfter=' + searchAfter
+      );
       return this.http.get<SearchResultDto<Text>>(
         this.baseUrl + '?searchAfter=' + searchAfter
       );
     } else {
-      console.log('normal search executing!');
+      this.logger.log('Executing HTTP Request GET: ', this.baseUrl);
       return this.http.get<SearchResultDto<Text>>(this.baseUrl);
     }
   }
@@ -42,6 +49,7 @@ export class TextService {
     tags: string[],
     commands: string[]
   ) {
+    this.logger.log('Executing HTTP Request POST: ', this.addTextUrl);
     return this.http.post(
       this.addTextUrl,
       {
@@ -68,6 +76,11 @@ export class TextService {
       httpParams = httpParams.set('searchAfter', searchAfter);
     }
 
+    this.logger.log(
+      'Executing HTTP Request GET: ',
+      this.tagSearchUrl + httpParams
+    );
+
     return this.http.get<SearchResultDto<Text>>(this.tagSearchUrl, {
       params: httpParams,
     });
@@ -83,6 +96,9 @@ export class TextService {
       page: page.toString(),
       size: size.toString(),
     };
+
+    this.logger.log('Executing HTTP Request GET: ', this.searchUrl);
+
     return this.http.get<SearchResultDto<Text>>(this.searchUrl, {
       params,
       withCredentials: true,
@@ -90,6 +106,7 @@ export class TextService {
   }
 
   getHistory(): Observable<string[]> {
+    this.logger.log('Executing HTTP Request GET: ', this.historyUrl);
     return this.http.get<string[]>(this.historyUrl);
   }
 }

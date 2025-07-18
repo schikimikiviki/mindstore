@@ -39,7 +39,7 @@ export class FilterButton {
 
     //  handle afterClosed
     dialogRef.afterClosed().subscribe((result) => {
-      console.log('Dialog closed with:', result);
+      //console.log('Dialog closed with:', result);
       if (result === true) {
         this.cdr.detectChanges();
       }

@@ -23,6 +23,7 @@ export class ResultPage implements OnInit {
   loading = true;
   expandedTextId: number | null = null;
   searchAfter: string | null = null;
+  previousScrollY = 0;
 
   @Input() childTryingToPullData: Text[] = [];
   @Input() initialSearchAfter: string | null = null;
@@ -32,7 +33,7 @@ export class ResultPage implements OnInit {
 
   ngOnInit(): void {
     this.searchAfter = this.initialSearchAfter;
-    console.log('initial : ', this.initialSearchAfter);
+    // console.log('initial : ', this.initialSearchAfter);
     this.loading = this.childTryingToPullData.length == 0;
     console.log(this.childTryingToPullData);
 
@@ -78,13 +79,18 @@ export class ResultPage implements OnInit {
     const pageHeight =
       document.documentElement.scrollHeight || document.body.scrollHeight;
 
-    if (scrollY + visibleHeight >= pageHeight - 5 && !this.loading) {
-      this.loadNextPage();
+    const scrollingDown = scrollY > this.previousScrollY;
+    this.previousScrollY = scrollY;
+
+    const nearBottom = scrollY + visibleHeight >= pageHeight - 100;
+
+    if (scrollingDown && nearBottom && !this.loading) {
+      this.executeLoad();
     }
   };
 
-  loadNextPage() {
-    console.log('emitting to app.. ');
+  executeLoad() {
+    console.log('scroll triggered.. ');
     this.loadMore.emit();
   }
 }

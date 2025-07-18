@@ -4,4 +4,5 @@ export interface SearchResultDto<T> {
   page: number;
   size: number;
   searchAfter: string;
+  hasMore: boolean;
 }

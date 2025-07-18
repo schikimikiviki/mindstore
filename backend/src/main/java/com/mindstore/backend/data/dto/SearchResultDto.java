@@ -9,13 +9,23 @@ public class SearchResultDto<T> {
     private int page;
     private int size;
     private String searchAfter;
+    private boolean hasMore;
 
-    public SearchResultDto(List<T> content, long total, int page, int size, String searchAfter) {
+    public SearchResultDto(List<T> content, long total, int page, int size, String searchAfter, boolean hasMore) {
         this.content = content;
         this.total = total;
         this.page = page;
         this.size = size;
         this.searchAfter = searchAfter;
+        this.hasMore = hasMore;
+    }
+
+    public void setHasMore(boolean hasMore){
+        this.hasMore = hasMore;
+    }
+
+    public boolean getHasMore(){
+        return hasMore;
     }
 
     public String getSearchAfter(){

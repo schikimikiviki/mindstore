@@ -1,43 +1,52 @@
 <div class="result-area">
   <div *ngIf="!loading">
-    <div class="result-singular" *ngFor="let text of childTryingToPullData">
-      <div class="result-header">
-        <h2 (click)="expandSection(text)" class="clickable-title">
-          {{ text?.title }}
-        </h2>
-        <p class="result-tags" *ngFor="let tag of text.tags">
-          {{ tag.trim() }}
-        </p>
+    <div
+      class="result-singular"
+      *ngFor="let text of childTryingToPullData; let i = index"
+    >
+      <div class="mini-header">
+        <p>id #{{text.id}}</p>
+        <p>resultnum: {{i + 1}}</p>
       </div>
+      <div>
+        <div class="result-header">
+          <h2 (click)="expandSection(text)" class="clickable-title">
+            {{ text?.title }}
+          </h2>
+          <p class="result-tags" *ngFor="let tag of text.tags">
+            {{ tag.trim() }}
+          </p>
+        </div>
 
-      <!--  content always visible -->
-      <div [innerHTML]="text.content_html"></div>
+        <!--  content always visible -->
+        <div [innerHTML]="text.content_html"></div>
 
-      <!--  section only visible when expanded -->
-      <div *ngIf="expandedTextId === text.id" class="expanded-details">
-        <p id="command-header">Commands:</p>
-        <ul>
-          <li
-            (click)="selectCommand(command)"
-            *ngFor="let command of text.commandList; let i = index"
-            [id]="i"
-          >
-            {{ command.trim() }}
-            <img
+        <!--  section only visible when expanded -->
+        <div *ngIf="expandedTextId === text.id" class="expanded-details">
+          <p id="command-header">Commands:</p>
+          <ul>
+            <li
               (click)="selectCommand(command)"
-              src="assets/copy.png"
-              width="20"
-              height="20"
-              alt="copy"
-              id="copyImg"
-            />
-          </li>
-        </ul>
+              *ngFor="let command of text.commandList; let i = index"
+              [id]="i"
+            >
+              {{ command.trim() }}
+              <img
+                (click)="selectCommand(command)"
+                src="assets/copy.png"
+                width="20"
+                height="20"
+                alt="copy"
+                id="copyImg"
+              />
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
-  </div>
 
-  <div *ngIf="loading">
-    <p>Loading...</p>
+    <div *ngIf="loading">
+      <p>Loading...</p>
+    </div>
   </div>
 </div>

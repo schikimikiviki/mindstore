@@ -31,7 +31,7 @@ export class App {
   loadNextPage() {
     if (this.headerRef) {
       this.headerRef.loadNextPage(this.searchAfter);
-      console.log('app emitting to header');
+      // console.log('app emitting to header');
     }
   }
 }

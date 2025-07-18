@@ -43,6 +43,8 @@ export class Header implements OnInit {
   searchTerm: string = '';
   tagSearchActivated = false;
   autocompleteArray: string[] = [];
+  hasMore: boolean = true;
+  tagTexts: Text[] = []; // this state is used as second "allTexts" when working with tags
 
   @Output() childEmitter: EventEmitter<Text[]> = new EventEmitter<Text[]>();
   @Output() searchAfterEmitter = new EventEmitter<string>();
@@ -64,7 +66,7 @@ export class Header implements OnInit {
     });
 
     this.authService.checkLogin().subscribe((state) => {
-      console.log(state);
+      // console.log(state);
       this.loggedIn = state;
       this.cdr.markForCheck();
     });
@@ -73,11 +75,11 @@ export class Header implements OnInit {
       this.allTexts = texts.content;
       this.filteredTexts = texts.content;
       this.textCount = texts.total;
-      this.filteredCount = texts.total;
+      this.filteredCount = texts.size;
       this.childEmitter.emit(this.filteredTexts);
       this.searchAfter = texts.searchAfter;
       this.searchAfterEmitter.emit(this.searchAfter);
-
+      this.hasMore = texts.hasMore;
       // console.log(texts);
     });
 
@@ -96,21 +98,29 @@ export class Header implements OnInit {
           return;
         }
 
-        this.textService.searchTexts(term).subscribe({
-          next: (result) => {
-            this.filteredTexts = [...result.content];
-            this.filteredCount = result.total;
-            this.cdr.markForCheck();
-            this.childEmitter.emit(result.content);
-            this.loadSearchHistory();
-          },
-          error: (err) => {
-            console.error('Search error:', err);
-            this.filteredTexts = [];
-            this.filteredCount = 0;
-            this.cdr.markForCheck();
-          },
-        });
+        // wenn tag search activated ist, dann wollen wir nur innerhalb der Tag texte suchen!
+
+        if (this.tagSearchActivated) {
+          //TODO: implement this on the backend
+        } else {
+          this.textService.searchTexts(term).subscribe({
+            next: (result) => {
+              this.filteredTexts = [...result.content];
+              this.filteredCount = result.total;
+              this.cdr.markForCheck();
+              this.childEmitter.emit(result.content);
+              this.loadSearchHistory();
+              this.hasMore = result.hasMore;
+              this.searchAfter = result.searchAfter;
+            },
+            error: (err) => {
+              console.error('Search error:', err);
+              this.filteredTexts = [];
+              this.filteredCount = 0;
+              this.cdr.markForCheck();
+            },
+          });
+        }
 
         // also get the autocomplete results for this
 
@@ -178,7 +188,6 @@ export class Header implements OnInit {
     this.authService.logoutUser().subscribe({
       next: () => {
         console.log('User logged out!');
-
         this.loggedIn = false;
         this.cdr.detectChanges(); // Force view update
       },
@@ -188,20 +197,21 @@ export class Header implements OnInit {
     });
   }
 
+  // sends tags to header component to filter
   getTagsFromChild(tags: string[]) {
     console.log('Tags received:', tags);
-
     this.tagsSelected = tags;
     // die neuen Texte fetch &
     // jetzt hier wieder mit der Result Page reden
-
     this.textService.getTextsWithTags(tags).subscribe({
       next: (result) => {
-        this.filteredTexts = [...result.content];
+        this.tagTexts = result.content;
         this.filteredCount = result.total;
         this.cdr.markForCheck();
         this.childEmitter.emit(result.content);
         this.tagSearchActivated = true;
+        this.hasMore = result.hasMore;
+        this.searchAfter = result.searchAfter;
       },
       error: (err) => {
         console.error('Search error:', err);
@@ -220,14 +230,14 @@ export class Header implements OnInit {
       this.filteredCount = texts.total;
       this.childEmitter.emit(this.filteredTexts);
       this.tagSearchActivated = false;
+      this.hasMore = texts.hasMore;
+      this.searchAfter = texts.searchAfter;
     });
   }
 
   onClickPlus() {
     // open add text component
-
     console.log('Opening popup with tags: ', this.tags);
-
     this.dialogRef
       .open(AddText, { data: { availableTags: this.tags } })
       .afterClosed()
@@ -247,27 +257,42 @@ export class Header implements OnInit {
       this.childEmitter.emit(this.filteredTexts);
       this.searchAfter = texts.searchAfter;
       this.searchAfterEmitter.emit(this.searchAfter);
-
+      this.hasMore = texts.hasMore;
+      this.searchAfter = texts.searchAfter;
       // console.log(texts);
     });
   }
 
   loadNextPage(searchAfter: string | null) {
-    console.log('Header received the emit!', searchAfter);
+    // console.log('Header received the emit!', searchAfter);
+    console.log('Has more value: ', this.hasMore, searchAfter);
     if (!searchAfter) return;
+    if (this.hasMore === false) {
+      console.log('No more results to load.');
+      return;
+    }
 
     if (this.tagSearchActivated) {
       // when this is true, we want to load the next page but for the specific tag
+      console.log('Load more for tag page .. ');
 
       this.textService
         .getTextsWithTags(this.tagsSelected, searchAfter)
         .subscribe({
           next: (result) => {
             const newTexts = result.content;
-            this.allTexts = [...this.allTexts, ...newTexts];
-            this.filteredTexts = this.allTexts;
-            this.filteredCount = result.total;
-            this.childEmitter.emit(this.filteredTexts);
+            const combined = [...this.tagTexts, ...newTexts];
+            this.tagTexts = combined.filter(
+              // we need to filter out because otherwise there will be dublicate entries, due to fast scrolling ? idk
+              (text, index, self) =>
+                index === self.findIndex((t) => t.id === text.id)
+            );
+            this.filteredCount = this.tagTexts.length;
+            this.childEmitter.emit(this.tagTexts);
+            this.hasMore = result.hasMore;
+            this.searchAfter = result.searchAfter;
+
+            console.log(result);
           },
           error: (err) => {
             console.error('Load more error:', err);
@@ -275,6 +300,7 @@ export class Header implements OnInit {
         });
     } else {
       // this loads more content for a normal search
+      console.log('load more for normal search');
       this.textService.getTexts(searchAfter).subscribe({
         next: (result) => {
           const newTexts = result.content;
@@ -282,6 +308,8 @@ export class Header implements OnInit {
           this.filteredTexts = this.allTexts;
           this.filteredCount = result.total;
           this.childEmitter.emit(this.filteredTexts);
+          this.hasMore = result.hasMore;
+          this.searchAfter = result.searchAfter;
         },
         error: (err) => {
           console.error('Load more error:', err);

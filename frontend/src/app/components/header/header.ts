@@ -117,12 +117,12 @@ export class Header implements OnInit {
         this.textService.getAutocompletion(term).subscribe({
           next: (result) => {
             // only display if the result does not equal the searched term (otherwise its unnccessary)
-            if (result[0] != term) {
-              this.autocompleteArray = result;
-            }
+            this.autocompleteArray = result.filter(
+              (item) => item.toLowerCase() !== term.toLowerCase()
+            );
 
             this.cdr.markForCheck();
-            console.log('autocomplete', result);
+            console.log('autocomplete', result, term);
           },
           error: (err) => {
             console.error('autocomplete error:', err);

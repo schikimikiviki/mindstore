@@ -17,7 +17,21 @@
       <div *ngIf="expandedTextId === text.id" class="expanded-details">
         <p id="command-header">Commands:</p>
         <ul>
-          <li *ngFor="let command of text.commandList">{{ command.trim() }}</li>
+          <li
+            (click)="selectCommand(command)"
+            *ngFor="let command of text.commandList; let i = index"
+            [id]="i"
+          >
+            {{ command.trim() }}
+            <img
+              (click)="selectCommand(command)"
+              src="assets/copy.png"
+              width="20"
+              height="20"
+              alt="copy"
+              id="copyImg"
+            />
+          </li>
         </ul>
       </div>
     </div>

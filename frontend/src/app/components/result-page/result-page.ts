@@ -51,6 +51,11 @@ export class ResultPage implements OnInit {
     }
   }
 
+  selectCommand(command: string) {
+    // wir kopieren das in die Zwischenablage
+    navigator.clipboard.writeText(command);
+  }
+
   expandSection(text: Text) {
     if (this.expandedTextId === text.id) {
       this.expandedTextId = null; // collapse if already expanded

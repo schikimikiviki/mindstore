@@ -9,6 +9,7 @@ import { LoggerService } from '../services/logger/logger.service';
   providedIn: 'root',
 })
 export class TextService {
+  // urls that we fetch
   private baseUrl = 'http://localhost:8080/text-index/all';
   private searchUrl = 'http://localhost:8080/api/search';
   private historyUrl = 'http://localhost:8080/api/search/history';
@@ -17,7 +18,37 @@ export class TextService {
   private autocompleteUrl =
     'http://localhost:8080/api/search/autocomplete?prefix=';
 
+  // so soll das aussehen: http://localhost:8080/api/search/tag-search?tags=JAVA&query=documentation&page=0&size=10
+  private searchUrlForTags = 'http://localhost:8080/api/search/tag-search?';
+
   constructor(private http: HttpClient, private logger: LoggerService) {}
+
+  getTagSearch(
+    query: string,
+    tags: string[],
+    searchAfter?: string
+  ): Observable<SearchResultDto<Text>> {
+    let httpParams = new HttpParams();
+    tags.forEach((tag) => {
+      httpParams = httpParams.append('tags', tag);
+    });
+
+    if (searchAfter) {
+      httpParams = httpParams.set('searchAfter', searchAfter);
+    }
+
+    httpParams = httpParams.set('query', query);
+    httpParams = httpParams.set('page', 0);
+    httpParams = httpParams.set('size', 10);
+
+    this.logger.log(
+      'Executing HTTP Request GET: ',
+      this.searchUrlForTags + httpParams
+    );
+    return this.http.get<SearchResultDto<Text>>(this.searchUrlForTags, {
+      params: httpParams,
+    });
+  }
 
   getAutocompletion(query: string): Observable<string[]> {
     this.logger.log(

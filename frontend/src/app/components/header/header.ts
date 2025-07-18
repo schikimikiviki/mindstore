@@ -37,7 +37,8 @@ export class Header implements OnInit {
   loggedIn = false;
   hydrated = false;
   tags: string[] = [];
-  searchAfter: string | null = null;
+  searchAfter: string | undefined = undefined;
+  searchAfterTagged: string | undefined = undefined;
   tagsSelected: string[] = [];
   searchTerm$ = new Subject<string>(); // RxJS subject for search input
   searchTerm: string = '';
@@ -95,13 +96,31 @@ export class Header implements OnInit {
           this.cdr.markForCheck();
           this.childEmitter.emit(this.filteredTexts);
           this.autocompleteArray = [];
+          this.searchAfter = undefined;
+          this.searchAfterTagged = undefined;
           return;
         }
 
         // wenn tag search activated ist, dann wollen wir nur innerhalb der Tag texte suchen!
 
         if (this.tagSearchActivated) {
-          //TODO: implement this on the backend
+          this.textService.getTagSearch(term, this.tagsSelected).subscribe({
+            next: (result) => {
+              console.log(result);
+              const newTexts = result.content;
+              this.tagTexts = newTexts;
+              this.filteredCount = this.tagTexts.length;
+              this.childEmitter.emit(this.tagTexts);
+              this.hasMore = result.hasMore;
+              this.searchAfterTagged = result.searchAfter;
+            },
+            error: (err) => {
+              console.error('Search error:', err);
+              this.filteredTexts = [];
+              this.filteredCount = 0;
+              this.cdr.markForCheck();
+            },
+          });
         } else {
           this.textService.searchTexts(term).subscribe({
             next: (result) => {
@@ -132,7 +151,7 @@ export class Header implements OnInit {
             );
 
             this.cdr.markForCheck();
-            console.log('autocomplete', result, term);
+            //  console.log('autocomplete', result, term);
           },
           error: (err) => {
             console.error('autocomplete error:', err);
@@ -211,7 +230,7 @@ export class Header implements OnInit {
         this.childEmitter.emit(result.content);
         this.tagSearchActivated = true;
         this.hasMore = result.hasMore;
-        this.searchAfter = result.searchAfter;
+        this.searchAfterTagged = result.searchAfter;
       },
       error: (err) => {
         console.error('Search error:', err);
@@ -232,6 +251,7 @@ export class Header implements OnInit {
       this.tagSearchActivated = false;
       this.hasMore = texts.hasMore;
       this.searchAfter = texts.searchAfter;
+      this.searchAfterTagged = undefined; // reset damits beim nächsten mal wieder geht
     });
   }
 
@@ -277,7 +297,7 @@ export class Header implements OnInit {
       console.log('Load more for tag page .. ');
 
       this.textService
-        .getTextsWithTags(this.tagsSelected, searchAfter)
+        .getTextsWithTags(this.tagsSelected, this.searchAfterTagged)
         .subscribe({
           next: (result) => {
             const newTexts = result.content;
@@ -290,7 +310,7 @@ export class Header implements OnInit {
             this.filteredCount = this.tagTexts.length;
             this.childEmitter.emit(this.tagTexts);
             this.hasMore = result.hasMore;
-            this.searchAfter = result.searchAfter;
+            this.searchAfterTagged = result.searchAfter;
 
             console.log(result);
           },

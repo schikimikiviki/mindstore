@@ -56,6 +56,19 @@ public class SearchController {
         return textSearchService.search(query, page, size, searchAfter);
     }
 
+    @GetMapping("/tag-search")
+    public SearchResultDto<TextDocument> searchThroughTags(@RequestParam String query,
+                                                @RequestParam(defaultValue = "0") int page,
+                                                @RequestParam(defaultValue = "10") int size,
+                                                @RequestParam(defaultValue = "") String searchAfter, @RequestParam List<String> tags,
+                                                Principal principal) {
+
+        // diese Suche auch ins history service speichern
+        searchHistoryService.saveSearch(query.toString());
+
+        return textSearchService.searchThroughTaggedTexts(tags, query, page, size, searchAfter);
+    }
+
     /**
      *
      * @param prefix - string we are searching for, for example "do" will suggest "docker"

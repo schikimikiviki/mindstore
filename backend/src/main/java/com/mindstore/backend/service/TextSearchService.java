@@ -92,6 +92,76 @@ public class TextSearchService {
         }
     }
 
+    /**
+     *
+     * @param categories - the list of categories that we need to filter
+     * @param query - the user query
+     * @param page - page for result
+     * @param size - number of results
+     * @param searchAfter String for pagination
+     * @return list of searchResultDtos
+     */
+    public SearchResultDto<TextDocument> searchThroughTaggedTexts(
+            List<String> categories,
+            String query,
+            int page,
+            int size,
+            String searchAfter
+    ) {
+        try {
+            SearchResponse<TextDocument> response = client.search(s -> {
+                SearchRequest.Builder builder = s
+                        .index("text-index")
+                        .size(size)
+                        .sort(sort -> sort
+                                .field(f -> f
+                                        .field("createdAt")
+                                        .order(SortOrder.Desc)
+                                )
+                        )
+                        .query(q -> q
+                                .bool(b -> b
+                                        .must(m -> m.multiMatch(mm -> mm
+                                                        .query(query)
+                                                        .fields("title.autocomplete", "content_raw.autocomplete")
+                                                        .type(TextQueryType.BoolPrefix)
+                                                )
+                                        )
+                                        .must(m -> m.terms(t -> t
+                                                        .field("tags.keyword")
+                                                        .terms(tt -> tt.value(
+                                                                categories.stream()
+                                                                        .map(FieldValue::of)
+                                                                        .toList()
+                                                        ))
+                                                )
+                                        )
+                                )
+                        );
+
+                if (searchAfter != null && !searchAfter.isEmpty()) {
+                    builder.searchAfter(List.of(searchAfter));
+                }
+
+                return builder;
+            }, TextDocument.class);
+
+            List<Hit<TextDocument>> hits = response.hits().hits();
+            List<TextDocument> results = hits.stream()
+                    .map(Hit::source)
+                    .toList();
+
+            String nextSearchAfter = hits.isEmpty()
+                    ? null
+                    : hits.get(hits.size() - 1).sort().get(0).toString();
+
+            boolean hasMore = hits.size() == size;
+
+            return new SearchResultDto<>(results, response.hits().total().value(), page, size, nextSearchAfter, hasMore);
+        } catch (IOException e) {
+            throw new RuntimeException("Search failed", e);
+        }
+    }
 
     /**
      *

@@ -66,9 +66,8 @@ export class Header implements OnInit {
       this.tags = tags.sort();
     });
 
-    this.authService.checkLogin().subscribe((state) => {
-      // console.log(state);
-      this.loggedIn = state;
+    this.authService.loggedIn$.subscribe((isLoggedIn) => {
+      this.loggedIn = isLoggedIn;
       this.cdr.markForCheck();
     });
 
@@ -196,10 +195,10 @@ export class Header implements OnInit {
       .afterClosed()
       .subscribe((result) => {
         console.log('Dialog closed with:', result);
-        if (result === true) {
-          this.loggedIn = true;
-          this.cdr.detectChanges(); // Force view update
-        }
+        // if (result === true) {
+        //   this.loggedIn = true;
+        //   this.cdr.detectChanges(); // Force view update
+        // }
       });
   }
 
@@ -207,8 +206,8 @@ export class Header implements OnInit {
     this.authService.logoutUser().subscribe({
       next: () => {
         console.log('User logged out!');
-        this.loggedIn = false;
-        this.cdr.detectChanges(); // Force view update
+        // this.loggedIn = false;
+        // this.cdr.detectChanges(); // Force view update
       },
       error: (err) => {
         console.error('Logout error:', err);
@@ -336,5 +335,22 @@ export class Header implements OnInit {
         },
       });
     }
+  }
+
+  reFetchTexts() {
+    // we just deleted a text, so just re-fetch
+
+    console.log('reloading .. ');
+    this.textService.getTexts().subscribe((texts) => {
+      this.allTexts = texts.content;
+      this.filteredTexts = texts.content;
+      this.textCount = texts.total;
+      this.filteredCount = texts.size;
+      this.childEmitter.emit(this.filteredTexts);
+      this.searchAfter = texts.searchAfter;
+      this.searchAfterEmitter.emit(this.searchAfter);
+      this.hasMore = texts.hasMore;
+      this.cdr.detectChanges();
+    });
   }
 }

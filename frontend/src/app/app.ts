@@ -21,7 +21,7 @@ export class App {
   @ViewChild(Header) headerRef!: Header;
 
   getDataFromChild(e: Text[]) {
-    this.textArray = e;
+    this.textArray = [...e];
   }
 
   getSearchAfterInitial(e: string) {
@@ -32,6 +32,12 @@ export class App {
     if (this.headerRef) {
       this.headerRef.loadNextPage(this.searchAfter);
       // console.log('app emitting to header');
+    }
+  }
+
+  refreshAfterDeletion() {
+    if (this.headerRef) {
+      this.headerRef.reFetchTexts();
     }
   }
 }

@@ -32,6 +32,16 @@ export class FilterMenu {
     });
   }
 
+  ngAfterViewInit() {
+    // load the tags from the localstore and display them
+
+    const savedData = JSON.parse(localStorage.getItem('selectedTags') || '[]');
+    if (savedData.length > 0) {
+      this.selectedTags = savedData;
+      this.cdr.detectChanges();
+    }
+  }
+
   toggleTag(tag: string) {
     const index = this.selectedTags.indexOf(tag);
     if (index === -1) {
@@ -41,6 +51,9 @@ export class FilterMenu {
     }
 
     this.childEmitter.emit(this.selectedTags);
+
+    // save this to localstorage as well, so that in the next opening, we can show that they are selected
+    localStorage.setItem('selectedTags', JSON.stringify(this.selectedTags));
   }
 
   isTagSelected(tag: string): boolean {
@@ -55,5 +68,6 @@ export class FilterMenu {
     // display all search results
     this.onResetBtn.emit(true);
     this.dialogRef.close();
+    localStorage.removeItem('selectedTags');
   }
 }

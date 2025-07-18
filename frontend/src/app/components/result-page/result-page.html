@@ -16,6 +16,15 @@
           <p class="result-tags" *ngFor="let tag of text.tags">
             {{ tag.trim() }}
           </p>
+          <div *ngIf="loggedIn$ | async">
+            <img
+              (click)="deleteText(text.id)"
+              src="assets/bin.png"
+              width="20"
+              height="20"
+              alt="delete"
+            />
+          </div>
         </div>
 
         <!--  content always visible -->

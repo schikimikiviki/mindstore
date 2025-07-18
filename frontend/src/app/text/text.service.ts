@@ -20,6 +20,7 @@ export class TextService {
 
   // so soll das aussehen: http://localhost:8080/api/search/tag-search?tags=JAVA&query=documentation&page=0&size=10
   private searchUrlForTags = 'http://localhost:8080/api/search/tag-search?';
+  private deleteUrl = 'http://localhost:8080/text-index/delete?id=';
 
   constructor(private http: HttpClient, private logger: LoggerService) {}
 
@@ -139,5 +140,12 @@ export class TextService {
   getHistory(): Observable<string[]> {
     this.logger.log('Executing HTTP Request GET: ', this.historyUrl);
     return this.http.get<string[]>(this.historyUrl);
+  }
+
+  deleteText(id: number): Observable<any> {
+    this.logger.log('Executing HTTP Request DELETE: ', this.deleteUrl + id);
+    return this.http.delete<any>(this.deleteUrl + id, {
+      withCredentials: true,
+    });
   }
 }

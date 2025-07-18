@@ -95,6 +95,7 @@
   <app-result-page
     [childTryingToPullData]="textArray"
     (loadMore)="loadNextPage()"
+    (refreshFrontend)="refreshAfterDeletion()"
     [initialSearchAfter]="searchAfter"
   ></app-result-page>
 </main>

@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import jakarta.servlet.http.Cookie;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -89,6 +90,20 @@ public class OpenSearchController {
         response.addCookie(cookie);
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    /**
+     *
+     * @param id - id of the document we want to delete
+     * @return Status OK when successfull
+     * @throws IOException when deletion fails
+     */
+    @DeleteMapping("/delete")
+    public ResponseEntity<Object> deleteTextDocument(
+            @RequestParam Integer id) throws IOException {
+
+        textIndexService.delete(id);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
 

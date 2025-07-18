@@ -33,26 +33,31 @@ export class Popup {
     const password = this.applyForm.value.password ?? '';
 
     this.authService.loginUser(email, password).subscribe({
-      next: (response) => {
-        // console.log('Login successful:', response);
-
-        const expiresAt = Date.now() + response.expiresIn * 1000;
-        localStorage.setItem('token', response.token);
-        localStorage.setItem('token_expiry', expiresAt.toString());
-
-        // start the timer to auto-logout
-        this.authService.startTokenExpiryTimer(response.expiresIn);
-
-        // close window
-        this.closePopup();
-      },
-      error: (err) => {
-        console.error('Login error:', err);
-        // display error message
-        this.displayError = true;
-        this.cdr.detectChanges();
-      },
+      next: () => this.dialogRef.close(true),
+      error: () => this.dialogRef.close(false),
     });
+
+    // this.authService.loginUser(email, password).subscribe({
+    //   next: (response) => {
+    //     // console.log('Login successful:', response);
+
+    //     const expiresAt = Date.now() + response.expiresIn * 1000;
+    //     localStorage.setItem('token', response.token);
+    //     localStorage.setItem('token_expiry', expiresAt.toString());
+
+    //     // start the timer to auto-logout
+    //     this.authService.startTokenExpiryTimer(response.expiresIn);
+
+    //     // close window
+    //     this.closePopup();
+    //   },
+    //   error: (err) => {
+    //     console.error('Login error:', err);
+    //     // display error message
+    //     this.displayError = true;
+    //     this.cdr.detectChanges();
+    //   },
+    // });
   }
 
   closePopup() {

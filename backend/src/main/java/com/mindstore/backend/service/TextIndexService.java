@@ -1,10 +1,7 @@
 package com.mindstore.backend.service;
 
-import com.mindstore.backend.data.Category;
 import com.mindstore.backend.data.TextDocument;
-
 import java.io.IOException;
-import java.util.List;
 
 public interface TextIndexService {
 
@@ -29,5 +26,10 @@ public interface TextIndexService {
      */
     void deleteAll() throws IOException;
 
-
+    /**
+     *
+     * @param id - the textDocument id to delete
+     * @throws IOException when deletion fails
+     */
+    void delete(Integer id) throws IOException;
 }

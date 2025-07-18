@@ -75,6 +75,20 @@ public class TextIndexServiceImpl implements TextIndexService{
         }
     }
 
+    public void delete( Integer id) throws IOException {
+
+        try {
+            client.delete(d -> d
+                    .index("text-index")
+                    .id(String.valueOf(id))
+            );
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to delete document with id " + id, e);
+        }
+    }
+
+
+
 
 
 }

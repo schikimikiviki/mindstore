@@ -11,6 +11,11 @@ import {
 import { Text } from '../../text/text.model';
 import { CommonModule } from '@angular/common';
 import { isPlatformBrowser } from '@angular/common';
+import { AuthService } from '../../services/auth/auth.service';
+import { ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
+import { TextService } from '../../text/text.service';
+import { NgZone } from '@angular/core';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-result-page',
@@ -18,18 +23,30 @@ import { isPlatformBrowser } from '@angular/common';
   styleUrl: './result-page.scss',
   standalone: true,
   imports: [CommonModule],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ResultPage implements OnInit {
   loading = true;
   expandedTextId: number | null = null;
   searchAfter: string | null = null;
   previousScrollY = 0;
+  loggedIn = false;
+  loggedIn$: Observable<boolean>;
 
   @Input() childTryingToPullData: Text[] = [];
   @Input() initialSearchAfter: string | null = null;
   @Output() loadMore = new EventEmitter<void>();
+  @Output() refreshFrontend = new EventEmitter<void>();
 
-  constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
+  constructor(
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private authService: AuthService,
+    private cdr: ChangeDetectorRef,
+    private textService: TextService,
+    private ngZone: NgZone
+  ) {
+    this.loggedIn$ = this.authService.loggedIn$;
+  }
 
   ngOnInit(): void {
     this.searchAfter = this.initialSearchAfter;
@@ -49,6 +66,8 @@ export class ResultPage implements OnInit {
       changes['childTryingToPullData'].currentValue.length > 0
     ) {
       this.loading = false;
+      console.log('Updated text array received:', this.childTryingToPullData);
+      this.cdr.markForCheck();
     }
   }
 
@@ -92,5 +111,15 @@ export class ResultPage implements OnInit {
   executeLoad() {
     console.log('scroll triggered.. ');
     this.loadMore.emit();
+  }
+
+  deleteText(id: number) {
+    console.log('deleting text with number: ', id);
+
+    this.textService.deleteText(id).subscribe((state) => {
+      setTimeout(() => {
+        this.refreshFrontend.emit();
+      }, 1000);
+    });
   }
 }

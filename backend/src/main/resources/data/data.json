@@ -222,7 +222,7 @@
     "content_raw": "You want to connect to a PostgreSQL database.",
     "content_html": "<u>Example</u>: You want to connect to a PostgreSQL database.",
     "tags": ["POSTGRES"],
-    "commandList": ["psql -U username -d dbname"]
+    "commandList": ["psql -U username -d dbname", "sudo -u postgres psql"]
   },
   {
     "title": "List all databases",
@@ -522,5 +522,35 @@
     "content_html": "<u>Example</u>: Something is off and you need to check the files from inside a container",
     "tags": ["DOCKER", "DEPLOYMENT"],
     "commandList": ["docker exec -it my_frontend sh"]
+  },
+  {
+    "title": "Add an SSL certificate when you already issued one for the domain",
+    "content_raw": "You are setting up a subdomain and the domain of that subdomain alreday has an SSL certificate, so you need to add a new one for both without replacing the old one. ",
+    "content_html": "<u>Example</u>: You are setting up a subdomain and the domain of that subdomain alreday has an SSL certificate, so you need to add a new one for both without replacing the old one.",
+    "tags": ["DEPLOYMENT", "CERTBOT"],
+    "commandList": ["sudo certbot --apache -d vbdev.at -d mindstore.vbdev.at"]
+  },
+  {
+    "title": "Set up an SSH tunnel",
+    "content_raw": "You want to connect to a remote database, but also use a program locally to view it, like DBeaver. You need to open up a ssh tunnel.",
+    "content_html": "<u>Example</u>: You want to connect to a remote database, but also use a program locally to view it, like DBeaver. You need to open up a ssh tunnel.",
+    "tags": ["SSH", "DATABASES"],
+    "commandList": ["ssh -L 5432:localhost:5432 -N -f -l root 91.91.91.91", "ssh -L [local_port]:[remote_host]:[remote_port] -N -f -l [user] [ipadress]"]
+  },
+  {
+    "title": "Set up an SSH tunnel when using a keyfile ",
+    "content_raw": "You want to connect to a remote database, but also use a program locally to view it, like DBeaver. You need to open up a ssh tunnel. You use a keyfile to connect to the server.",
+    "content_html": "<u>Example</u>: You want to connect to a remote database, but also use a program locally to view it, like DBeaver. You need to open up a ssh tunnel. You use a keyfile to connect to the server.",
+    "tags": ["SSH", "DATABASES"],
+    "commandList": ["ssh -i ~/.ssh/testserver/vbzdyk_id_rsa -L 54321:localhost:54321 -N -f -l vbzdyk 49.13.156.140", "ssh -L [local_port]:[remote_host]:[remote_port] -N -f -l [user] [ipadress]"]
+  },
+  {
+    "title": "Enter a database in a docker container",
+    "content_raw": "You want to check the contents of a database that was started with a docker-compose file. ",
+    "content_html": "<u>Example</u>: You want to check the contents of a database that was started with a docker-compose file. ",
+    "tags": ["DOCKER", "DATABASES"],
+    "commandList": ["docker exec -it my_postgres psql -U vikusia -d mindstore"]
   }
+
+
 ]

@@ -58,6 +58,6 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
 
 
         // redirect to frontend
-        response.sendRedirect("http://localhost:4200/");
+        response.sendRedirect("https://mindstore.vbdev.at");
     }
 }

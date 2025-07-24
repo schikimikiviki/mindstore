@@ -18,5 +18,6 @@ public enum Category {
     REACT,
     ANGULAR,
     PROGRAMMING_GENERAL,
-    PYTHON
+    PYTHON, 
+    CERTBOT
 }

@@ -16,7 +16,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Date;
@@ -51,7 +50,7 @@ public class Initializer implements CommandLineRunner {
     public void run(String... args) throws Exception {
         try {
 
-            textIndexService.deleteAll();
+           // textIndexService.deleteAll();
             Thread.sleep(2000); // Simulate delay
 
             // Load JSON data

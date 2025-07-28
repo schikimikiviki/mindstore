@@ -20,6 +20,8 @@ services:
       retries: 12
     networks:
       - backend
+    volumes:
+      - opensearch_data:/usr/share/opensearch/data
 
   postgres:
     image: postgres:16
@@ -107,8 +109,31 @@ services:
     networks:
       - backend
 
+  manifoldcf:
+    image: apache/manifoldcf
+    container_name: manifoldcf
+    ports:
+      - "8345:8345"   # UI port (MCF Crawler UI)
+      - "8341:8341"   # API or Agent communication
+    depends_on:
+      opensearch:
+        condition: service_healthy
+    environment:
+      - CATALINA_OPTS=-Xms512m -Xmx512m
+    volumes:
+      - manifoldcf_data:/opt/mcf/mcf_home 
+    networks:
+      - backend
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8340/mcf-crawler-ui/"]
+      interval: 15s
+      timeout: 10s
+      retries: 10
+
 volumes:
   pgdata:
+  opensearch_data:
+  manifoldcf_data: 
 
 networks:
   backend:

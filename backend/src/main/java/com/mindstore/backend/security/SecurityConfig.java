@@ -71,13 +71,19 @@ public class SecurityConfig {
                         .requestMatchers("/auth/login").permitAll()
                         .requestMatchers("/auth/logout").permitAll()
                         .requestMatchers( "/oauth2/**").permitAll()
+                        .requestMatchers( "/").permitAll()
+                        .requestMatchers(
+                                "/", "/index.html", "/assets/**", "/favicon.ico", "/static/**"
+                        ).permitAll()
                         .requestMatchers("/auth/check").authenticated()
 
                         .requestMatchers("/texts/all").permitAll()
                         .requestMatchers("/text-index/all").permitAll()
                         .requestMatchers("/text-index/all/**").permitAll()
                         .requestMatchers("/api/search").permitAll()
+                        .requestMatchers("/api/search/tags").permitAll()
                         .requestMatchers("/api/search/**").permitAll()
+                        .requestMatchers("/api/search/history").permitAll()
 
                         .requestMatchers("/users/recent-users").permitAll()
 
@@ -109,7 +115,7 @@ public class SecurityConfig {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200"));
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200", "https://mindstore.vbdev.at"));
         configuration.setAllowedMethods(Arrays.asList("GET","POST","PUT", "PATCH","DELETE","OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.setAllowCredentials(true);

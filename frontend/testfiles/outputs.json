@@ -1,0 +1,63 @@
+{
+  "outputconnection": {
+    "_children_": [
+      { "_type_": "isnew", "_value_": "false" },
+      { "_type_": "name", "_value_": "test" },
+      {
+        "_type_": "class_name",
+        "_value_": "org.apache.manifoldcf.agents.output.elasticsearch.ElasticSearchConnector"
+      },
+      { "_type_": "max_connections", "_value_": "10" },
+      { "_type_": "description", "_value_": "" },
+      {
+        "_type_": "configuration",
+        "_PARAMETER_": [
+          {
+            "_value_": "http://opensearch:9200/",
+            "_attribute_name": "SERVERLOCATION"
+          },
+          { "_value_": "admin", "_attribute_name": "USERNAME" },
+          {
+            "_value_": "viVB5rjONZ+3NQ8120TKkFh8jTBpp9h0N1I7BnGCDSU=",
+            "_attribute_name": "PASSWORD"
+          },
+          {
+            "_value_": "/u3+7QAAAAIAAAAAV768J2KiHXD/8hjdWWgBH/5COmk=",
+            "_attribute_name": "SERVERKEYSTORE"
+          },
+          { "_value_": "testindex", "_attribute_name": "INDEXNAME" },
+          { "_value_": "_doc", "_attribute_name": "INDEXTYPE" },
+          { "_value_": "", "_attribute_name": "PIPELINENAME" },
+          { "_value_": "content", "_attribute_name": "CONTENTATTRIBUTENAME" },
+          { "_value_": "url", "_attribute_name": "URIATTRIBUTENAME" },
+          {
+            "_value_": "created",
+            "_attribute_name": "CREATEDDATEATTRIBUTENAME"
+          },
+          {
+            "_value_": "last-modified",
+            "_attribute_name": "MODIFIEDDATEATTRIBUTENAME"
+          },
+          {
+            "_value_": "indexed",
+            "_attribute_name": "INDEXINGDATEATTRIBUTENAME"
+          },
+          {
+            "_value_": "mime-type",
+            "_attribute_name": "MIMETYPEATTRIBUTENAME"
+          },
+          {
+            "_value_": "900000",
+            "_attribute_name": "ELASTICSEARCH_SOCKET_TIMEOUT"
+          },
+          {
+            "_value_": "60000",
+            "_attribute_name": "ELASTICSEARCH_CONNECTION_TIMEOUT"
+          },
+          { "_value_": "false", "_attribute_name": "USEINGESTATTACHMENT" },
+          { "_value_": "false", "_attribute_name": "USEMAPPERATTACHMENTS" }
+        ]
+      }
+    ]
+  }
+}

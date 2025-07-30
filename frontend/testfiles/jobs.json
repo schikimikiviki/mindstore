@@ -1,0 +1,133 @@
+{
+  "job": [
+    {
+      "_children_": [
+        { "_type_": "id", "_value_": "1753813748961" },
+        { "_type_": "description", "_value_": "crawl" },
+        { "_type_": "repository_connection", "_value_": "repo" },
+        {
+          "_type_": "document_specification",
+          "_children_": [
+            { "_type_": "seeds", "_value_": "http://example.com/" },
+            { "_type_": "includes", "_value_": ".*" },
+            { "_type_": "includesindex", "_value_": ".*" },
+            {
+              "_type_": "limittoseeds",
+              "_value_": "",
+              "_attribute_value": "true"
+            },
+            { "_type_": "excludes", "_value_": "" },
+            { "_type_": "excludesindex", "_value_": "" },
+            { "_type_": "excludescontentindex", "_value_": "" }
+          ]
+        },
+        {
+          "_type_": "pipelinestage",
+          "_children_": [
+            { "_type_": "stage_id", "_value_": "0" },
+            { "_type_": "stage_isoutput", "_value_": "true" },
+            { "_type_": "stage_connectionname", "_value_": "output" },
+            { "_type_": "stage_specification" }
+          ]
+        },
+        { "_type_": "start_mode", "_value_": "manual" },
+        { "_type_": "run_mode", "_value_": "scan once" },
+        { "_type_": "hopcount_mode", "_value_": "accurate" },
+        { "_type_": "priority", "_value_": "5" },
+        { "_type_": "recrawl_interval", "_value_": "86400000" },
+        { "_type_": "max_recrawl_interval", "_value_": "infinite" },
+        { "_type_": "expiration_interval", "_value_": "infinite" },
+        { "_type_": "reseed_interval", "_value_": "3600000" }
+      ]
+    },
+    {
+      "_children_": [
+        { "_type_": "id", "_value_": "1753872329047" },
+        { "_type_": "description", "_value_": "crawl tldr pages" },
+        { "_type_": "repository_connection", "_value_": "repo" },
+        {
+          "_type_": "document_specification",
+          "_children_": [
+            {
+              "_type_": "seeds",
+              "_value_": "http://tldr.sh/\r\nhttp://devhints.io\r\nhttp://explainshell.com\r\nhttp://linuxize.com\r\nhttp://ss64.com\r\nhttp://www.commandlinefu.com"
+            },
+            { "_type_": "includes", "_value_": ".*" },
+            { "_type_": "includesindex", "_value_": ".*" },
+            {
+              "_type_": "limittoseeds",
+              "_value_": "",
+              "_attribute_value": "false"
+            },
+            { "_type_": "excludes", "_value_": "" },
+            { "_type_": "excludesindex", "_value_": "" },
+            { "_type_": "excludescontentindex", "_value_": "" }
+          ]
+        },
+        {
+          "_type_": "pipelinestage",
+          "_children_": [
+            { "_type_": "stage_id", "_value_": "0" },
+            { "_type_": "stage_isoutput", "_value_": "true" },
+            {
+              "_type_": "stage_connectionname",
+              "_value_": "output for new index"
+            },
+            { "_type_": "stage_specification" }
+          ]
+        },
+        { "_type_": "start_mode", "_value_": "manual" },
+        { "_type_": "run_mode", "_value_": "scan once" },
+        { "_type_": "hopcount_mode", "_value_": "accurate" },
+        { "_type_": "priority", "_value_": "5" },
+        { "_type_": "recrawl_interval", "_value_": "86400000" },
+        { "_type_": "max_recrawl_interval", "_value_": "infinite" },
+        { "_type_": "expiration_interval", "_value_": "infinite" },
+        { "_type_": "reseed_interval", "_value_": "3600000" }
+      ]
+    },
+    {
+      "_children_": [
+        { "_type_": "id", "_value_": "1753868537799" },
+        { "_type_": "description", "_value_": "stackoverflow" },
+        { "_type_": "repository_connection", "_value_": "repo" },
+        {
+          "_type_": "document_specification",
+          "_children_": [
+            {
+              "_type_": "seeds",
+              "_value_": "http://stackoverflow.com/questions/tagged/java"
+            },
+            { "_type_": "includes", "_value_": ".*" },
+            { "_type_": "includesindex", "_value_": ".*" },
+            {
+              "_type_": "limittoseeds",
+              "_value_": "",
+              "_attribute_value": "true"
+            },
+            { "_type_": "excludes", "_value_": "" },
+            { "_type_": "excludesindex", "_value_": "" },
+            { "_type_": "excludescontentindex", "_value_": "" }
+          ]
+        },
+        {
+          "_type_": "pipelinestage",
+          "_children_": [
+            { "_type_": "stage_id", "_value_": "0" },
+            { "_type_": "stage_isoutput", "_value_": "true" },
+            { "_type_": "stage_connectionname", "_value_": "output" },
+            { "_type_": "stage_specification" }
+          ]
+        },
+        { "_type_": "start_mode", "_value_": "manual" },
+        { "_type_": "run_mode", "_value_": "scan once" },
+        { "_type_": "hopcount_mode", "_value_": "accurate" },
+        { "_type_": "priority", "_value_": "5" },
+        { "_type_": "recrawl_interval", "_value_": "86400000" },
+        { "_type_": "max_recrawl_interval", "_value_": "infinite" },
+        { "_type_": "expiration_interval", "_value_": "infinite" },
+        { "_type_": "reseed_interval", "_value_": "3600000" }
+      ]
+    }
+  ]
+}

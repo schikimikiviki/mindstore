@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.security.Principal;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -110,6 +111,66 @@ public class SearchController {
     @GetMapping("/tags")
     public Category[] getTagList() {
         return textSearchService.findTags();
+    }
+
+
+    /**
+     * Searches through all available {@code TextDocument}s based on the query parameter.
+     * Results are paginated and returned in a {@code SearchResultDto}.
+
+     * Additionally, the query is saved to the search history.
+     *
+     * @param query      the search term entered by the user
+     * @param page       the zero-based page index for pagination (default is 0)
+     * @param size       the number of items per page (default is 10)
+     * @param principal  the currently authenticated user (used for audit or filtering if needed)
+     * @param dateFrom   the date we are querying from
+     * @param dateTo     the date we are querying to
+     *
+     * @return a {@code SearchResultDto} containing the paginated list of matching {@code TextDocument}s
+     */
+
+    @GetMapping("/time")
+    public SearchResultDto<TextDocument> searchThroughTime(@RequestParam String query,
+                                                           @RequestParam(defaultValue = "0") int page,
+                                                           @RequestParam(defaultValue = "10") int size,
+                                                           @RequestParam(defaultValue = "") String searchAfter,
+                                                           @RequestParam(required = false)String dateFrom,
+                                                           @RequestParam(required = false)String dateTo,
+                                                           Principal principal) {
+
+        // wenn wir eine Search machen, soll das auch als History abgespeichert werden
+        searchHistoryService.saveSearch(query.toString());
+
+        return textSearchService.searchWithTimeSpan(query, page, size, searchAfter, dateFrom, dateTo);
+    }
+
+
+    /**
+     * Searches through all available {@code TextDocument}s based on the query parameter.
+     * Results are paginated and returned in a {@code SearchResultDto}.
+
+     * Additionally, the query is saved to the search history.
+     *
+     * @param command      the search term entered by the user
+     * @param page       the zero-based page index for pagination (default is 0)
+     * @param size       the number of items per page (default is 10)
+     * @param principal  the currently authenticated user (used for audit or filtering if needed)
+     *
+     * @return a {@code SearchResultDto} containing the paginated list of matching {@code TextDocument}s
+     */
+
+    @GetMapping("/command-search")
+    public SearchResultDto<TextDocument> searchCommandList(@RequestParam String command,
+                                                           @RequestParam(defaultValue = "0") int page,
+                                                           @RequestParam(defaultValue = "10") int size,
+                                                           @RequestParam(defaultValue = "") String searchAfter,
+                                                           Principal principal) {
+
+        // wenn wir eine Search machen, soll das auch als History abgespeichert werden
+        searchHistoryService.saveSearch(command.toString());
+
+        return textSearchService.searchForCommand(command, page, size, searchAfter);
     }
 
 }

@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -311,4 +312,134 @@ public class TextSearchService {
             throw new RuntimeException("Failed to fetch all indexed texts", e);
         }
     }
-}
+
+    /**
+     *
+     * @param query the string we are searching for
+     * @param page param used for pagination, page number
+     * @param size defines how many results are returned
+     * @param from defines the from date for the time span
+     * @param to defines the to date for the time span
+
+     * function: search the available TextDocuments for a specific string
+     *
+     * @return a SearchResultDto with TextDocuments that match the query, filter out the search results from the time span
+     */
+    public SearchResultDto<TextDocument> searchWithTimeSpan(String query, int page, int size, String searchAfter, String from, String to) {
+        try {
+            SearchResponse<TextDocument> response = client.search(s -> {
+                SearchRequest.Builder builder = s
+                        .index("text-index")
+                        .size(size)
+                        .sort(sort -> sort
+                                .field(f -> f
+                                        .field("createdAt")
+                                        .order(SortOrder.Desc)
+                                )
+                        )
+                        .query(q -> q
+                                .bool(b -> b
+                                        .must(m -> m.multiMatch(mm -> mm
+                                                        .query(query)
+                                                        .fields("title.autocomplete", "content_raw.autocomplete")
+                                                        .type(TextQueryType.BoolPrefix)
+                                                )
+                                        ).filter(f -> f.range(r -> r
+                                                .field("createdAt")
+                                                .gte(JsonData.of(from)) // we use a unix timestamp here
+                                                .lte(JsonData.of(to))
+                                        ))
+                                )
+                        );
+
+                // Apply search_after if provided
+                if (searchAfter != null && !searchAfter.isEmpty()) {
+                    builder.searchAfter(List.of(searchAfter));
+                }
+
+                return builder;
+            }, TextDocument.class);
+
+            List<Hit<TextDocument>> hits = response.hits().hits();
+
+            List<TextDocument> results = hits.stream()
+                    .map(Hit::source)
+                    .collect(Collectors.toList());
+
+            long total = response.hits().total().value();
+
+            // Extract the sort value from the last hit for next request
+            String nextSearchAfter = hits.isEmpty()
+                    ? null
+                    : hits.get(hits.size() - 1).sort().get(0).toString(); // Assuming sort on one field
+
+            boolean hasMore = hits.size() == size;
+
+            return new SearchResultDto<>(results, total, page, size, nextSearchAfter, hasMore);
+
+
+        } catch (IOException e) {
+            throw new RuntimeException("Search failed", e);
+        }
+    }
+
+    /**
+     *
+     * @param command the string we are searching for
+     * @param page param used for pagination, page number
+     * @param size defines how many results are returned
+
+     * function: search the available TextDocuments for a specific string
+     *
+     * @return a SearchResultDto with TextDocuments that match the query, filter out the search results from the time span
+     */
+    public SearchResultDto<TextDocument> searchForCommand(String command, int page, int size, String searchAfter) {
+        try {
+            SearchResponse<TextDocument> response = client.search(s -> {
+                SearchRequest.Builder builder = s
+                        .index("text-index")
+                        .size(size)
+                        .sort(sort -> sort
+                                .field(f -> f
+                                        .field("createdAt")
+                                        .order(SortOrder.Desc)
+                                )
+                        )
+                        .query(q -> q
+                                .multiMatch(mm -> mm
+                                        .query(command)
+                                        .fields("commandList")
+                                        .type(TextQueryType.BoolPrefix)
+                                )
+                        );
+
+                // Apply search_after if provided
+                if (searchAfter != null && !searchAfter.isEmpty()) {
+                    builder.searchAfter(List.of(searchAfter));
+                }
+
+                return builder;
+            }, TextDocument.class);
+
+            List<Hit<TextDocument>> hits = response.hits().hits();
+
+            List<TextDocument> results = hits.stream()
+                    .map(Hit::source)
+                    .collect(Collectors.toList());
+
+            long total = response.hits().total().value();
+
+            // Extract the sort value from the last hit for next request
+            String nextSearchAfter = hits.isEmpty()
+                    ? null
+                    : hits.get(hits.size() - 1).sort().get(0).toString(); // Assuming sort on one field
+
+            boolean hasMore = hits.size() == size;
+
+            return new SearchResultDto<>(results, total, page, size, nextSearchAfter, hasMore);
+
+
+        } catch (IOException e) {
+            throw new RuntimeException("Search failed", e);
+        }
+}}

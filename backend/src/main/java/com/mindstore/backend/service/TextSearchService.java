@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mindstore.backend.data.Category;
 import com.mindstore.backend.data.TextDocument;
+import com.mindstore.backend.data.dto.SearchHitDto;
 import com.mindstore.backend.data.dto.SearchResultDto;
 import org.opensearch.client.json.JsonData;
 import org.opensearch.client.opensearch.OpenSearchClient;
@@ -12,14 +13,12 @@ import org.opensearch.client.opensearch._types.SortOrder;
 import org.opensearch.client.opensearch._types.query_dsl.TextQueryType;
 import org.opensearch.client.opensearch.core.SearchRequest;
 import org.opensearch.client.opensearch.core.SearchResponse;
+import org.opensearch.client.opensearch.core.search.HighlightField;
 import org.opensearch.client.opensearch.core.search.Hit;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -442,4 +441,83 @@ public class TextSearchService {
         } catch (IOException e) {
             throw new RuntimeException("Search failed", e);
         }
-}}
+}
+
+
+    /**
+     *
+     * @param query the string we are searching for
+     * @param page param used for pagination, page number
+     * @param size defines how many results are returned
+
+     * function: search the available TextDocuments for a specific string
+     *
+     * @return a SearchResultDto with TextDocuments that match the query, highlighted search results
+     */
+    public SearchResultDto<SearchHitDto<TextDocument>>  searchHighlighted(String query, int page, int size, String searchAfter) {
+        try {
+            SearchResponse<TextDocument> response = client.search(s -> {
+                SearchRequest.Builder builder = s
+                        .index("text-index")
+                        .size(size)
+                        .sort(sort -> sort
+                                .field(f -> f
+                                        .field("createdAt")
+                                        .order(SortOrder.Desc)
+                                )
+                        )
+                        .query(q -> q
+                                .multiMatch(mm -> mm
+                                        .query(query)
+                                        .fields("title", "content_raw")
+                                        .type(TextQueryType.BoolPrefix)
+                                )
+                        ).highlight(h -> h
+                                .preTags("<em>")
+                                .postTags("</em>")
+                                .fields(
+                                        Map.of(
+                                        "title", HighlightField.of(hf -> hf),
+                                        "content_raw", HighlightField.of(hf -> hf)
+                                )
+                        )
+                );
+
+                // Apply search_after if provided
+                if (searchAfter != null && !searchAfter.isEmpty()) {
+                    builder.searchAfter(List.of(searchAfter));
+                }
+
+                return builder;
+            }, TextDocument.class);
+
+            List<Hit<TextDocument>> hits = response.hits().hits();
+
+            List<SearchHitDto<TextDocument>> results = hits.stream()
+                    .map(hit -> new SearchHitDto<>(hit.source(), hit.highlight()))
+                    .collect(Collectors.toList());
+
+
+            long total = response.hits().total().value();
+
+            // Extract the sort value from the last hit for next request
+            String nextSearchAfter = hits.isEmpty()
+                    ? null
+                    : hits.get(hits.size() - 1).sort().get(0).toString(); // Assuming sort on one field
+
+            boolean hasMore = hits.size() == size;
+
+            return new SearchResultDto<>(results, total, page, size, nextSearchAfter, hasMore);
+
+
+
+        } catch (IOException e) {
+            throw new RuntimeException("Search failed", e);
+        }
+    }
+
+
+
+}
+
+

@@ -1,15 +1,11 @@
 package com.mindstore.backend.service;
 
-import com.mindstore.backend.data.Category;
 import com.mindstore.backend.data.TextDocument;
 import org.opensearch.client.opensearch.OpenSearchClient;
 import org.opensearch.client.opensearch._types.FieldValue;
-import org.opensearch.client.opensearch.core.search.Hit;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -47,9 +43,9 @@ public class TextIndexServiceImpl implements TextIndexService{
             var response = client.search(s -> s
                     .index("text-index")
                     .query(q -> q
-                            .match(m -> m
-                                    .field("title")
-                                    .query(FieldValue.of(title))
+                            .term(t -> t
+                                    .field("title.keyword")
+                                    .value(v -> v.stringValue(title))
                             )
                     ), TextDocument.class);
 
@@ -74,6 +70,7 @@ public class TextIndexServiceImpl implements TextIndexService{
             throw new RuntimeException("Failed to delete all documents from text-index", e);
         }
     }
+
 
     public void delete( Integer id) throws IOException {
 

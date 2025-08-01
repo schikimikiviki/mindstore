@@ -81,10 +81,10 @@ public class Initializer implements CommandLineRunner {
                     JSONArray commandListArray = (JSONArray) jsonEntry.get("commandList");
 
                     if (title == null || content_raw == null || content_html == null ||
-                            tagsArray == null || commandListArray == null) {
+                            tagsArray == null || commandListArray == null || textIndexService.existsByTitle(title)) {
                         System.out.println("Skipping entry with missing fields: " + jsonEntry);
                         skippedCount++;
-                        continue;
+                        continue; //
                     }
 
                     // Normalize title

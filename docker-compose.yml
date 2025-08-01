@@ -136,7 +136,7 @@ services:
 volumes:
   pgdata:
   opensearch_data:
- # manifoldcf_data: 
+
 
 networks:
   backend:

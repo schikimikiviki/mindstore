@@ -11,7 +11,8 @@ public class SearchResultDto<T> {
     private String searchAfter;
     private boolean hasMore;
 
-    public SearchResultDto(List<T> content, long total, int page, int size, String searchAfter, boolean hasMore) {
+
+    public SearchResultDto( List<T> content, long total, int page, int size, String searchAfter, boolean hasMore) {
         this.content = content;
         this.total = total;
         this.page = page;

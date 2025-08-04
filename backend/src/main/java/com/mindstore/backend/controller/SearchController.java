@@ -16,6 +16,9 @@ import java.security.Principal;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * REST controller for searches within text-index
+ */
 @RestController
 @RequestMapping("/api/search")
 public class SearchController {
@@ -23,7 +26,12 @@ public class SearchController {
     private final TextSearchService textSearchService;
     private final SearchHistoryService searchHistoryService;
 
-
+    /**
+     * search controller constructor
+     *
+     * @param textSearchService service class for search functions
+     * @param searchHistoryService service class or search history functions
+     */
     public SearchController(TextSearchService textSearchService, SearchHistoryService searchHistoryService) {
 
         //System.out.println("SearchController loaded");
@@ -39,6 +47,7 @@ public class SearchController {
      * Additionally, the query is saved to the search history.
      *
      * @param query      the search term entered by the user
+     * @param searchAfter the string for the next search page
      * @param page       the zero-based page index for pagination (default is 0)
      * @param size       the number of items per page (default is 10)
      * @param principal  the currently authenticated user (used for audit or filtering if needed)
@@ -58,6 +67,18 @@ public class SearchController {
         return textSearchService.search(query, page, size, searchAfter);
     }
 
+    /**
+     *
+     * function: search controller endpoint for search inside tagged texts
+     *
+     * @param query the search term entered by the user
+     * @param searchAfter the string for the next search page
+     * @param page       the zero-based page index for pagination (default is 0)
+     * @param size       the number of items per page (default is 10)
+     * @param principal  the currently authenticated user (used for audit or filtering if needed)
+     * @param tags the tags that we filter the texts with
+     * @return a {@code SearchResultDto} containing the paginated list of matching {@code TextDocument}s
+     */
     @GetMapping("/tag-search")
     public SearchResultDto<TextDocument> searchThroughTags(@RequestParam String query,
                                                 @RequestParam(defaultValue = "0") int page,
@@ -72,6 +93,7 @@ public class SearchController {
     }
 
     /**
+     * function: endpoint for autocompletion within search
      *
      * @param prefix - string we are searching for, for example "do" will suggest "docker"
      * @return List of strings that match query
@@ -94,9 +116,9 @@ public class SearchController {
 
 
     /**
+     * function: get the recent searches that were made by the user
      *
      * @param principal the currently authenticated user
-     * function: get the recent searches that were made by the user
      * @return a List of strings with the searches
      */
     @GetMapping("/history")
@@ -127,6 +149,7 @@ public class SearchController {
      * @param principal  the currently authenticated user (used for audit or filtering if needed)
      * @param dateFrom   the date we are querying from
      * @param dateTo     the date we are querying to
+     * @param searchAfter the string for the next search page
      *
      * @return a {@code SearchResultDto} containing the paginated list of matching {@code TextDocument}s
      */
@@ -157,6 +180,7 @@ public class SearchController {
      * @param page       the zero-based page index for pagination (default is 0)
      * @param size       the number of items per page (default is 10)
      * @param principal  the currently authenticated user (used for audit or filtering if needed)
+     * @param searchAfter the string for the next search page
      *
      * @return a {@code SearchResultDto} containing the paginated list of matching {@code TextDocument}s
      */
@@ -185,6 +209,7 @@ public class SearchController {
      * @param page       the zero-based page index for pagination (default is 0)
      * @param size       the number of items per page (default is 10)
      * @param principal  the currently authenticated user (used for audit or filtering if needed)
+     * @param searchAfter the string for the next search page
      *
      * @return a {@code SearchResultDto} containing the paginated list of matching {@code TextDocument}s and a section of highlighted results
      */

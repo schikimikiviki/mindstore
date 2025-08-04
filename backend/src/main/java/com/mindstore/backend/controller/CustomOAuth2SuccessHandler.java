@@ -9,16 +9,25 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import org.springframework.stereotype.Component;
+
 
 import java.io.IOException;
 
 
+/**
+ * Custom Handler for Success Page when using OAuth - Google Authentication
+ */
 public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler {
 
     private final JwtService jwtService;
     private final AuthenticationService authService;
 
+    /**
+     * custom success handler class
+     *
+     * @param jwtService for authenticating jwt token
+     * @param authService service class for authentication actions
+     */
     public CustomOAuth2SuccessHandler(JwtService jwtService, AuthenticationService authService) {
         this.jwtService = jwtService;
         this.authService = authService;

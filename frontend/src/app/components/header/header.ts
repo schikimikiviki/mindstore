@@ -263,7 +263,10 @@ export class Header implements OnInit {
       .subscribe((result) => {
         console.log('Dialog closed with:', result);
         this.cdr.detectChanges(); // Force view update
-        this.reloadTextsFromDb();
+
+        setTimeout(() => {
+          this.reloadTextsFromDb();
+        }, 5000);
       });
   }
 
@@ -272,7 +275,6 @@ export class Header implements OnInit {
       this.allTexts = texts.content;
       this.filteredTexts = texts.content;
       this.textCount = texts.total;
-      this.filteredCount = texts.total;
       this.childEmitter.emit(this.filteredTexts);
       this.searchAfter = texts.searchAfter;
       this.searchAfterEmitter.emit(this.searchAfter);
@@ -351,6 +353,10 @@ export class Header implements OnInit {
       this.searchAfterEmitter.emit(this.searchAfter);
       this.hasMore = texts.hasMore;
       this.cdr.detectChanges();
+      this.searchTerm = '';
+      this.searchTerm$.next('');
     });
+
+    //TODO: when deleting, the re-fetch should not trigger the defualt view
   }
 }

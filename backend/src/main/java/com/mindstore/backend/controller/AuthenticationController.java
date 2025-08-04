@@ -25,6 +25,10 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+/**
+ * REST controller for handling authentication endpoints.
+ * Provides login, registration, and JWT token-related operations.
+ */
 @RequestMapping("/auth")
 @RestController
 public class AuthenticationController {
@@ -32,6 +36,11 @@ public class AuthenticationController {
 
     private final AuthenticationService authenticationService;
 
+    /**
+     * authentication controller class
+     * @param jwtService with jwt token
+     * @param authenticationService used for authenticating functions
+     */
     public AuthenticationController(JwtService jwtService, AuthenticationService authenticationService) {
         this.jwtService = jwtService;
         this.authenticationService = authenticationService;
@@ -39,8 +48,9 @@ public class AuthenticationController {
 
     /**
      *
-     * @param registerUserDto the Dto with user data
      * function: used to register users
+     *
+     * @param registerUserDto the Dto with user data
      * @return ok --> if successfull
      */
     @PostMapping("/signup")
@@ -53,10 +63,11 @@ public class AuthenticationController {
 
     /**
      *
-     * @param request the path that the user tries to access
      * function: check if a user is currently logged in
      * for example when setting the login state in the frontend
      * returns the token, and the time left for the token validity
+     *
+     * @param request the path that the user tries to access
      * @return ok --> if successfull, else return 401 Unauthorized
      */
     @GetMapping("/check")
@@ -99,9 +110,10 @@ public class AuthenticationController {
 
     /**
      *
+     * function: login a user and set a cookie
+     *
      * @param loginUserDto with the email and password
      * @param response the extended response
-     * function: login a user and set a cookie
      * @return ok ---> if successfull
      */
     @PostMapping("/login")
@@ -128,8 +140,9 @@ public class AuthenticationController {
 
     /**
      *
-     * @param response - the extended response
      * function: log out a user, used in frontend to delete the set cookie
+     *
+     * @param response - the extended response
      * @return ok ---> if successfull
      */
     @PostMapping("/logout")

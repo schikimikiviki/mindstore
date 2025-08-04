@@ -17,6 +17,9 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * REST controller for texts
+ */
 @RestController
 @RequestMapping("/text-index")
 public class OpenSearchController {
@@ -26,6 +29,13 @@ public class OpenSearchController {
     private final JwtService jwtService;
     private final TextSearchService textSearchService;
 
+    /**
+     *  controller class for opensearch
+     *
+     * @param textIndexService service class for basic text document operations
+     * @param jwtService jwt service class
+     * @param textSearchService service class for text seearches
+     */
     public OpenSearchController(TextIndexService textIndexService, JwtService jwtService, TextSearchService textSearchService) {
         this.textIndexService = textIndexService;
         this.jwtService = jwtService;
@@ -34,9 +44,10 @@ public class OpenSearchController {
 
     /**
      *
+     * function: used to return all Text documents available
+     *
      * @param searchAfter - searchAfter string that references the createdAt
      * @param size - the size of the result to be fetched
-     * function: used to return all Text documents available
      * @return a SearchResultDto with the TextDocuments
      */
     @GetMapping("/all")
@@ -50,11 +61,13 @@ public class OpenSearchController {
 
     /**
      *
+     * function: used to get all text documents that contain a specific tag
+     * or a list of tags, used in the frontend to filter for specific tags
+     *
      * @param searchAfter - searchAfter string that references the createdAt
      * @param size - the size of the result to be fetched
      * @param tags that are searched
-     * function: used to get all text documents that contain a specific tag
-     *  or a list of tags, used in the frontend to filter for specific tags
+
      * @return a SearchResultDto with the text documents
      */
     @GetMapping("/all/tags")
@@ -66,10 +79,11 @@ public class OpenSearchController {
     }
 
     /**
+     * function: used to create new text documents, used in the frontend so that the user can add new entries
      *
      * @param textDocument with title, content, taglist, etc.
      * @param response - the extended response
-     * function: used to create new text documents, used in the frontend so that the user can add new entries
+
      * @return 201 CREATED --> if successfull
      */
     @PostMapping("/create")
@@ -93,6 +107,7 @@ public class OpenSearchController {
     }
 
     /**
+     * function: deletes text documents
      *
      * @param id - id of the document we want to delete
      * @return Status OK when successfull

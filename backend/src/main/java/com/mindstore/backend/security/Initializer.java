@@ -22,7 +22,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-
+/**
+ * Initializer class that is used to populate the database with texts and a test user.
+ */
 @Component
 public class Initializer implements CommandLineRunner {
 
@@ -31,7 +33,13 @@ public class Initializer implements CommandLineRunner {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-
+    /**
+     * initializer class
+     *
+     * @param textIndexService service class that holds logic for manipulating textDocuments
+     * @param userRepository repository class for users
+     * @param passwordEncoder used to encode passwords for users
+     */
     public Initializer(TextIndexService textIndexService, UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.textIndexService = textIndexService;
         this.userRepository = userRepository;

@@ -10,6 +10,9 @@ import com.mindstore.backend.data.dto.RegisterUserDto;
 import com.mindstore.backend.data.entity.User;
 import com.mindstore.backend.repository.UserRepository;
 
+/**
+ * Service class for authentication functions
+ */
 @Service
 public class AuthenticationService {
     private final UserRepository userRepository;
@@ -18,6 +21,14 @@ public class AuthenticationService {
 
     private final AuthenticationManager authenticationManager;
 
+    /**
+     *
+     * Authentication Service class
+     *
+     * @param userRepository containing user functionalities, eg. for signup
+     * @param authenticationManager manages authentication for the user
+     * @param passwordEncoder encodes the user password
+     */
     public AuthenticationService(
             UserRepository userRepository,
             AuthenticationManager authenticationManager,
@@ -29,9 +40,9 @@ public class AuthenticationService {
     }
 
     /**
+     *  function: sign up a user
      *
      * @param input RegisterUSerDTO with name and password
-     * function: sign up a user
      * @return the saved User
      */
     public User signup(RegisterUserDto input) {
@@ -44,9 +55,9 @@ public class AuthenticationService {
     }
 
     /**
-     *
-     * @param input LoginUserDto
      * function: used to authenticate a user, for example for the login by using authenticationManager
+     *
+     *  @param input LoginUserDto
      * @return User
      */
     public User authenticate(LoginUserDto input) {
@@ -63,9 +74,10 @@ public class AuthenticationService {
 
     /**
      *
-     * @param email of the user
      * function: search for a user by using the email
      * if the user isn't found, create them.
+     *
+     * @param email of the user
      * @return the User that was created
      */
     public User findOrCreateUserByEmail(String email) {

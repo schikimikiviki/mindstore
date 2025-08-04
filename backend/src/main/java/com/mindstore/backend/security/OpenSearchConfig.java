@@ -22,7 +22,17 @@ import java.net.URI;
         @Value("${opensearch.host}")
         private String openSearchHost;
 
+    /**
+     * default constructor
+     */
+    public OpenSearchConfig(){
+        }
 
+    /**
+     *
+     * Bean that creates the opensearch client with custom config
+     * @return the created open search client
+     */
         @Bean
         public OpenSearchClient openSearchClient() {
             // Create the low-level client with sniffing disabled

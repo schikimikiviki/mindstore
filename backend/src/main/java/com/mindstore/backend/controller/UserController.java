@@ -1,12 +1,10 @@
 package com.mindstore.backend.controller;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import com.mindstore.backend.data.dto.UserQueryDto;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +15,9 @@ import org.springframework.web.bind.annotation.*;
 import com.mindstore.backend.data.entity.User;
 import com.mindstore.backend.service.UserService;
 
+/**
+ * REST controller for user actions
+ */
 @RestController
 @RequestMapping("/users")
 public class UserController {
@@ -26,7 +27,12 @@ public class UserController {
     private final PasswordEncoder passwordEncoder;
     private final UserService userService;
 
-
+    /**
+     * user controller
+     * @param userService for managing users
+     * @param passwordEncoder for encoding user passwords
+     * @param userDetailsService spring user details
+     */
     public UserController(UserService userService, PasswordEncoder passwordEncoder, UserDetailsService userDetailsService ) {
         this.userService = userService;
         this.passwordEncoder = passwordEncoder;
@@ -45,9 +51,8 @@ public class UserController {
     }
 
     /**
-     *
-     * @param Id of the user that is requested
      * function: get a singular user
+     * @param Id of the user that is requested
      * @return Optional User
      */
     @GetMapping("/id/{Id}")
@@ -56,11 +61,11 @@ public class UserController {
     }
 
     /**
+     * function: get a user based on their email and the date they were created in the database.
+     * For example, you might want to check if user with email text@text.at was created before 2024-07-01T14:30:00
      *
      * @param email the email of the user
      * @param createdAt the time of creation, in ISO time format
-     * function: get a user based on their email and the date they were created in the database.
-     * For example, you might want to check if user with email text@text.at was created before 2024-07-01T14:30:00
      * @return User
      */
     @GetMapping("/recent-users")
@@ -75,9 +80,8 @@ public class UserController {
 
 
     /**
-     *
-     * @param userId the id of the user that is supposed to be deleted
      * function: delete a user that is not needed
+     * @param userId the id of the user that is supposed to be deleted
      * @return ok ---> if successfull, else: 401
      */
     @DeleteMapping("/{userId}")

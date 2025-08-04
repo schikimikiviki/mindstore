@@ -6,22 +6,29 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.data.elasticsearch.ElasticsearchDataAutoConfiguration;
 
+/**
+ * Main java entry point
+ */
 @SpringBootApplication
 @EnableAutoConfiguration(exclude = {
 		ElasticsearchDataAutoConfiguration.class
 })
 public class BackendApplication {
 
+
+	/**
+	 * Default constructor.
+	 */
+	public BackendApplication() {
+	}
+
+	/**
+	 * main function
+	 * @param args for command line arguments
+	 */
 	public static void main(String[] args) {
 
 		System.out.println("starting");
-
-//		Dotenv dotenv = Dotenv.load();
-//		System.setProperty("SPRING_DATASOURCE_URL", dotenv.get("SPRING_DATASOURCE_URL"));
-//		System.setProperty("SPRING_DATASOURCE_USERNAME", dotenv.get("SPRING_DATASOURCE_USERNAME"));
-//		System.setProperty("SPRING_DATASOURCE_PASSWORD", dotenv.get("SPRING_DATASOURCE_PASSWORD"));
-//		//System.out.println("Read: " +  dotenv.get("SPRING_DATASOURCE_USERNAME") +  " and: " + dotenv.get("SPRING_DATASOURCE_PASSWORD"));
-
 
 		SpringApplication.run(BackendApplication.class, args);
 

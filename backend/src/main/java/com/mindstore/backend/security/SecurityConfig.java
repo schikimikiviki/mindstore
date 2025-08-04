@@ -12,11 +12,6 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.oauth2.client.registration.ClientRegistration;
-import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
-import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
-import org.springframework.security.oauth2.core.AuthorizationGrantType;
-import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
@@ -26,7 +21,9 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import jakarta.servlet.http.HttpServletResponse;
 
 
-
+/**
+ * Main security configuration class
+ */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -35,6 +32,14 @@ public class SecurityConfig {
     private final AuthenticationProvider authenticationProvider;
     private final CustomOAuth2SuccessHandler customOAuth2SuccessHandler;
 
+    /**
+     *
+     * security configuration
+     *
+     * @param jwtAuthenticationFilter filter for jwt token
+     * @param authenticationProvider spring security auth provider class
+     * @param customOAuth2SuccessHandler success handler for oAuth
+     */
     public SecurityConfig(
             JwtAuthenticationFilter jwtAuthenticationFilter,
             AuthenticationProvider authenticationProvider,
@@ -46,11 +51,11 @@ public class SecurityConfig {
     }
 
     /**
-     *
-     * @param http
      * function: sets the filterChain for the routes that need special permissions
      * by default, any request needs authentication
      * uses jwtAuthenticationFilter and oauth for oauth login
+     *
+     * @param http http security
      * @return the build securityFilterChain
      * @throws Exception when a route is accessed without authentication that needs it
      */
@@ -125,10 +130,10 @@ public class SecurityConfig {
     }
 
     /**
+     * function: creates the customOAuthSuccessHandler with the Authentication service and the jwt service
      *
      * @param jwtService that serves as input for the handler
      * @param authService our authentication service
-     * function: creates the customOAuthSuccessHandler with the Authentication service and the jwt service
      * @return the custom Oauth handler
      */
     @Bean

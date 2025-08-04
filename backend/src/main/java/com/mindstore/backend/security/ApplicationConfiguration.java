@@ -25,6 +25,10 @@ import org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolv
 public class ApplicationConfiguration {
     private final UserRepository userRepository;
 
+    /**
+     * configuration class for entire application
+     * @param userRepository the user repo used in the main config
+     */
     public ApplicationConfiguration(UserRepository userRepository) {
         this.userRepository = userRepository;
     }

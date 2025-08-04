@@ -8,16 +8,27 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.UUID;
 
+/**
+ * Implementation of the TextIndexService interface, implements relevant functions for rest controller
+ */
 @Service
 public class TextIndexServiceImpl implements TextIndexService{
 
 
     private final OpenSearchClient client;
 
+    /**
+     * text index service implementation
+     * @param client opensearchclient
+     */
     public TextIndexServiceImpl(OpenSearchClient client) {
         this.client = client;
     }
 
+    /**
+     * used to index texts into the opensearch index
+     * @param text the TextDocument we want to index
+     */
     public void indexText(TextDocument text) {
 
         try {
@@ -37,7 +48,11 @@ public class TextIndexServiceImpl implements TextIndexService{
     }
 
 
-
+    /**
+     * function that returns a boolean to indicate if a documents exists by a title
+     * @param title string
+     * @return true or false
+     */
     public boolean existsByTitle(String title) {
         try {
             var response = client.search(s -> s
@@ -55,6 +70,10 @@ public class TextIndexServiceImpl implements TextIndexService{
         }
     }
 
+    /**
+     * deletes all text documents in the index
+     * @throws IOException when deletion fails
+     */
     public void deleteAll() throws IOException {
 
         if (!client.indices().exists(b -> b.index("text-index")).value()) {
@@ -71,7 +90,11 @@ public class TextIndexServiceImpl implements TextIndexService{
         }
     }
 
-
+    /**
+     * deletes a single text document by id
+     * @param id - the textDocument id to delete
+     * @throws IOException when deletion fails
+     */
     public void delete( Integer id) throws IOException {
 
         try {

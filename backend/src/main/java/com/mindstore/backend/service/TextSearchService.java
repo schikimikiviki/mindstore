@@ -1,7 +1,5 @@
 package com.mindstore.backend.service;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mindstore.backend.data.Category;
 import com.mindstore.backend.data.TextDocument;
 import com.mindstore.backend.data.dto.SearchHitDto;
@@ -22,23 +20,30 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * Service class for search functionalities within the text index
+ */
 @Service
 public class TextSearchService {
 
     private final OpenSearchClient client;
 
+    /**
+     * text search service
+     * @param client opensearch client
+     */
     public TextSearchService(OpenSearchClient client) {
         this.client = client;
     }
 
     /**
+     * function: search the available TextDocuments for a specific string
      *
      * @param query the string we are searching for
      * @param page param used for pagination, page number
      * @param size defines how many results are returned
+     * @param searchAfter string for the next search result page
 
-     * function: search the available TextDocuments for a specific string
-     *
      * @return a SearchResultDto with TextDocuments that match the query
      */
     public SearchResultDto<TextDocument> search(String query, int page, int size, String searchAfter) {
@@ -93,6 +98,8 @@ public class TextSearchService {
     }
 
     /**
+     *
+     * search function for tagged texts
      *
      * @param categories - the list of categories that we need to filter
      * @param query - the user query
@@ -164,6 +171,7 @@ public class TextSearchService {
     }
 
     /**
+     * function for autocompletion results for a search
      *
      * @param prefix - String that we are searching for
      * @return List of titles that match for that string
@@ -205,10 +213,10 @@ public class TextSearchService {
     }
 
     /**
+     * function: service method that returns all available textDocuments
      *
      * @param searchAfter - searchAfter string
      * @param size - size of the results
-     * function: service method that returns all available textDocuments
      * @return list of documents
      */
     public SearchResultDto<TextDocument> findAll(String searchAfter, int size) {
@@ -253,6 +261,8 @@ public class TextSearchService {
 
 
     /**
+     *
+     * function that finds all texts with certain tags
      *
      * @param searchAfter - searchAfter string
      * @param size - size of the results
@@ -313,14 +323,14 @@ public class TextSearchService {
     }
 
     /**
+     * function: search the available TextDocuments for a specific string
      *
      * @param query the string we are searching for
      * @param page param used for pagination, page number
      * @param size defines how many results are returned
      * @param from defines the from date for the time span
      * @param to defines the to date for the time span
-
-     * function: search the available TextDocuments for a specific string
+     * @param searchAfter string for the next search result page
      *
      * @return a SearchResultDto with TextDocuments that match the query, filter out the search results from the time span
      */
@@ -383,12 +393,12 @@ public class TextSearchService {
     }
 
     /**
+     * function: search the available TextDocuments for a specific string
      *
      * @param command the string we are searching for
      * @param page param used for pagination, page number
      * @param size defines how many results are returned
-
-     * function: search the available TextDocuments for a specific string
+     * @param searchAfter string for the next search result page
      *
      * @return a SearchResultDto with TextDocuments that match the query, filter out the search results from the time span
      */
@@ -446,11 +456,12 @@ public class TextSearchService {
 
     /**
      *
+     * function: search the available TextDocuments for a specific string
+     *
      * @param query the string we are searching for
      * @param page param used for pagination, page number
      * @param size defines how many results are returned
-
-     * function: search the available TextDocuments for a specific string
+     * @param searchAfter string for the next search result page
      *
      * @return a SearchResultDto with TextDocuments that match the query, highlighted search results
      */

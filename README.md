@@ -16,20 +16,12 @@ Search engine application that allows searching for IT terms and topics and addi
 
 ![Image](https://github.com/user-attachments/assets/3c3477a8-99f1-4513-9d51-c764674fdf69)
 
-## Info for deployed version
+## Deployed version
 
-the data in opensearch is  not persisted yet. Make sure to copy the contents before restarting: 
+See: https://mindstore.vbdev.at/
 
-```
-curl -X GET "http://localhost:9200/text-index/_search" -H 'Content-Type: application/json' -d'
-{
-  "query": {
-    "match_all": {}
-  },
-  "size": 10000
-}
-' | jq '[.hits.hits[]._source]'
-```
+JavaDocs available at: https://docs.mindstore.vbdev.at/
+
 
 ## Deployment
 

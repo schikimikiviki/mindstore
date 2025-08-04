@@ -16,6 +16,9 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 
+/**
+ * service class for jwt token
+ */
 @Service
 public class JwtService {
     @Value("${security.jwt.secret-key}")
@@ -24,10 +27,18 @@ public class JwtService {
     @Value("${security.jwt.expiration-time}")
     private long jwtExpiration;
 
+
+    /**
+     * Default constructor.
+     */
+    public JwtService() {
+    }
+
     /**
      *
-     * @param token in string format
      * function: get the username, used in the jwtAuthenticationFilter
+     *
+     * @param token in string format
      * @return the claim (info about the jwt token)
      */
     public String extractUsername(String token) {
@@ -35,6 +46,7 @@ public class JwtService {
     }
 
     /**
+     * function: extract claim from token
      *
      * @param token the JWT token that we extract the claim from
      * @param claimsResolver - a function that resolves the claim
@@ -48,6 +60,8 @@ public class JwtService {
 
     /**
      *
+     * function: generates token
+     *
      * @param userDetails details to include in the token
      * @return the generated token
      */
@@ -56,6 +70,7 @@ public class JwtService {
     }
 
     /**
+     * function: generate token
      *
      * @param extraClaims additional claims to include
      * @param userDetails - the userDetails for the token
@@ -66,6 +81,8 @@ public class JwtService {
     }
 
     /**
+     *
+     * function: generate token
      *
      * @param extraClaims additional claims to include
      * @param userDetails the userDetails for the token
@@ -79,6 +96,7 @@ public class JwtService {
 
     /**
      * function: used for the /auth/check controller method
+     *
      * @return the remaining time until expiration
      */
     public long getExpirationTime() {
@@ -86,6 +104,8 @@ public class JwtService {
     }
 
     /**
+     *
+     * function: build token
      *
      * @param extraClaims additional claims to include
      * @param userDetails the userDetails for the token
@@ -108,10 +128,11 @@ public class JwtService {
     }
 
     /**
+     * function: check token validity
      *
      * @param token - the token that needs validation
      * @param userDetails the userDetails that we expect the token to have
-     * @return true if the token is valid & not expired --> else false
+     * @return true if the token is valid and not expired --> else false
      */
     public boolean isTokenValid(String token, UserDetails userDetails) {
         final String username = extractUsername(token);
@@ -119,6 +140,8 @@ public class JwtService {
     }
 
     /**
+     *
+     * function: check if token is expired yet
      *
      * @param token the token we are checking
      * @return true if the token is expired --> else false
@@ -129,6 +152,8 @@ public class JwtService {
 
     /**
      *
+     * function: returns expiration from token
+     *
      * @param token the token we are checking
      * @return the expiration date
      */
@@ -137,6 +162,8 @@ public class JwtService {
     }
 
     /**
+     *
+     * function: extracts all claims from token
      *
      * @param token the token we are checking
      * @return object containing all claims
@@ -152,6 +179,7 @@ public class JwtService {
 
     /**
      * function: get the encoded key
+     *
      * @return key object with base64-encoded key
      */
     private Key getSignInKey() {

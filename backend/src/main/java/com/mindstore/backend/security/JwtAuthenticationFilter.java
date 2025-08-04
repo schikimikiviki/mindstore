@@ -23,6 +23,9 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+/**
+ * Jwt Authentication Filter component
+ */
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
@@ -30,6 +33,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
 
+    /**
+     * Jwt main filter component
+     *
+     * @param jwtService holds functions for jwt
+     * @param userDetailsService lets you manipulate user details
+     */
     public JwtAuthenticationFilter(
             JwtService jwtService,
             UserDetailsService userDetailsService
@@ -39,19 +48,18 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     /**
-     *
-     * @param request the path requested
-     * @param response the extended response
-     * @param filterChain the jakarta filter chain
-     *
      * function: checks the paths that need to be filtered for spring security,
      * then checks if some kind of authorization is present - token, cookie
      * if a username can be found, their authority is checked
      * if a token is found, the token validity is checked
      * if those checks pass, the authentication is "passed"
      *
-     * @throws ServletException
-     * @throws IOException
+     * @param request the path requested
+     * @param response the extended response
+     * @param filterChain the jakarta filter chain
+     *
+     * @throws ServletException on filterChain error
+     * @throws IOException when the request is unauthorized
      */
     @Override
     protected void doFilterInternal(

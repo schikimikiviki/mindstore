@@ -1,0 +1,667 @@
+{
+	"info": {
+		"_postman_id": "246334fb-c523-4e75-9b91-1303719a7fc8",
+		"name": "Mindstore",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26172203"
+	},
+	"item": [
+		{
+			"name": "User requests",
+			"item": [
+				{
+					"name": "LOGIN a user",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"test@test.at\",\n    \"password\": \"testPassword\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "VERIFY a user",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/auth/check",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"auth",
+								"check"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "LOGOUT user",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/auth/logout",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"auth",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET the history of a user",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/search/history",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"search",
+								"history"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET a user CREATED BEFORE a date",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/users/recent-users?email=viktoria.bzdyk@gmx.at&createdAt=2024-07-01T14:30:00",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"recent-users"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "viktoria.bzdyk@gmx.at"
+								},
+								{
+									"key": "createdAt",
+									"value": "2024-07-01T14:30:00"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET all users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/users/all",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "REGISTER a user",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"viktoria.bzdyk@gmx.at\",\n    \"password\": \"PestakaMaTexty\",\n    \"fullName\": \"viva emptiness\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/auth/signup",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"auth",
+								"signup"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Text requests",
+			"item": [
+				{
+					"name": "GET all texts",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/texts/all",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"texts",
+								"all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST a new text",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"This is a title\",\n  \"content_raw\": \"some content\",\n  \"content_html\": \"<h1> some html content </h1>\",\n  \"tags\": [\"DOCKER\", \"DEPLOYMENT\"],\n  \"commandList\": [\n    \"docker build -t myapp .\",\n    \"docker run -p 8080:8080 myapp\"\n  ]\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/texts",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"texts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET all textIndexes FIRST PAGE",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/text-index/all?size=10",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"text-index",
+								"all"
+							],
+							"query": [
+								{
+									"key": "size",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST a textIndex",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"something\",\n    \"content_raw\": \"some content\",\n    \"content_html\": \"<h1>some content</h1>\",\n    \"tags\": [\n        \"DOCKER\",\n        \"LINUX\"\n    ],\n    \"commandList\": [\n        \"some command\",\n        \"some other command\"\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/text-index/create",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"text-index",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET all text-indexes with specific tags",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/text-index/all/tags?tags=JAVA&tags=PYTHON&size=10&searchAfter=1752802031816",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"text-index",
+								"all",
+								"tags"
+							],
+							"query": [
+								{
+									"key": "tags",
+									"value": "JAVA"
+								},
+								{
+									"key": "tags",
+									"value": "PYTHON"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								},
+								{
+									"key": "searchAfter",
+									"value": "1752802031816"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET all textIndexes SECOND PAGE",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/text-index/all?size=10&searchAfter=1752799474576",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"text-index",
+								"all"
+							],
+							"query": [
+								{
+									"key": "size",
+									"value": "10"
+								},
+								{
+									"key": "searchAfter",
+									"value": "1752799474576"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE a textDocument",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/text-index/delete?id=1784191832",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"text-index",
+								"delete"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1784191832"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Search requests",
+			"item": [
+				{
+					"name": "GET /api/search",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/search?query=linux&page=0&size=10",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"search"
+							],
+							"query": [
+								{
+									"key": "query",
+									"value": "linux"
+								},
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET categories list",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/search/tags",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"search",
+								"tags"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET autocomplete",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/search/autocomplete?prefix=do",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"search",
+								"autocomplete"
+							],
+							"query": [
+								{
+									"key": "prefix",
+									"value": "do"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /api/search but for the tag list",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/search/tag-search?tags=JAVA&query=docu&page=0&size=10",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"search",
+								"tag-search"
+							],
+							"query": [
+								{
+									"key": "tags",
+									"value": "JAVA"
+								},
+								{
+									"key": "query",
+									"value": "docu"
+								},
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "SEARCH for a term WITH TIMESPAN",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/search/time?query=linux&page=0&size=10&dateFrom=1704067200000&dateTo=1753873658000",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"search",
+								"time"
+							],
+							"query": [
+								{
+									"key": "query",
+									"value": "linux"
+								},
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								},
+								{
+									"key": "dateFrom",
+									"value": "1704067200000"
+								},
+								{
+									"key": "dateTo",
+									"value": "1753873658000"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "SEARCH for a command",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/search/command-search?command=pg_dump -U nucc -h localhost -p 54321 nucc > dump.sql&page=0&size=10",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"search",
+								"command-search"
+							],
+							"query": [
+								{
+									"key": "command",
+									"value": "pg_dump -U nucc -h localhost -p 54321 nucc > dump.sql"
+								},
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "SEARCH for a term and get back highlighted version",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/search/highlight?query=list&page=0&size=10",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"search",
+								"highlight"
+							],
+							"query": [
+								{
+									"key": "query",
+									"value": "list"
+								},
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "SEARCH for a term and get back BOOSTED title",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/search/boosted?query=list&page=0&size=10",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"search",
+								"boosted"
+							],
+							"query": [
+								{
+									"key": "query",
+									"value": "list"
+								},
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

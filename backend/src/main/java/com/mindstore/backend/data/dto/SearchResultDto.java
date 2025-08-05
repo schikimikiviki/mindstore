@@ -8,6 +8,9 @@ import java.util.List;
  * @param <T> can be used as wrapper
  */
 public class SearchResultDto<T> {
+
+    private long durationMs;
+    private String query;
     private List<T> content;
     private long total;
     private int page;
@@ -26,15 +29,32 @@ public class SearchResultDto<T> {
      * @param searchAfter string for pagination
      * @param hasMore boolean that shows if this is the last result page or not
      */
-    public SearchResultDto( List<T> content, long total, int page, int size, String searchAfter, boolean hasMore) {
+    public SearchResultDto( List<T> content, long total, int page, int size, String searchAfter, boolean hasMore, String query, long durationMs) {
         this.content = content;
         this.total = total;
         this.page = page;
         this.size = size;
         this.searchAfter = searchAfter;
         this.hasMore = hasMore;
+        this.query = query;
+        this.durationMs = durationMs;
     }
 
+    public void setDurationMs(long durationMs){
+        this.durationMs = durationMs;
+    }
+
+    public long getDurationMs(){
+        return this.durationMs;
+    }
+
+    public String getQuery(){
+        return this.query;
+    }
+
+    public void setQuery(String query){
+        this.query = query;
+    }
     /**
      * default setter
      * @param hasMore boolean

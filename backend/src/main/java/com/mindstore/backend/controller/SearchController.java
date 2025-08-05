@@ -226,6 +226,34 @@ public class SearchController {
         return textSearchService.searchHighlighted(query, page, size, searchAfter);
     }
 
+    /**
+     * Searches through all available {@code TextDocument}s based on the query parameter.
+     * Results are paginated and returned in a {@code SearchResultDto}.
+     * Results containing a the query in the title field are boosted.
+
+     * Additionally, the query is saved to the search history.
+     *
+     * @param query      the search term entered by the user
+     * @param searchAfter the string for the next search page
+     * @param page       the zero-based page index for pagination (default is 0)
+     * @param size       the number of items per page (default is 10)
+     * @param principal  the currently authenticated user (used for audit or filtering if needed)
+     * @return a {@code SearchResultDto} containing the paginated list of matching {@code TextDocument}s
+     */
+
+    @GetMapping("/boosted")
+    public SearchResultDto<TextDocument> searchBoostedTitle(@RequestParam String query,
+                                                @RequestParam(defaultValue = "0") int page,
+                                                @RequestParam(defaultValue = "10") int size,
+                                                @RequestParam(defaultValue = "") String searchAfter,
+                                                Principal principal) {
+
+        // wenn wir eine Search machen, soll das auch als History abgespeichert werden
+        searchHistoryService.saveSearch(query.toString());
+
+        return textSearchService.search(query, page, size, searchAfter);
+    }
+
 
 
 }

@@ -86,7 +86,7 @@ class OpenSearchControllerTest {
                 expectedDataSize,
                 0,
                 10,
-                null, true
+                null, true, "", 0
         );
 
         when(textSearchService.findAll("", 10)).thenReturn(mockResult);
@@ -130,7 +130,7 @@ class OpenSearchControllerTest {
                 expectedDataSize,
                 0,
                 10,
-                null, true
+                null, true, "", 0
         );
 
         when(textSearchService.findAll("", 10)).thenReturn(mockResult);
@@ -175,7 +175,7 @@ class OpenSearchControllerTest {
                 expectedDataSize,
                 0,
                 10,
-                null, true
+                null, true, "", 0
         );
 
         when(textSearchService.findAll("", 10)).thenReturn(mockResult);

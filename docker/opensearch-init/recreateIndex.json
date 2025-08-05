@@ -6,6 +6,43 @@
           "type": "edge_ngram",
           "min_gram": 1,
           "max_gram": 20
+        },
+        "synonym_filter": {
+          "type": "synonym",
+          "synonyms": [
+            "bug, defect, issue",
+            "function, method",
+            "variable, var",
+            "loop, iteration, for loop, while loop",
+            "object, instance",
+            "error, exception, fault",
+            "parameter, argument, param",
+            " version control, git",
+            "repository, repo",
+            "deploy, release",
+            "continuous integration, ci",
+            "continuous deployment, cd",
+            "js, javascript",
+            "py, python",
+            "ts, typescript",
+            "csharp, c#, dotnet",
+            "cpp, c++",
+            "react, reactjs",
+            "node, nodejs",
+            "nosql, non-relational database",
+            "row, record",
+            "column, field",
+            "index, key",
+            "ui, user interface, gui",
+            "ux, user experience",
+            "web app, website, application",
+            "frontend, client-side",
+            "backend, server-side",
+            "api, rest api, endpoint, rest",
+            "authentication, login, auth",
+            "authorization, permissions, access control, access",
+            "encryption, encoding, hashing"
+          ]
         }
       },
       "analyzer": {
@@ -16,6 +53,10 @@
         "autocomplete_search": {
           "tokenizer": "standard",
           "filter": ["lowercase"]
+        },
+        "custom_synonym_analyzer": {
+          "tokenizer": "standard",
+          "filter": ["lowercase", "synonym_filter"]
         }
       }
     }
@@ -32,6 +73,10 @@
             "type": "text",
             "analyzer": "autocomplete_index",
             "search_analyzer": "autocomplete_search"
+          },
+          "synonyms": {
+            "type": "text",
+            "analyzer": "custom_synonym_analyzer"
           }
         }
       },
@@ -42,6 +87,10 @@
             "type": "text",
             "analyzer": "autocomplete_index",
             "search_analyzer": "autocomplete_search"
+          },
+          "synonyms": {
+            "type": "text",
+            "analyzer": "custom_synonym_analyzer"
           }
         }
       },

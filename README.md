@@ -49,6 +49,20 @@ http://localhost:5601
 http://localhost:8345/mcf-crawler-ui/
 ```
 
+# Reindexing documents when the index changed without loosing the old data
+
+1. Execute the reindex.sh script at docker/opensearch-init/reindex.sh. This creates a backup of the current index.
+
+2. Restart the opensearch-init docker container. 
+
+3. Execute the getback.sh script at docker/opensearch-init/getback.sh. This loads the old data into the new index. 
+
+4. You can check if the 2 indexes are there using: 
+
+```
+curl -X GET "http://localhost:9200/_cat/indices?v"
+```
+
 ## Development
 
 1. Start the database and the opensearch services with docker using: 
@@ -61,3 +75,4 @@ docker compose up manifoldcf opensearch postgres opensearch-dashboards opensearc
 This is important for the opensearch URL and the postgres URL. 
 
 3. You can start the frontend with IntelliJ.
+
